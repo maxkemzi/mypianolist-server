@@ -1,0 +1,3 @@
+rootProject.name = 'mypianolist-backend'
+
+include 'mypianolist'
