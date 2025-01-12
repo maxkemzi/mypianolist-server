@@ -14,6 +14,17 @@ public class PieceGenre {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
-	@Column(unique = true)
+	@Column(nullable = false, unique = true)
 	private String name;
+
+	public PieceGenre() {
+	}
+
+	public PieceGenre(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return this.name;
+	}
 }
