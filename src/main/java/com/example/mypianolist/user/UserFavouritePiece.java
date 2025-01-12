@@ -34,6 +34,13 @@ public class UserFavouritePiece {
 	public UserFavouritePiece() {
 	}
 
+	public UserFavouritePiece(User user, Piece piece) {
+		this.user = user;
+		this.piece = piece;
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
+	}
+
 	@PrePersist
 	protected void onCreate() {
 		this.createdAt = LocalDateTime.now();
