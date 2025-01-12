@@ -34,6 +34,13 @@ public class UserFavouriteComposer {
 	public UserFavouriteComposer() {
 	}
 
+	public UserFavouriteComposer(User user, Composer composer) {
+		this.user = user;
+		this.composer = composer;
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
+	}
+
 	@PrePersist
 	protected void onCreate() {
 		this.createdAt = LocalDateTime.now();
