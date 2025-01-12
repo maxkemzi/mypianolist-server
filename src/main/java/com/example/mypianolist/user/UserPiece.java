@@ -14,6 +14,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 
 @Entity
 public class UserPiece {
@@ -47,6 +49,17 @@ public class UserPiece {
 		this.piece = piece;
 		this.status = status;
 		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
+	}
+
+	@PrePersist
+	protected void onCreate() {
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
 		this.updatedAt = LocalDateTime.now();
 	}
 
@@ -92,5 +105,13 @@ public class UserPiece {
 
 	public void setFinishedAt(LocalDate finishedAt) {
 		this.finishedAt = finishedAt;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return this.createdAt;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return this.updatedAt;
 	}
 }

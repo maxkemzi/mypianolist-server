@@ -12,6 +12,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 
 @Entity
 public class User {
@@ -30,6 +32,7 @@ public class User {
 
 	private String avatar;
 	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UserPiece> userPieces = new ArrayList<>();
@@ -47,6 +50,19 @@ public class User {
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
+	}
+
+	@PrePersist
+	protected void onCreate() {
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+		this.updatedAt = LocalDateTime.now();
 	}
 
 	public UUID getId() {
@@ -75,5 +91,9 @@ public class User {
 
 	public LocalDateTime getCreatedAt() {
 		return this.createdAt;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return this.updatedAt;
 	}
 }
