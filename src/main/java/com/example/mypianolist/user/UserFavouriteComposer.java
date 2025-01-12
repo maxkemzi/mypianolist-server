@@ -24,4 +24,15 @@ public class UserFavouriteComposer {
 	@ManyToOne
 	@JoinColumn(name = "composer_id", nullable = false)
 	private Composer composer;
+
+	public UserFavouriteComposer() {
+	}
+
+	public User getUser() {
+		return this.user;
+	}
+
+	public Composer getComposer() {
+		return this.composer;
+	}
 }
