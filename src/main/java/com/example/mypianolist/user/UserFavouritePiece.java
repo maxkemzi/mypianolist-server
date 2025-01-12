@@ -24,4 +24,15 @@ public class UserFavouritePiece {
 	@ManyToOne
 	@JoinColumn(name = "piece_id", nullable = false)
 	private Piece piece;
+
+	public UserFavouritePiece() {
+	}
+
+	public User getUser() {
+		return this.user;
+	}
+
+	public Piece getPiece() {
+		return this.piece;
+	}
 }
