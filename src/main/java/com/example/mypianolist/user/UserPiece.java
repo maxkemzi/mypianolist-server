@@ -1,5 +1,6 @@
 package com.example.mypianolist.user;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -33,8 +34,63 @@ public class UserPiece {
 	@Enumerated(EnumType.STRING)
 	private UserPieceStatus status;
 
-	private LocalDateTime startedAt;
-	private LocalDateTime finishedAt;
+	private LocalDate startedAt;
+	private LocalDate finishedAt;
 	private LocalDateTime updatedAt;
 	private LocalDateTime createdAt;
+
+	public UserPiece() {
+	}
+
+	public UserPiece(User user, Piece piece, UserPieceStatus status) {
+		this.user = user;
+		this.piece = piece;
+		this.status = status;
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
+	}
+
+	public UUID getId() {
+		return this.id;
+	}
+
+	public User getUser() {
+		return this.user;
+	}
+
+	public Piece getPiece() {
+		return this.piece;
+	}
+
+	public Integer getScore() {
+		return this.score;
+	}
+
+	public void setScore(Integer score) {
+		this.score = score;
+	}
+
+	public UserPieceStatus getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(UserPieceStatus status) {
+		this.status = status;
+	}
+
+	public LocalDate getStartedAt() {
+		return this.startedAt;
+	}
+
+	public void setStartedAt(LocalDate startedAt) {
+		this.startedAt = startedAt;
+	}
+
+	public LocalDate getFinishedAt() {
+		return this.finishedAt;
+	}
+
+	public void setFinishedAt(LocalDate finishedAt) {
+		this.finishedAt = finishedAt;
+	}
 }
