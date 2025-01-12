@@ -54,11 +54,14 @@ public class Piece {
 	public Piece() {
 	}
 
-	public Piece(String title, String description, String image, LocalDate composedAt) {
+	public Piece(String title, String description, String image, LocalDate composedAt, Composer composer,
+			PieceGenre genre) {
 		this.title = title;
 		this.description = description;
 		this.image = image;
 		this.composedAt = composedAt;
+		this.composer = composer;
+		this.genre = genre;
 	}
 
 	public UUID getId() {
