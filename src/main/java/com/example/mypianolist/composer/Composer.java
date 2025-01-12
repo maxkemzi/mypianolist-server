@@ -94,4 +94,9 @@ public class Composer {
 		Composer composer = (Composer) o;
 		return id != null && id.equals(composer.id);
 	}
+
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
 }

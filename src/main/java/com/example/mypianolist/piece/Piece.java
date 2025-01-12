@@ -95,4 +95,9 @@ public class Piece {
 		Piece piece = (Piece) o;
 		return id != null && id.equals(piece.id);
 	}
+
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
 }

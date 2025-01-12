@@ -79,4 +79,9 @@ public class UserFavouritePiece {
 		UserFavouritePiece userFavouritePiece = (UserFavouritePiece) o;
 		return id != null && id.equals(userFavouritePiece.id);
 	}
+
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
 }

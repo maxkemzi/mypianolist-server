@@ -39,4 +39,9 @@ public class PieceGenre {
 		PieceGenre pieceGenre = (PieceGenre) o;
 		return id != null && id.equals(pieceGenre.id);
 	}
+
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
 }

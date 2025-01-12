@@ -126,4 +126,9 @@ public class UserPiece {
 		UserPiece userPiece = (UserPiece) o;
 		return id != null && id.equals(userPiece.id);
 	}
+
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
 }

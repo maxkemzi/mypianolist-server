@@ -79,4 +79,9 @@ public class UserFavouriteComposer {
 		UserFavouriteComposer userFavouriteComposer = (UserFavouriteComposer) o;
 		return id != null && id.equals(userFavouriteComposer.id);
 	}
+
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
 }
