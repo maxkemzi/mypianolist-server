@@ -67,4 +67,16 @@ public class UserFavouritePiece {
 	public LocalDateTime getUpdatedAt() {
 		return this.updatedAt;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+
+		if (o == null || getClass() != o.getClass())
+			return false;
+
+		UserFavouritePiece userFavouritePiece = (UserFavouritePiece) o;
+		return id != null && id.equals(userFavouritePiece.id);
+	}
 }

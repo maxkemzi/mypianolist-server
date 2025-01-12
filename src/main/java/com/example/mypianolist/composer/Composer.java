@@ -82,4 +82,16 @@ public class Composer {
 	public LocalDate getDiedAt() {
 		return this.diedAt;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+
+		if (o == null || getClass() != o.getClass())
+			return false;
+
+		Composer composer = (Composer) o;
+		return id != null && id.equals(composer.id);
+	}
 }

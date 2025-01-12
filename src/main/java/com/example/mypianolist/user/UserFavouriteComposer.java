@@ -67,4 +67,16 @@ public class UserFavouriteComposer {
 	public LocalDateTime getUpdatedAt() {
 		return this.updatedAt;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+
+		if (o == null || getClass() != o.getClass())
+			return false;
+
+		UserFavouriteComposer userFavouriteComposer = (UserFavouriteComposer) o;
+		return id != null && id.equals(userFavouriteComposer.id);
+	}
 }
