@@ -25,7 +25,7 @@ public class UserFavouritePiece {
 
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
+	private UserAccount user;
 
 	@ManyToOne
 	@JoinColumn(name = "piece_id", nullable = false)
@@ -34,7 +34,7 @@ public class UserFavouritePiece {
 	public UserFavouritePiece() {
 	}
 
-	public UserFavouritePiece(User user, Piece piece) {
+	public UserFavouritePiece(UserAccount user, Piece piece) {
 		this.user = user;
 		this.piece = piece;
 		this.createdAt = LocalDateTime.now();
@@ -52,7 +52,7 @@ public class UserFavouritePiece {
 		this.updatedAt = LocalDateTime.now();
 	}
 
-	public User getUser() {
+	public UserAccount getUser() {
 		return this.user;
 	}
 

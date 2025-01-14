@@ -25,7 +25,7 @@ public class UserFavouriteComposer {
 
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
+	private UserAccount user;
 
 	@ManyToOne
 	@JoinColumn(name = "composer_id", nullable = false)
@@ -34,7 +34,7 @@ public class UserFavouriteComposer {
 	public UserFavouriteComposer() {
 	}
 
-	public UserFavouriteComposer(User user, Composer composer) {
+	public UserFavouriteComposer(UserAccount user, Composer composer) {
 		this.user = user;
 		this.composer = composer;
 		this.createdAt = LocalDateTime.now();
@@ -52,7 +52,7 @@ public class UserFavouriteComposer {
 		this.updatedAt = LocalDateTime.now();
 	}
 
-	public User getUser() {
+	public UserAccount getUser() {
 		return this.user;
 	}
 

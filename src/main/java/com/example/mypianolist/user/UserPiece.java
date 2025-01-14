@@ -25,7 +25,7 @@ public class UserPiece {
 
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
+	private UserAccount user;
 
 	@ManyToOne
 	@JoinColumn(name = "piece_id", nullable = false)
@@ -44,7 +44,7 @@ public class UserPiece {
 	public UserPiece() {
 	}
 
-	public UserPiece(User user, Piece piece, UserPieceStatus status) {
+	public UserPiece(UserAccount user, Piece piece, UserPieceStatus status) {
 		this.user = user;
 		this.piece = piece;
 		this.status = status;
@@ -67,7 +67,7 @@ public class UserPiece {
 		return this.id;
 	}
 
-	public User getUser() {
+	public UserAccount getUser() {
 		return this.user;
 	}
 

@@ -16,7 +16,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 
 @Entity
-public class User {
+public class UserAccount {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
@@ -43,10 +43,10 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UserFavouriteComposer> favouriteComposers = new ArrayList<>();
 
-	public User() {
+	public UserAccount() {
 	}
 
-	public User(String username, String email, String password) {
+	public UserAccount(String username, String email, String password) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
@@ -105,7 +105,7 @@ public class User {
 		if (o == null || getClass() != o.getClass())
 			return false;
 
-		User user = (User) o;
+		UserAccount user = (UserAccount) o;
 		return id != null && id.equals(user.id);
 	}
 
