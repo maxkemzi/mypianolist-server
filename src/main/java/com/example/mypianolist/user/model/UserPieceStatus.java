@@ -1,4 +1,4 @@
-package com.example.mypianolist.user;
+package com.example.mypianolist.user.model;
 
 public enum UserPieceStatus {
 	CURRENTLY_LEARNING,

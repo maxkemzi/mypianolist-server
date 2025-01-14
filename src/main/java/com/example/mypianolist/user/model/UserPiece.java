@@ -1,10 +1,10 @@
-package com.example.mypianolist.user;
+package com.example.mypianolist.user.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.example.mypianolist.piece.Piece;
+import com.example.mypianolist.piece.model.Piece;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

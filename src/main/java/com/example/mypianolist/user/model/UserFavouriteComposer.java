@@ -1,9 +1,9 @@
-package com.example.mypianolist.user;
+package com.example.mypianolist.user.model;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.example.mypianolist.piece.Piece;
+import com.example.mypianolist.composer.model.Composer;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +15,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 
 @Entity
-public class UserFavouritePiece {
+public class UserFavouriteComposer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
@@ -28,15 +28,15 @@ public class UserFavouritePiece {
 	private UserAccount user;
 
 	@ManyToOne
-	@JoinColumn(name = "piece_id", nullable = false)
-	private Piece piece;
+	@JoinColumn(name = "composer_id", nullable = false)
+	private Composer composer;
 
-	public UserFavouritePiece() {
+	public UserFavouriteComposer() {
 	}
 
-	public UserFavouritePiece(UserAccount user, Piece piece) {
+	public UserFavouriteComposer(UserAccount user, Composer composer) {
 		this.user = user;
-		this.piece = piece;
+		this.composer = composer;
 		this.createdAt = LocalDateTime.now();
 		this.updatedAt = LocalDateTime.now();
 	}
@@ -56,8 +56,8 @@ public class UserFavouritePiece {
 		return this.user;
 	}
 
-	public Piece getPiece() {
-		return this.piece;
+	public Composer getComposer() {
+		return this.composer;
 	}
 
 	public LocalDateTime getCreatedAt() {
@@ -76,8 +76,8 @@ public class UserFavouritePiece {
 		if (o == null || getClass() != o.getClass())
 			return false;
 
-		UserFavouritePiece userFavouritePiece = (UserFavouritePiece) o;
-		return id != null && id.equals(userFavouritePiece.id);
+		UserFavouriteComposer userFavouriteComposer = (UserFavouriteComposer) o;
+		return id != null && id.equals(userFavouriteComposer.id);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package com.example.mypianolist.piece;
+package com.example.mypianolist.piece.model;
 
 import java.util.UUID;
 

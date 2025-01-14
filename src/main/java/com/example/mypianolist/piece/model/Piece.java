@@ -1,13 +1,13 @@
-package com.example.mypianolist.piece;
+package com.example.mypianolist.piece.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.example.mypianolist.composer.Composer;
-import com.example.mypianolist.user.UserFavouritePiece;
-import com.example.mypianolist.user.UserPiece;
+import com.example.mypianolist.composer.model.Composer;
+import com.example.mypianolist.user.model.UserFavouritePiece;
+import com.example.mypianolist.user.model.UserPiece;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

@@ -1,8 +1,9 @@
-package com.example.mypianolist.user;
+package com.example.mypianolist.user.repository;
 
 import java.util.UUID;
 
 import com.example.mypianolist.CrudRepository;
+import com.example.mypianolist.user.model.UserAccount;
 
 public interface UserAccountRepository extends CrudRepository<UserAccount, UUID> {
 	UserAccount findByUsername(String username);

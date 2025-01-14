@@ -1,4 +1,4 @@
-package com.example.mypianolist.user;
+package com.example.mypianolist.user.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
