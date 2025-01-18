@@ -24,6 +24,10 @@ public class PieceGenre {
 		this.name = name;
 	}
 
+	public UUID getId() {
+		return this.id;
+	}
+
 	public String getName() {
 		return this.name;
 	}
