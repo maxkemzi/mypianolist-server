@@ -1,5 +1,6 @@
 package com.example.mypianolist.piece.controller;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +28,9 @@ public class PieceController {
 	public Iterable<Piece> findAll(@RequestParam(required = false) String genre,
 			@RequestParam(defaultValue = "") String search) {
 		if (genre != null) {
-			PieceGenre genreObj = this.pieceGenreRepository.findByName(genre);
-			if (genreObj != null) {
-				UUID genreId = genreObj.getId();
+			Optional<PieceGenre> genreObj = this.pieceGenreRepository.findByName(genre);
+			if (genreObj.isPresent()) {
+				UUID genreId = genreObj.get().getId();
 				return this.pieceRepository.findByGenreIdAndSearchQuery(genreId, search);
 			} else {
 				throw new PieceGenreNotFoundException();

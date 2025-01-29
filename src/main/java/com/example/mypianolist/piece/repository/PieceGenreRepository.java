@@ -1,10 +1,14 @@
 package com.example.mypianolist.piece.repository;
 
+import java.util.Optional;
 import java.util.UUID;
+
+import org.springframework.data.jpa.repository.Query;
 
 import com.example.mypianolist.util.CrudRepository;
 import com.example.mypianolist.piece.model.PieceGenre;
 
 public interface PieceGenreRepository extends CrudRepository<PieceGenre, UUID> {
-	PieceGenre findByName(String name);
+	@Query("SELECT pg FROM PieceGenre pg WHERE pg.name = :name")
+	Optional<PieceGenre> findByName(String name);
 }

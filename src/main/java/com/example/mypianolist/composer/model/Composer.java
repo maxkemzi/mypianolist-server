@@ -15,8 +15,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
+@Table(name = "composer", uniqueConstraints = {
+		@UniqueConstraint(columnNames = { "first_name", "last_name" })
+})
 public class Composer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
@@ -28,19 +33,19 @@ public class Composer {
 	@Column(nullable = false)
 	private String lastName;
 
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "TEXT")
 	private String biography;
 
-	@Column(nullable = false)
+	@Column
 	private String photo;
 
 	@Column(nullable = false)
 	private LocalDate bornAt;
 
-	@Column(nullable = false)
+	@Column
 	private LocalDate diedAt;
 
-	@OneToMany(mappedBy = "composer")
+	@OneToMany(mappedBy = "composer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Piece> pieces = new ArrayList<>();
 
 	@OneToMany(mappedBy = "composer", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -59,12 +64,24 @@ public class Composer {
 		this.diedAt = diedAt;
 	}
 
+	public Composer(String firstName, String lastName, String biography, String photo, LocalDate bornAt) {
+		this(firstName, lastName, biography, photo, bornAt, null);
+	}
+
 	public UUID getId() {
 		return this.id;
 	}
 
+	public String getFirstName() {
+		return this.firstName;
+	}
+
+	public String getLastName() {
+		return this.lastName;
+	}
+
 	public String getFullName() {
-		return this.firstName + " " + this.lastName;
+		return this.getFirstName() + this.getLastName();
 	}
 
 	public String getBiography() {

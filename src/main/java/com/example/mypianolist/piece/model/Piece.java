@@ -18,8 +18,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
+@Table(name = "piece", uniqueConstraints = {
+		@UniqueConstraint(columnNames = { "title", "composer_id" })
+})
 public class Piece {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
@@ -28,7 +33,7 @@ public class Piece {
 	@Column(nullable = false)
 	private String title;
 
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "TEXT")
 	private String description;
 
 	@Column(nullable = false)
@@ -38,7 +43,7 @@ public class Piece {
 	private LocalDate composedAt;
 
 	@ManyToOne
-	@JoinColumn(name = "composer_id")
+	@JoinColumn(name = "composer_id", nullable = false)
 	private Composer composer;
 
 	@ManyToOne
