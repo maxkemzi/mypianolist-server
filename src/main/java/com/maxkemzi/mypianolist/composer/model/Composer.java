@@ -38,13 +38,11 @@ public class Composer {
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String biography;
 
-	@Column
 	private String photo;
 
 	@Column(nullable = false)
 	private LocalDate bornAt;
 
-	@Column
 	private LocalDate diedAt;
 
 	@OneToMany(mappedBy = "composer", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -71,19 +69,19 @@ public class Composer {
 	}
 
 	public UUID getId() {
-		return this.id;
+		return id;
 	}
 
 	public String getFirstName() {
-		return this.firstName;
+		return firstName;
 	}
 
 	public String getLastName() {
-		return this.lastName;
+		return lastName;
 	}
 
 	public String getFullName() {
-		return this.getFirstName() + this.getLastName();
+		return getFirstName() + getLastName();
 	}
 
 	public String getNickname() {
@@ -91,19 +89,19 @@ public class Composer {
 	}
 
 	public String getBiography() {
-		return this.biography;
+		return biography;
 	}
 
 	public String getPhoto() {
-		return this.photo;
+		return photo;
 	}
 
 	public LocalDate getBornAt() {
-		return this.bornAt;
+		return bornAt;
 	}
 
 	public LocalDate getDiedAt() {
-		return this.diedAt;
+		return diedAt;
 	}
 
 	@Override

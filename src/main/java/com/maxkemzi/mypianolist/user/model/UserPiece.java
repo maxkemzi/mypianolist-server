@@ -64,19 +64,19 @@ public class UserPiece {
 	}
 
 	public UUID getId() {
-		return this.id;
+		return id;
 	}
 
 	public UserAccount getUser() {
-		return this.user;
+		return user;
 	}
 
 	public Piece getPiece() {
-		return this.piece;
+		return piece;
 	}
 
 	public Integer getScore() {
-		return this.score;
+		return score;
 	}
 
 	public void setScore(Integer score) {
@@ -84,7 +84,7 @@ public class UserPiece {
 	}
 
 	public UserPieceStatus getStatus() {
-		return this.status;
+		return status;
 	}
 
 	public void setStatus(UserPieceStatus status) {
@@ -92,7 +92,7 @@ public class UserPiece {
 	}
 
 	public LocalDate getStartedAt() {
-		return this.startedAt;
+		return startedAt;
 	}
 
 	public void setStartedAt(LocalDate startedAt) {
@@ -100,7 +100,7 @@ public class UserPiece {
 	}
 
 	public LocalDate getFinishedAt() {
-		return this.finishedAt;
+		return finishedAt;
 	}
 
 	public void setFinishedAt(LocalDate finishedAt) {
@@ -108,11 +108,11 @@ public class UserPiece {
 	}
 
 	public LocalDateTime getCreatedAt() {
-		return this.createdAt;
+		return createdAt;
 	}
 
 	public LocalDateTime getUpdatedAt() {
-		return this.updatedAt;
+		return updatedAt;
 	}
 
 	@Override

@@ -66,23 +66,23 @@ public class UserAccount {
 	}
 
 	public UUID getId() {
-		return this.id;
+		return id;
 	}
 
 	public String getUsername() {
-		return this.username;
+		return username;
 	}
 
 	public String getEmail() {
-		return this.email;
+		return email;
 	}
 
 	public String getPassword() {
-		return this.password;
+		return password;
 	}
 
 	public String getAvatar() {
-		return this.avatar;
+		return avatar;
 	}
 
 	public void setAvatar(String avatar) {
@@ -90,11 +90,11 @@ public class UserAccount {
 	}
 
 	public LocalDateTime getCreatedAt() {
-		return this.createdAt;
+		return createdAt;
 	}
 
 	public LocalDateTime getUpdatedAt() {
-		return this.updatedAt;
+		return updatedAt;
 	}
 
 	@Override

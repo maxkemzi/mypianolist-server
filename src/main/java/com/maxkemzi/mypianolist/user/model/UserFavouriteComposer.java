@@ -20,9 +20,6 @@ public class UserFavouriteComposer {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
-	private LocalDateTime createdAt;
-	private LocalDateTime updatedAt;
-
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
 	private UserAccount user;
@@ -30,6 +27,9 @@ public class UserFavouriteComposer {
 	@ManyToOne
 	@JoinColumn(name = "composer_id", nullable = false)
 	private Composer composer;
+
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
 
 	public UserFavouriteComposer() {
 	}
@@ -53,19 +53,19 @@ public class UserFavouriteComposer {
 	}
 
 	public UserAccount getUser() {
-		return this.user;
+		return user;
 	}
 
 	public Composer getComposer() {
-		return this.composer;
+		return composer;
 	}
 
 	public LocalDateTime getCreatedAt() {
-		return this.createdAt;
+		return createdAt;
 	}
 
 	public LocalDateTime getUpdatedAt() {
-		return this.updatedAt;
+		return updatedAt;
 	}
 
 	@Override

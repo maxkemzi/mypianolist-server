@@ -36,7 +36,6 @@ public class Piece {
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String description;
 
-	@Column(nullable = false)
 	private String image;
 
 	@Column(nullable = false)
@@ -70,23 +69,23 @@ public class Piece {
 	}
 
 	public UUID getId() {
-		return this.id;
+		return id;
 	}
 
 	public String getTitle() {
-		return this.title;
+		return title;
 	}
 
 	public String getDescription() {
-		return this.description;
+		return description;
 	}
 
 	public String getImage() {
-		return this.image;
+		return image;
 	}
 
 	public LocalDate getComposedAt() {
-		return this.composedAt;
+		return composedAt;
 	}
 
 	@Override

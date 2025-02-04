@@ -20,9 +20,6 @@ public class UserFavouritePiece {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
-	private LocalDateTime createdAt;
-	private LocalDateTime updatedAt;
-
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
 	private UserAccount user;
@@ -30,6 +27,9 @@ public class UserFavouritePiece {
 	@ManyToOne
 	@JoinColumn(name = "piece_id", nullable = false)
 	private Piece piece;
+
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
 
 	public UserFavouritePiece() {
 	}
@@ -53,19 +53,19 @@ public class UserFavouritePiece {
 	}
 
 	public UserAccount getUser() {
-		return this.user;
+		return user;
 	}
 
 	public Piece getPiece() {
-		return this.piece;
+		return piece;
 	}
 
 	public LocalDateTime getCreatedAt() {
-		return this.createdAt;
+		return createdAt;
 	}
 
 	public LocalDateTime getUpdatedAt() {
-		return this.updatedAt;
+		return updatedAt;
 	}
 
 	@Override
