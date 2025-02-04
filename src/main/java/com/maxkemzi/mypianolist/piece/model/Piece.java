@@ -3,6 +3,7 @@ package com.maxkemzi.mypianolist.piece.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
@@ -30,7 +31,7 @@ public class Piece {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
-	@Column(nullable = false)
+	@Column(name = "title", nullable = false)
 	private String title;
 
 	@Column(nullable = false, columnDefinition = "TEXT")
@@ -97,11 +98,11 @@ public class Piece {
 			return false;
 
 		Piece piece = (Piece) o;
-		return id != null && id.equals(piece.id);
+		return Objects.equals(title, piece.title) && Objects.equals(composer, piece.composer);
 	}
 
 	@Override
 	public int hashCode() {
-		return getClass().hashCode();
+		return Objects.hash(title, composer);
 	}
 }
