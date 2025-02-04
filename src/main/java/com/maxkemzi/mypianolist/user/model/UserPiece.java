@@ -2,6 +2,7 @@ package com.maxkemzi.mypianolist.user.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 import com.maxkemzi.mypianolist.piece.model.Piece;
@@ -16,8 +17,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
+@Table(name = "user_piece", uniqueConstraints = {
+		@UniqueConstraint(columnNames = { "user_id", "piece_id" })
+})
 public class UserPiece {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
@@ -124,11 +130,11 @@ public class UserPiece {
 			return false;
 
 		UserPiece userPiece = (UserPiece) o;
-		return id != null && id.equals(userPiece.id);
+		return Objects.equals(user, userPiece.user) && Objects.equals(piece, userPiece.piece);
 	}
 
 	@Override
 	public int hashCode() {
-		return getClass().hashCode();
+		return Objects.hash(user, piece);
 	}
 }
