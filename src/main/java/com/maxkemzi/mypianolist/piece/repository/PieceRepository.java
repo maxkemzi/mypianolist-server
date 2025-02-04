@@ -18,11 +18,11 @@ public interface PieceRepository extends CrudRepository<Piece, UUID> {
 	Iterable<Piece> findByGenreId(@Param("id") UUID id);
 
 	@Query("SELECT p FROM Piece p WHERE p.genre.id = :id AND LOWER(p.title) LIKE LOWER(CONCAT('%', :query, '%'))")
-	Iterable<Piece> findByGenreIdAndSearchQuery(UUID id, String query);
+	Iterable<Piece> findByGenreIdAndSearchQuery(@Param("id") UUID id, @Param("query") String query);
 
 	@Query("SELECT p FROM Piece p WHERE LOWER(p.title) LIKE LOWER(CONCAT('%', :query, '%'))")
-	Iterable<Piece> findBySearchQuery(String query);
+	Iterable<Piece> findBySearchQuery(@Param("query") String query);
 
 	@Query("SELECT p FROM Piece p WHERE p.title = :title AND p.composer.id = :id")
-	Optional<Piece> findByTitleAndComposerId(String title, UUID id);
+	Optional<Piece> findByTitleAndComposerId(@Param("title") String title, @Param("id") UUID id);
 }
