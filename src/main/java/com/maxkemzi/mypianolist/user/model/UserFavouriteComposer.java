@@ -1,6 +1,7 @@
 package com.maxkemzi.mypianolist.user.model;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
@@ -77,11 +78,11 @@ public class UserFavouriteComposer {
 			return false;
 
 		UserFavouriteComposer userFavouriteComposer = (UserFavouriteComposer) o;
-		return id != null && id.equals(userFavouriteComposer.id);
+		return Objects.equals(id, userFavouriteComposer.id);
 	}
 
 	@Override
 	public int hashCode() {
-		return getClass().hashCode();
+		return id != null ? id.hashCode() : System.identityHashCode(this);
 	}
 }
