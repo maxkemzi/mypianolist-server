@@ -1,0 +1,42 @@
+package com.maxkemzi.mypianolist.piece.controller;
+
+import java.util.Optional;
+import java.util.UUID;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.maxkemzi.mypianolist.piece.model.Piece;
+import com.maxkemzi.mypianolist.piece.model.PieceGenre;
+import com.maxkemzi.mypianolist.piece.repository.PieceGenreRepository;
+import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
+
+@RestController
+@RequestMapping("/pieces")
+public class PieceController {
+	private final PieceRepository pieceRepository;
+	private final PieceGenreRepository pieceGenreRepository;
+
+	public PieceController(PieceRepository pieceRepository, PieceGenreRepository pieceGenreRepository) {
+		this.pieceRepository = pieceRepository;
+		this.pieceGenreRepository = pieceGenreRepository;
+	}
+
+	@GetMapping()
+	public Iterable<Piece> findAll(@RequestParam(required = false) String genre,
+			@RequestParam(defaultValue = "") String search) {
+		if (genre != null) {
+			Optional<PieceGenre> genreObj = this.pieceGenreRepository.findByName(genre);
+			if (genreObj.isPresent()) {
+				UUID genreId = genreObj.get().getId();
+				return this.pieceRepository.findByGenreIdAndSearchQuery(genreId, search);
+			} else {
+				throw new PieceGenreNotFoundException();
+			}
+		}
+
+		return this.pieceRepository.findBySearchQuery(search);
+	}
+}
