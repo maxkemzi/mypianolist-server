@@ -3,6 +3,7 @@ package com.maxkemzi.mypianolist.user.model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
@@ -106,11 +107,11 @@ public class UserAccount {
 			return false;
 
 		UserAccount user = (UserAccount) o;
-		return id != null && id.equals(user.id);
+		return Objects.equals(id, user.id);
 	}
 
 	@Override
 	public int hashCode() {
-		return getClass().hashCode();
+		return id != null ? id.hashCode() : System.identityHashCode(this);
 	}
 }
