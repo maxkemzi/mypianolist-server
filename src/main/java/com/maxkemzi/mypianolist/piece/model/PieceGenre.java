@@ -1,5 +1,6 @@
 package com.maxkemzi.mypianolist.piece.model;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -41,11 +42,11 @@ public class PieceGenre {
 			return false;
 
 		PieceGenre pieceGenre = (PieceGenre) o;
-		return id != null && id.equals(pieceGenre.id);
+		return Objects.equals(name, pieceGenre.name);
 	}
 
 	@Override
 	public int hashCode() {
-		return getClass().hashCode();
+		return Objects.hash(name);
 	}
 }
