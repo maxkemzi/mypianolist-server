@@ -32,7 +32,7 @@ public class UserFavouritePiece {
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 
-	public UserFavouritePiece() {
+	protected UserFavouritePiece() {
 	}
 
 	public UserFavouritePiece(UserAccount user, Piece piece) {

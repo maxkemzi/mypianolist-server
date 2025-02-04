@@ -47,7 +47,7 @@ public class UserPiece {
 	private LocalDateTime updatedAt;
 	private LocalDateTime createdAt;
 
-	public UserPiece() {
+	protected UserPiece() {
 	}
 
 	public UserPiece(UserAccount user, Piece piece, UserPieceStatus status) {

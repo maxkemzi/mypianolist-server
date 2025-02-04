@@ -18,7 +18,7 @@ public class PieceGenre {
 	@Column(nullable = false, unique = true)
 	private String name;
 
-	public PieceGenre() {
+	protected PieceGenre() {
 	}
 
 	public PieceGenre(String name) {

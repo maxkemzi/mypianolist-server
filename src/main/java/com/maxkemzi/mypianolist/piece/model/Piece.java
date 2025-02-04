@@ -56,7 +56,7 @@ public class Piece {
 	@OneToMany(mappedBy = "piece", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UserFavouritePiece> favouritePieces = new ArrayList<>();
 
-	public Piece() {
+	protected Piece() {
 	}
 
 	public Piece(String title, String description, String image, LocalDate composedAt, Composer composer,

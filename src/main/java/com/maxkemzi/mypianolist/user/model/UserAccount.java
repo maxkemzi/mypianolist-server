@@ -44,7 +44,7 @@ public class UserAccount {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UserFavouriteComposer> favouriteComposers = new ArrayList<>();
 
-	public UserAccount() {
+	protected UserAccount() {
 	}
 
 	public UserAccount(String username, String email, String password) {

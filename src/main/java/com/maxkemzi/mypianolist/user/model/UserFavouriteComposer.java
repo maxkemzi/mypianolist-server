@@ -32,7 +32,7 @@ public class UserFavouriteComposer {
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 
-	public UserFavouriteComposer() {
+	protected UserFavouriteComposer() {
 	}
 
 	public UserFavouriteComposer(UserAccount user, Composer composer) {

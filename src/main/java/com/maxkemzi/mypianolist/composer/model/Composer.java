@@ -52,7 +52,7 @@ public class Composer {
 	@OneToMany(mappedBy = "composer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UserFavouriteComposer> favouriteComposers = new ArrayList<>();
 
-	public Composer() {
+	protected Composer() {
 	}
 
 	public Composer(String firstName, String lastName, String biography, String photo, LocalDate bornAt,
