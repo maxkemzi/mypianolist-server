@@ -33,6 +33,8 @@ public class Composer {
 	@Column(nullable = false)
 	private String lastName;
 
+	private String nickname;
+
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String biography;
 
@@ -82,6 +84,10 @@ public class Composer {
 
 	public String getFullName() {
 		return this.getFirstName() + this.getLastName();
+	}
+
+	public String getNickname() {
+		return nickname;
 	}
 
 	public String getBiography() {
