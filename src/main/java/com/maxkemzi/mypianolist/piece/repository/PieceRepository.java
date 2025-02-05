@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.maxkemzi.mypianolist.util.CrudRepository;
-import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.piece.model.Piece;
 
 public interface PieceRepository extends CrudRepository<Piece, UUID> {
