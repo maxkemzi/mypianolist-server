@@ -21,9 +21,8 @@ public class PieceGenreController {
 	}
 
 	@GetMapping
-	public PagedResponse<PieceGenre> findAll(@PageableDefault(page = 0, size = 20, sort = "name") Pageable pageable) {
+	public PagedResponse<PieceGenre> findAll(@PageableDefault(sort = "name") Pageable pageable) {
 		Page<PieceGenre> page = repository.findAll(pageable);
-		return new PagedResponse<>(page.getContent(), page.getNumber(), page.getSize(), page.getTotalElements(),
-				page.getTotalPages(), page.hasNext());
+		return new PagedResponse<>(page);
 	}
 }
