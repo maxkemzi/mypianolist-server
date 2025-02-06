@@ -13,4 +13,6 @@ public interface PieceGenreRepository extends CrudRepository<PieceGenre, UUID> {
 	Optional<PieceGenre> findByName(String name);
 
 	Page<PieceGenre> findAll(Pageable pageable);
+
+	boolean existsByName(String name);
 }

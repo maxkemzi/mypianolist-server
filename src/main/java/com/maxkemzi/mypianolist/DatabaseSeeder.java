@@ -59,7 +59,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
 		Piece piece = new Piece("Sweden (Minecraft)",
 				"Here we again, this time with Sweden! While it is calm like most of the MC tracks, it's surprisingly hard to nail on the piano. The quick transitions from the simple melody to the chords are difficult when you're also supposed to highlight the top note of the chord. I also found myself contemplating some wisdom words from my teacher \"slow is not always easier\". Luckily, I'll have a few high tempo songs in a week or two :) Enjoy!",
-				"", LocalDate.of(2011, 3, 4), composer, genre);
+				"", LocalDate.of(2011, 3, 4), genre, composer);
 		Optional<Piece> existingPiece = this.pieceRepository.findByTitleAndComposerId(piece.getTitle(),
 				composer.getId());
 		if (existingPiece.isEmpty()) {

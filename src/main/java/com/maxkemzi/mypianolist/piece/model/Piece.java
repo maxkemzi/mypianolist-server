@@ -43,12 +43,12 @@ public class Piece {
 	private LocalDate composedAt;
 
 	@ManyToOne
-	@JoinColumn(name = "composer_id", nullable = false)
-	private Composer composer;
-
-	@ManyToOne
 	@JoinColumn(name = "genre_id")
 	private PieceGenre genre;
+
+	@ManyToOne
+	@JoinColumn(name = "composer_id", nullable = false)
+	private Composer composer;
 
 	@OneToMany(mappedBy = "piece", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UserPiece> userPieces = new ArrayList<>();
@@ -59,14 +59,19 @@ public class Piece {
 	protected Piece() {
 	}
 
-	public Piece(String title, String description, String image, LocalDate composedAt, Composer composer,
-			PieceGenre genre) {
+	public Piece(String title, String description, String image, LocalDate composedAt, PieceGenre genre,
+			Composer composer) {
 		this.title = title;
 		this.description = description;
 		this.image = image;
 		this.composedAt = composedAt;
-		this.composer = composer;
 		this.genre = genre;
+		this.composer = composer;
+	}
+
+	public Piece(String title, String description, LocalDate composedAt, PieceGenre genre,
+			Composer composer) {
+		this(title, description, null, composedAt, genre, composer);
 	}
 
 	public UUID getId() {
