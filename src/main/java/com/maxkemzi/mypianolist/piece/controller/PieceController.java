@@ -57,17 +57,18 @@ public class PieceController {
 
 	@PostMapping
 	public ResponseEntity<Piece> create(@Valid @RequestBody PieceDTO pieceDTO) {
-		Optional<PieceGenre> genre = genreRepository.findById(pieceDTO.genreId);
+		Optional<PieceGenre> genre = genreRepository.findById(pieceDTO.getGenreId());
 		if (genre.isEmpty()) {
 			throw new PieceGenreDoesntExistException();
 		}
 
-		Optional<Composer> composer = composerRepository.findById(pieceDTO.composerId);
+		Optional<Composer> composer = composerRepository.findById(pieceDTO.getComposerId());
 		if (composer.isEmpty()) {
 			throw new ComposerDoesntExistException();
 		}
 
-		Piece piece = new Piece(pieceDTO.title, pieceDTO.description, pieceDTO.image, pieceDTO.composedAt, genre.get(),
+		Piece piece = new Piece(pieceDTO.getTitle(), pieceDTO.getDescription(), pieceDTO.getImage(),
+				pieceDTO.getComposedAt(), genre.get(),
 				composer.get());
 
 		Piece savedPiece = repository.save(piece);

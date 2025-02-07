@@ -9,22 +9,56 @@ import jakarta.validation.constraints.Past;
 
 public class PieceDTO {
 	@NotBlank(message = "Title is required.")
-	public String title;
+	private String title;
 
 	@NotBlank(message = "Description is required.")
-	public String description;
+	private String description;
 
-	public String image;
+	private String image;
 
 	@Past(message = "Composed date must be in the past.")
-	public LocalDate composedAt;
+	private LocalDate composedAt;
 
 	@NotNull(message = "Composer id is required.")
-	public UUID composerId;
+	private UUID composerId;
 
 	@NotNull(message = "Genre id is required.")
-	public UUID genreId;
+	private UUID genreId;
 
-	public PieceDTO() {
+	protected PieceDTO() {
+	}
+
+	public PieceDTO(String title, String description, String image, LocalDate composedAt, UUID composerId,
+			UUID genreId) {
+		this.title = title;
+		this.description = description;
+		this.image = image;
+		this.composedAt = composedAt;
+		this.composerId = composerId;
+		this.genreId = genreId;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public LocalDate getComposedAt() {
+		return composedAt;
+	}
+
+	public UUID getComposerId() {
+		return composerId;
+	}
+
+	public UUID getGenreId() {
+		return genreId;
 	}
 }

@@ -7,24 +7,63 @@ import jakarta.validation.constraints.Past;
 
 public class ComposerDTO {
 	@NotBlank(message = "First name is required.")
-	public String firstName;
+	private String firstName;
 
 	@NotBlank(message = "Last name is required.")
-	public String lastName;
+	private String lastName;
 
-	public String nickname;
+	private String nickname;
 
 	@NotBlank(message = "Biography is required.")
-	public String biography;
+	private String biography;
 
-	public String photo;
+	private String photo;
 
 	@Past(message = "Born date must be in the past.")
-	public LocalDate bornAt;
+	private LocalDate bornAt;
 
 	@Past(message = "Died date must be in the past.")
-	public LocalDate diedAt;
+	private LocalDate diedAt;
 
-	public ComposerDTO() {
+	protected ComposerDTO() {
+	}
+
+	public ComposerDTO(String firstName, String lastName, String nickname, String biography, String photo,
+			LocalDate bornAt, LocalDate diedAt) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.nickname = nickname;
+		this.biography = biography;
+		this.photo = photo;
+		this.bornAt = bornAt;
+		this.diedAt = diedAt;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public String getBiography() {
+		return biography;
+	}
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public LocalDate getBornAt() {
+		return bornAt;
+	}
+
+	public LocalDate getDiedAt() {
+		return diedAt;
 	}
 }

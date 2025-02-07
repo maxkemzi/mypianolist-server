@@ -69,11 +69,6 @@ public class Piece {
 		this.composer = composer;
 	}
 
-	public Piece(String title, String description, LocalDate composedAt, PieceGenre genre,
-			Composer composer) {
-		this(title, description, null, composedAt, genre, composer);
-	}
-
 	public UUID getId() {
 		return id;
 	}

@@ -38,9 +38,9 @@ public class DatabaseSeeder implements CommandLineRunner {
 			this.userAccountRepository.save(account);
 		}
 
-		Composer composer = new Composer("Daniel", "Rosenfeld",
+		Composer composer = new Composer("Daniel", "Rosenfeld", null,
 				"Daniel Rosenfeld, known professionally as C418, is a German musician, producer and sound engineer. Known for his minimalistic ambient work, he rose to fame as the former composer and sound designer for the sandbox video game Minecraft.",
-				"", LocalDate.of(1989, 5, 9));
+				"", LocalDate.of(1989, 5, 9), null);
 		Optional<Composer> existingComposer = this.composerRepository.findByFirstNameAndLastName(composer.getFirstName(),
 				composer.getLastName());
 		if (existingComposer.isEmpty()) {

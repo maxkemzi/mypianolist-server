@@ -55,18 +55,15 @@ public class Composer {
 	protected Composer() {
 	}
 
-	public Composer(String firstName, String lastName, String biography, String photo, LocalDate bornAt,
+	public Composer(String firstName, String lastName, String nickname, String biography, String photo, LocalDate bornAt,
 			LocalDate diedAt) {
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.nickname = nickname;
 		this.biography = biography;
 		this.photo = photo;
 		this.bornAt = bornAt;
 		this.diedAt = diedAt;
-	}
-
-	public Composer(String firstName, String lastName, String biography, String photo, LocalDate bornAt) {
-		this(firstName, lastName, biography, photo, bornAt, null);
 	}
 
 	public UUID getId() {

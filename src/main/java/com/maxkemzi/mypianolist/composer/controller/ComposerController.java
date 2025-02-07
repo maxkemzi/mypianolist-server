@@ -37,8 +37,8 @@ public class ComposerController {
 
 	@PostMapping
 	public ResponseEntity<Composer> create(@Valid @RequestBody ComposerDTO composerDTO) {
-		Composer composer = new Composer(composerDTO.firstName, composerDTO.lastName,
-				composerDTO.biography, composerDTO.photo, composerDTO.bornAt, composerDTO.diedAt);
+		Composer composer = new Composer(composerDTO.getFirstName(), composerDTO.getLastName(), composerDTO.getNickname(),
+				composerDTO.getBiography(), composerDTO.getPhoto(), composerDTO.getBornAt(), composerDTO.getDiedAt());
 
 		Composer savedComposer = repository.save(composer);
 
