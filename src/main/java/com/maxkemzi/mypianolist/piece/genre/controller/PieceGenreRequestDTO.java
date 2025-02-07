@@ -1,5 +1,4 @@
-
-package com.maxkemzi.mypianolist.piece.controller;
+package com.maxkemzi.mypianolist.piece.genre.controller;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

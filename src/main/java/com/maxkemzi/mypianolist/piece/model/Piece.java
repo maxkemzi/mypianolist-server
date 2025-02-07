@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
+import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
 import com.maxkemzi.mypianolist.user.model.UserFavouritePiece;
 import com.maxkemzi.mypianolist.user.model.UserPiece;
 

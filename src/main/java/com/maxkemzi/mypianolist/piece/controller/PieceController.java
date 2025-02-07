@@ -19,9 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.maxkemzi.mypianolist.composer.controller.ComposerDoesntExistException;
 import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.composer.repository.ComposerRepository;
+import com.maxkemzi.mypianolist.piece.genre.controller.PieceGenreDoesntExistException;
 import com.maxkemzi.mypianolist.piece.model.Piece;
-import com.maxkemzi.mypianolist.piece.model.PieceGenre;
-import com.maxkemzi.mypianolist.piece.repository.PieceGenreRepository;
+import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
+import com.maxkemzi.mypianolist.piece.genre.repository.PieceGenreRepository;
 import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
 import com.maxkemzi.mypianolist.util.PagedResponse;
 

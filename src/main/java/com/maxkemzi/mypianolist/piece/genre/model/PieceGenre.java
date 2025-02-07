@@ -1,4 +1,4 @@
-package com.maxkemzi.mypianolist.piece.model;
+package com.maxkemzi.mypianolist.piece.genre.model;
 
 import java.util.Objects;
 import java.util.UUID;

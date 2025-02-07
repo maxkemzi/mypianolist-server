@@ -1,4 +1,4 @@
-package com.maxkemzi.mypianolist.piece.controller;
+package com.maxkemzi.mypianolist.piece.genre.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

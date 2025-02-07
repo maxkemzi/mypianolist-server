@@ -1,4 +1,4 @@
-package com.maxkemzi.mypianolist.piece.controller;
+package com.maxkemzi.mypianolist.piece.genre.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.maxkemzi.mypianolist.piece.model.PieceGenre;
-import com.maxkemzi.mypianolist.piece.repository.PieceGenreRepository;
+import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
+import com.maxkemzi.mypianolist.piece.genre.repository.PieceGenreRepository;
 import com.maxkemzi.mypianolist.util.PagedResponse;
 
 import jakarta.validation.Valid;

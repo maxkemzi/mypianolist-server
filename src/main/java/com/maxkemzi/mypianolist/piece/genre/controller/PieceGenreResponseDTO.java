@@ -1,8 +1,8 @@
-package com.maxkemzi.mypianolist.piece.controller;
+package com.maxkemzi.mypianolist.piece.genre.controller;
 
 import java.util.UUID;
 
-import com.maxkemzi.mypianolist.piece.model.PieceGenre;
+import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
 
 public class PieceGenreResponseDTO {
 	private UUID id;

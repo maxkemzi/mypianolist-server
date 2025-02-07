@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import com.maxkemzi.mypianolist.composer.controller.ComposerResponseDTO;
+import com.maxkemzi.mypianolist.piece.genre.controller.PieceGenreResponseDTO;
 import com.maxkemzi.mypianolist.piece.model.Piece;
 
 public class PieceResponseDTO {
