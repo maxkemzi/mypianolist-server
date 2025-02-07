@@ -89,6 +89,14 @@ public class Piece {
 		return composedAt;
 	}
 
+	public PieceGenre getGenre() {
+		return genre;
+	}
+
+	public Composer getComposer() {
+		return composer;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)

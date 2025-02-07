@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.maxkemzi.mypianolist.composer.controller.ComposerDoesntExistException;
 import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.composer.repository.ComposerRepository;
@@ -42,7 +41,7 @@ public class PieceController {
 	}
 
 	@GetMapping
-	public PagedResponse<Piece> findAll(@RequestParam(name = "genre") Optional<String> genreName,
+	public PagedResponse<PieceResponseDTO> findAll(@RequestParam(name = "genre") Optional<String> genreName,
 			@RequestParam(name = "search", defaultValue = "") String search, @PageableDefault Pageable pageable) {
 		if (genreName.isPresent()) {
 			boolean genreExists = genreRepository.existsByName(genreName.get());
@@ -52,27 +51,32 @@ public class PieceController {
 		}
 
 		Page<Piece> page = repository.findAll(genreName.orElse(null), search, pageable);
-		return new PagedResponse<>(page);
+
+		Page<PieceResponseDTO> resPage = page.map(PieceResponseDTO::new);
+
+		return new PagedResponse<>(resPage);
 	}
 
 	@PostMapping
-	public ResponseEntity<Piece> create(@Valid @RequestBody PieceDTO pieceDTO) {
-		Optional<PieceGenre> genre = genreRepository.findById(pieceDTO.getGenreId());
+	public ResponseEntity<PieceResponseDTO> create(@Valid @RequestBody PieceRequestDTO reqDTO) {
+		Optional<PieceGenre> genre = genreRepository.findById(reqDTO.getGenreId());
 		if (genre.isEmpty()) {
 			throw new PieceGenreDoesntExistException();
 		}
 
-		Optional<Composer> composer = composerRepository.findById(pieceDTO.getComposerId());
+		Optional<Composer> composer = composerRepository.findById(reqDTO.getComposerId());
 		if (composer.isEmpty()) {
 			throw new ComposerDoesntExistException();
 		}
 
-		Piece piece = new Piece(pieceDTO.getTitle(), pieceDTO.getDescription(), pieceDTO.getImage(),
-				pieceDTO.getComposedAt(), genre.get(),
+		Piece piece = new Piece(reqDTO.getTitle(), reqDTO.getDescription(), reqDTO.getImage(),
+				reqDTO.getComposedAt(), genre.get(),
 				composer.get());
 
 		Piece savedPiece = repository.save(piece);
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(savedPiece);
+		PieceResponseDTO resDTO = new PieceResponseDTO(savedPiece);
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(resDTO);
 	}
 }

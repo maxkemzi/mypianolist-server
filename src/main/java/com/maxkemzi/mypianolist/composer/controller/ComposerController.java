@@ -30,18 +30,23 @@ public class ComposerController {
 	}
 
 	@GetMapping
-	public PagedResponse<Composer> findAll(@PageableDefault Pageable pageable) {
+	public PagedResponse<ComposerResponseDTO> findAll(@PageableDefault Pageable pageable) {
 		Page<Composer> page = repository.findAll(pageable);
-		return new PagedResponse<>(page);
+
+		Page<ComposerResponseDTO> resPage = page.map(ComposerResponseDTO::new);
+
+		return new PagedResponse<>(resPage);
 	}
 
 	@PostMapping
-	public ResponseEntity<Composer> create(@Valid @RequestBody ComposerDTO composerDTO) {
-		Composer composer = new Composer(composerDTO.getFirstName(), composerDTO.getLastName(), composerDTO.getNickname(),
-				composerDTO.getBiography(), composerDTO.getPhoto(), composerDTO.getBornAt(), composerDTO.getDiedAt());
+	public ResponseEntity<ComposerResponseDTO> create(@Valid @RequestBody ComposerRequestDTO reqDTO) {
+		Composer composer = new Composer(reqDTO.getFirstName(), reqDTO.getLastName(), reqDTO.getNickname(),
+				reqDTO.getBiography(), reqDTO.getPhoto(), reqDTO.getBornAt(), reqDTO.getDiedAt());
 
 		Composer savedComposer = repository.save(composer);
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(savedComposer);
+		ComposerResponseDTO resDTO = new ComposerResponseDTO(savedComposer);
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(resDTO);
 	}
 }

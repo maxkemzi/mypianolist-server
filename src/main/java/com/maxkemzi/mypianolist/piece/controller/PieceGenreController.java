@@ -29,17 +29,22 @@ public class PieceGenreController {
 	}
 
 	@GetMapping
-	public PagedResponse<PieceGenre> findAll(@PageableDefault(sort = "name") Pageable pageable) {
+	public PagedResponse<PieceGenreResponseDTO> findAll(@PageableDefault(sort = "name") Pageable pageable) {
 		Page<PieceGenre> page = repository.findAll(pageable);
-		return new PagedResponse<>(page);
+
+		Page<PieceGenreResponseDTO> resPage = page.map(PieceGenreResponseDTO::new);
+
+		return new PagedResponse<>(resPage);
 	}
 
 	@PostMapping
-	public ResponseEntity<PieceGenre> create(@Valid @RequestBody PieceGenreDTO genreDTO) {
-		PieceGenre genre = new PieceGenre(genreDTO.getName());
+	public ResponseEntity<PieceGenreResponseDTO> create(@Valid @RequestBody PieceGenreRequestDTO reqDTO) {
+		PieceGenre genre = new PieceGenre(reqDTO.getName());
 
 		PieceGenre savedGenre = repository.save(genre);
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(savedGenre);
+		PieceGenreResponseDTO resDTO = new PieceGenreResponseDTO(savedGenre);
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(resDTO);
 	}
 }

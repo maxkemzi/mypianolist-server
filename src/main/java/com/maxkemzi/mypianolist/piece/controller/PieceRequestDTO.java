@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
-public class PieceDTO {
+public class PieceRequestDTO {
 	@NotBlank(message = "Title is required.")
 	@Size(min = 2, max = 100, message = "Title must be between 2 and 100 characters.")
 	private String title;
@@ -32,10 +32,10 @@ public class PieceDTO {
 	@NotNull(message = "Genre id is required.")
 	private UUID genreId;
 
-	protected PieceDTO() {
+	protected PieceRequestDTO() {
 	}
 
-	public PieceDTO(String title, String description, String image, LocalDate composedAt, UUID composerId,
+	public PieceRequestDTO(String title, String description, String image, LocalDate composedAt, UUID composerId,
 			UUID genreId) {
 		this.title = title;
 		this.description = description;
