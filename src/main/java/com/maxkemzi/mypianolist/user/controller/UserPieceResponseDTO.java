@@ -14,7 +14,6 @@ public class UserPieceResponseDTO {
 	private LocalDate startedAt;
 	private LocalDate finishedAt;
 	private PieceResponseDTO piece;
-	private UserResponseDTO user;
 
 	protected UserPieceResponseDTO() {
 	}
@@ -26,7 +25,6 @@ public class UserPieceResponseDTO {
 		this.startedAt = userPiece.getStartedAt();
 		this.finishedAt = userPiece.getFinishedAt();
 		this.piece = new PieceResponseDTO(userPiece.getPiece());
-		this.user = new UserResponseDTO(userPiece.getUser());
 	}
 
 	public UUID getId() {
@@ -51,9 +49,5 @@ public class UserPieceResponseDTO {
 
 	public PieceResponseDTO getPiece() {
 		return piece;
-	}
-
-	public UserResponseDTO getUser() {
-		return user;
 	}
 }
