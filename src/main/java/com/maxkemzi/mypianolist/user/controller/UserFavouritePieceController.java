@@ -1,0 +1,61 @@
+package com.maxkemzi.mypianolist.user.controller;
+
+import java.util.Optional;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.maxkemzi.mypianolist.piece.controller.PieceDoesntExistException;
+import com.maxkemzi.mypianolist.piece.model.Piece;
+import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
+import com.maxkemzi.mypianolist.user.model.UserAccount;
+import com.maxkemzi.mypianolist.user.model.UserFavouritePiece;
+import com.maxkemzi.mypianolist.user.repository.UserAccountRepository;
+import com.maxkemzi.mypianolist.user.repository.UserFavouritePieceRepository;
+
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/users/{username}/favourite-pieces")
+@Validated
+public class UserFavouritePieceController {
+	private final UserFavouritePieceRepository repository;
+	private final UserAccountRepository userRepository;
+	private final PieceRepository pieceRepository;
+
+	public UserFavouritePieceController(UserFavouritePieceRepository repository, UserAccountRepository userRepository,
+			PieceRepository pieceRepository) {
+		this.repository = repository;
+		this.userRepository = userRepository;
+		this.pieceRepository = pieceRepository;
+	}
+
+	@PostMapping
+	public ResponseEntity<UserFavouritePieceResponseDTO> create(@PathVariable("username") String username,
+			@Valid @RequestBody UserFavouritePieceRequestDTO reqDTO) {
+		Optional<UserAccount> user = userRepository.findByUsername(username);
+		if (user.isEmpty()) {
+			throw new UserDoesntExistException();
+		}
+
+		Optional<Piece> piece = pieceRepository.findById(reqDTO.getPieceId());
+		if (piece.isEmpty()) {
+			throw new PieceDoesntExistException();
+		}
+
+		UserFavouritePiece userFavPiece = new UserFavouritePiece(user.get(), piece.get());
+
+		UserFavouritePiece savedUserFavPiece = repository.save(userFavPiece);
+
+		UserFavouritePieceResponseDTO resDTO = new UserFavouritePieceResponseDTO(savedUserFavPiece);
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(resDTO);
+	}
+}

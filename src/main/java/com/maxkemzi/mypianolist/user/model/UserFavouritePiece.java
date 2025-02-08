@@ -53,6 +53,10 @@ public class UserFavouritePiece {
 		this.updatedAt = LocalDateTime.now();
 	}
 
+	public UUID getId() {
+		return id;
+	}
+
 	public UserAccount getUser() {
 		return user;
 	}
