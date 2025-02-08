@@ -29,6 +29,16 @@ public class UserPiece {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
+	private Integer score;
+
+	@Enumerated(EnumType.STRING)
+	private UserPieceStatus status;
+
+	private LocalDate startedAt;
+	private LocalDate finishedAt;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
+
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
 	private UserAccount user;
@@ -37,25 +47,19 @@ public class UserPiece {
 	@JoinColumn(name = "piece_id", nullable = false)
 	private Piece piece;
 
-	private Integer score;
-
-	@Enumerated(EnumType.STRING)
-	private UserPieceStatus status;
-
-	private LocalDate startedAt;
-	private LocalDate finishedAt;
-	private LocalDateTime updatedAt;
-	private LocalDateTime createdAt;
-
 	protected UserPiece() {
 	}
 
-	public UserPiece(UserAccount user, Piece piece, UserPieceStatus status) {
-		this.user = user;
-		this.piece = piece;
+	public UserPiece(Integer score, UserPieceStatus status, LocalDate startedAt, LocalDate finishedAt, UserAccount user,
+			Piece piece) {
+		this.score = score;
 		this.status = status;
+		this.startedAt = startedAt;
+		this.finishedAt = finishedAt;
 		this.createdAt = LocalDateTime.now();
 		this.updatedAt = LocalDateTime.now();
+		this.user = user;
+		this.piece = piece;
 	}
 
 	@PrePersist
@@ -71,14 +75,6 @@ public class UserPiece {
 
 	public UUID getId() {
 		return id;
-	}
-
-	public UserAccount getUser() {
-		return user;
-	}
-
-	public Piece getPiece() {
-		return piece;
 	}
 
 	public Integer getScore() {
@@ -119,6 +115,14 @@ public class UserPiece {
 
 	public LocalDateTime getUpdatedAt() {
 		return updatedAt;
+	}
+
+	public UserAccount getUser() {
+		return user;
+	}
+
+	public Piece getPiece() {
+		return piece;
 	}
 
 	@Override

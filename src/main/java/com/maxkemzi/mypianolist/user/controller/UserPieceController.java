@@ -1,34 +1,76 @@
 package com.maxkemzi.mypianolist.user.controller;
 
-import java.util.UUID;
+import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.maxkemzi.mypianolist.util.InvalidUuidException;
+import com.maxkemzi.mypianolist.piece.controller.PieceDoesntExistException;
+import com.maxkemzi.mypianolist.piece.model.Piece;
+import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
+import com.maxkemzi.mypianolist.user.model.UserAccount;
 import com.maxkemzi.mypianolist.user.model.UserPiece;
+import com.maxkemzi.mypianolist.user.repository.UserAccountRepository;
 import com.maxkemzi.mypianolist.user.repository.UserPieceRepository;
+import com.maxkemzi.mypianolist.util.PagedResponse;
+
+import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/users/{id}/pieces")
+@RequestMapping("/users/{username}/pieces")
+@Validated
 public class UserPieceController {
 	private final UserPieceRepository repository;
+	private final UserAccountRepository userRepository;
+	private final PieceRepository pieceRepository;
 
-	public UserPieceController(UserPieceRepository repository) {
+	public UserPieceController(UserPieceRepository repository, UserAccountRepository userRepository,
+			PieceRepository pieceRepository) {
 		this.repository = repository;
+		this.userRepository = userRepository;
+		this.pieceRepository = pieceRepository;
 	}
 
-	@GetMapping()
-	public Iterable<UserPiece> findByUserId(@PathVariable String id) {
-		UUID uuid;
-		try {
-			uuid = UUID.fromString(id);
-		} catch (IllegalArgumentException e) {
-			throw new InvalidUuidException();
+	@PostMapping
+	public ResponseEntity<UserPieceResponseDTO> create(@PathVariable("username") String username,
+			@Valid @RequestBody UserPieceRequestDTO reqDTO) {
+		Optional<UserAccount> user = userRepository.findByUsername(username);
+		if (user.isEmpty()) {
+			throw new UserDoesntExistException();
 		}
 
-		return this.repository.findByUserId(uuid);
+		Optional<Piece> piece = pieceRepository.findById(reqDTO.getPieceId());
+		if (piece.isEmpty()) {
+			throw new PieceDoesntExistException();
+		}
+
+		UserPiece userPiece = new UserPiece(reqDTO.getScore(), reqDTO.getStatus(), reqDTO.getStartedAt(),
+				reqDTO.getFinishedAt(), user.get(), piece.get());
+
+		UserPiece savedUserPiece = repository.save(userPiece);
+
+		UserPieceResponseDTO resDTO = new UserPieceResponseDTO(savedUserPiece);
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(resDTO);
+	}
+
+	@GetMapping
+	public PagedResponse<UserPieceResponseDTO> findByUsername(@PathVariable("username") String username,
+			@PageableDefault Pageable pageable) {
+		Page<UserPiece> page = repository.findByUserUsername(username, pageable);
+
+		Page<UserPieceResponseDTO> resPage = page.map(UserPieceResponseDTO::new);
+
+		return new PagedResponse<>(resPage);
 	}
 }
