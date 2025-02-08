@@ -2,6 +2,9 @@ package com.maxkemzi.mypianolist.user.controller;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,12 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.piece.controller.PieceDoesntExistException;
+import com.maxkemzi.mypianolist.piece.controller.PieceResponseDTO;
 import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
 import com.maxkemzi.mypianolist.user.model.UserAccount;
 import com.maxkemzi.mypianolist.user.model.UserFavouritePiece;
 import com.maxkemzi.mypianolist.user.repository.UserAccountRepository;
 import com.maxkemzi.mypianolist.user.repository.UserFavouritePieceRepository;
+import com.maxkemzi.mypianolist.util.PageResponseDTO;
 
 import jakarta.validation.Valid;
 
@@ -57,5 +62,20 @@ public class UserFavouritePieceController {
 		UserFavouritePieceResponseDTO resDTO = new UserFavouritePieceResponseDTO(savedUserFavPiece);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(resDTO);
+	}
+
+	@GetMapping
+	public PageResponseDTO<PieceResponseDTO> findByUsername(@PathVariable("username") String username,
+			@PageableDefault Pageable pageable) {
+		boolean userExists = userRepository.existsByUsername(username);
+		if (!userExists) {
+			throw new UserDoesntExistException();
+		}
+
+		Page<UserFavouritePiece> page = repository.findByUserUsername(username, pageable);
+
+		Page<PieceResponseDTO> resPage = page.map(ufp -> new PieceResponseDTO(ufp.getPiece()));
+
+		return new PageResponseDTO<>(resPage);
 	}
 }
