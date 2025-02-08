@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.composer.repository.ComposerRepository;
-import com.maxkemzi.mypianolist.util.PagedResponse;
+import com.maxkemzi.mypianolist.util.PageResponseDTO;
 
 import jakarta.validation.Valid;
 
@@ -30,12 +30,12 @@ public class ComposerController {
 	}
 
 	@GetMapping
-	public PagedResponse<ComposerResponseDTO> findAll(@PageableDefault Pageable pageable) {
+	public PageResponseDTO<ComposerResponseDTO> findAll(@PageableDefault Pageable pageable) {
 		Page<Composer> page = repository.findAll(pageable);
 
 		Page<ComposerResponseDTO> resPage = page.map(ComposerResponseDTO::new);
 
-		return new PagedResponse<>(resPage);
+		return new PageResponseDTO<>(resPage);
 	}
 
 	@PostMapping

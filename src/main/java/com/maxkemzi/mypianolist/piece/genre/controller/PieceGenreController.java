@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
 import com.maxkemzi.mypianolist.piece.genre.repository.PieceGenreRepository;
-import com.maxkemzi.mypianolist.util.PagedResponse;
+import com.maxkemzi.mypianolist.util.PageResponseDTO;
 
 import jakarta.validation.Valid;
 
@@ -29,12 +29,12 @@ public class PieceGenreController {
 	}
 
 	@GetMapping
-	public PagedResponse<PieceGenreResponseDTO> findAll(@PageableDefault(sort = "name") Pageable pageable) {
+	public PageResponseDTO<PieceGenreResponseDTO> findAll(@PageableDefault(sort = "name") Pageable pageable) {
 		Page<PieceGenre> page = repository.findAll(pageable);
 
 		Page<PieceGenreResponseDTO> resPage = page.map(PieceGenreResponseDTO::new);
 
-		return new PagedResponse<>(resPage);
+		return new PageResponseDTO<>(resPage);
 	}
 
 	@PostMapping

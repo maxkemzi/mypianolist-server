@@ -24,7 +24,7 @@ import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
 import com.maxkemzi.mypianolist.piece.genre.repository.PieceGenreRepository;
 import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
-import com.maxkemzi.mypianolist.util.PagedResponse;
+import com.maxkemzi.mypianolist.util.PageResponseDTO;
 
 import jakarta.validation.Valid;
 
@@ -44,7 +44,7 @@ public class PieceController {
 	}
 
 	@GetMapping
-	public PagedResponse<PieceResponseDTO> findAll(@RequestParam(name = "genre") Optional<String> genreName,
+	public PageResponseDTO<PieceResponseDTO> findAll(@RequestParam(name = "genre") Optional<String> genreName,
 			@RequestParam(name = "search", defaultValue = "") String search, @PageableDefault Pageable pageable) {
 		if (genreName.isPresent()) {
 			boolean genreExists = genreRepository.existsByName(genreName.get());
@@ -57,7 +57,7 @@ public class PieceController {
 
 		Page<PieceResponseDTO> resPage = page.map(PieceResponseDTO::new);
 
-		return new PagedResponse<>(resPage);
+		return new PageResponseDTO<>(resPage);
 	}
 
 	@PostMapping

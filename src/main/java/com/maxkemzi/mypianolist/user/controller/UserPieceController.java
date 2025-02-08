@@ -22,7 +22,7 @@ import com.maxkemzi.mypianolist.user.model.UserAccount;
 import com.maxkemzi.mypianolist.user.model.UserPiece;
 import com.maxkemzi.mypianolist.user.repository.UserAccountRepository;
 import com.maxkemzi.mypianolist.user.repository.UserPieceRepository;
-import com.maxkemzi.mypianolist.util.PagedResponse;
+import com.maxkemzi.mypianolist.util.PageResponseDTO;
 
 import jakarta.validation.Valid;
 
@@ -65,12 +65,12 @@ public class UserPieceController {
 	}
 
 	@GetMapping
-	public PagedResponse<UserPieceResponseDTO> findByUsername(@PathVariable("username") String username,
+	public PageResponseDTO<UserPieceResponseDTO> findByUsername(@PathVariable("username") String username,
 			@PageableDefault Pageable pageable) {
 		Page<UserPiece> page = repository.findByUserUsername(username, pageable);
 
 		Page<UserPieceResponseDTO> resPage = page.map(UserPieceResponseDTO::new);
 
-		return new PagedResponse<>(resPage);
+		return new PageResponseDTO<>(resPage);
 	}
 }
