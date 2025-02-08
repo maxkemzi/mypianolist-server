@@ -1,4 +1,4 @@
-package com.maxkemzi.mypianolist.user.controller;
+package com.maxkemzi.mypianolist.user.favouritepiece.controller;
 
 import java.util.UUID;
 

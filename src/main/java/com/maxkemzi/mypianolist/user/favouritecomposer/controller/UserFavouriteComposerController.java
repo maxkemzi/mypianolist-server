@@ -1,4 +1,4 @@
-package com.maxkemzi.mypianolist.user.controller;
+package com.maxkemzi.mypianolist.user.favouritecomposer.controller;
 
 import java.util.Optional;
 
@@ -20,9 +20,10 @@ import com.maxkemzi.mypianolist.composer.controller.ComposerResponseDTO;
 import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.composer.repository.ComposerRepository;
 import com.maxkemzi.mypianolist.user.model.UserAccount;
-import com.maxkemzi.mypianolist.user.model.UserFavouriteComposer;
+import com.maxkemzi.mypianolist.user.controller.UserDoesntExistException;
+import com.maxkemzi.mypianolist.user.favouritecomposer.model.UserFavouriteComposer;
 import com.maxkemzi.mypianolist.user.repository.UserAccountRepository;
-import com.maxkemzi.mypianolist.user.repository.UserFavouriteComposerRepository;
+import com.maxkemzi.mypianolist.user.favouritecomposer.repository.UserFavouriteComposerRepository;
 import com.maxkemzi.mypianolist.util.PageResponseDTO;
 
 import jakarta.validation.Valid;

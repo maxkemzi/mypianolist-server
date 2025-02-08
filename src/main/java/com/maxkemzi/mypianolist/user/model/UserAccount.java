@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.maxkemzi.mypianolist.user.favouritecomposer.model.UserFavouriteComposer;
+import com.maxkemzi.mypianolist.user.favouritepiece.model.UserFavouritePiece;
+import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

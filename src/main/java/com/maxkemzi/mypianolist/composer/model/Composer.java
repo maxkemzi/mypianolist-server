@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import com.maxkemzi.mypianolist.piece.model.Piece;
-import com.maxkemzi.mypianolist.user.model.UserFavouriteComposer;
+import com.maxkemzi.mypianolist.user.favouritecomposer.model.UserFavouriteComposer;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

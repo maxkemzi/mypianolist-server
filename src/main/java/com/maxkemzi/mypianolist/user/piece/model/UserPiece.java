@@ -1,4 +1,4 @@
-package com.maxkemzi.mypianolist.user.model;
+package com.maxkemzi.mypianolist.user.piece.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import com.maxkemzi.mypianolist.piece.model.Piece;
+import com.maxkemzi.mypianolist.user.model.UserAccount;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

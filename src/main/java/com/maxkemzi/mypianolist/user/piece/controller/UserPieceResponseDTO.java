@@ -1,11 +1,11 @@
-package com.maxkemzi.mypianolist.user.controller;
+package com.maxkemzi.mypianolist.user.piece.controller;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 import com.maxkemzi.mypianolist.piece.controller.PieceResponseDTO;
-import com.maxkemzi.mypianolist.user.model.UserPiece;
-import com.maxkemzi.mypianolist.user.model.UserPieceStatus;
+import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
+import com.maxkemzi.mypianolist.user.piece.model.UserPieceStatus;
 
 public class UserPieceResponseDTO {
 	private UUID id;

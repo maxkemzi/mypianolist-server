@@ -8,8 +8,8 @@ import java.util.UUID;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
-import com.maxkemzi.mypianolist.user.model.UserFavouritePiece;
-import com.maxkemzi.mypianolist.user.model.UserPiece;
+import com.maxkemzi.mypianolist.user.favouritepiece.model.UserFavouritePiece;
+import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
