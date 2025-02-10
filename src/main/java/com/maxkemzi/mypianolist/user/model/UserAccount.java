@@ -1,43 +1,34 @@
 package com.maxkemzi.mypianolist.user.model;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import com.maxkemzi.mypianolist.user.favouritecomposer.model.UserFavouriteComposer;
 import com.maxkemzi.mypianolist.user.favouritepiece.model.UserFavouritePiece;
 import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
+import com.maxkemzi.mypianolist.db.BaseEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 
 @Entity
-public class UserAccount {
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
-
-	@Column(nullable = false, unique = true)
+@Table(name = "user_account")
+public class UserAccount extends BaseEntity {
+	@Column(name = "username", nullable = false, unique = true)
 	private String username;
 
-	@Column(nullable = false, unique = true)
+	@Column(name = "email", nullable = false, unique = true)
 	private String email;
 
-	@Column(nullable = false)
+	@Column(name = "password", nullable = false)
 	private String password;
 
+	@Column(name = "avatar")
 	private String avatar;
-	private LocalDateTime createdAt;
-	private LocalDateTime updatedAt;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UserPiece> userPieces = new ArrayList<>();
@@ -55,23 +46,6 @@ public class UserAccount {
 		this.username = username;
 		this.email = email;
 		this.password = password;
-		this.createdAt = LocalDateTime.now();
-		this.updatedAt = LocalDateTime.now();
-	}
-
-	@PrePersist
-	protected void onCreate() {
-		this.createdAt = LocalDateTime.now();
-		this.updatedAt = LocalDateTime.now();
-	}
-
-	@PreUpdate
-	protected void onUpdate() {
-		this.updatedAt = LocalDateTime.now();
-	}
-
-	public UUID getId() {
-		return id;
 	}
 
 	public String getUsername() {
@@ -94,28 +68,12 @@ public class UserAccount {
 		this.avatar = avatar;
 	}
 
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
+	protected boolean entityEquals(Object o) {
+		UserAccount ua = (UserAccount) o;
+		return Objects.equals(getId(), ua.getId());
 	}
 
-	public LocalDateTime getUpdatedAt() {
-		return updatedAt;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-
-		if (o == null || getClass() != o.getClass())
-			return false;
-
-		UserAccount user = (UserAccount) o;
-		return Objects.equals(id, user.id);
-	}
-
-	@Override
-	public int hashCode() {
-		return id != null ? id.hashCode() : System.identityHashCode(this);
+	protected Object[] getHashCodeValues() {
+		return new Object[] { username, email };
 	}
 }

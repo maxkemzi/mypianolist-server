@@ -4,19 +4,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
 import com.maxkemzi.mypianolist.user.favouritepiece.model.UserFavouritePiece;
 import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
+import com.maxkemzi.mypianolist.db.BaseEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -27,20 +24,17 @@ import jakarta.persistence.UniqueConstraint;
 @Table(name = "piece", uniqueConstraints = {
 		@UniqueConstraint(columnNames = { "title", "composer_id" })
 })
-public class Piece {
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
-
+public class Piece extends BaseEntity {
 	@Column(name = "title", nullable = false)
 	private String title;
 
-	@Column(nullable = false, columnDefinition = "TEXT")
+	@Column(name = "description", nullable = false, columnDefinition = "TEXT")
 	private String description;
 
+	@Column(name = "image")
 	private String image;
 
-	@Column(nullable = false)
+	@Column(name = "composed_at", nullable = false)
 	private LocalDate composedAt;
 
 	@ManyToOne
@@ -70,10 +64,6 @@ public class Piece {
 		this.composer = composer;
 	}
 
-	public UUID getId() {
-		return id;
-	}
-
 	public String getTitle() {
 		return title;
 	}
@@ -98,20 +88,12 @@ public class Piece {
 		return composer;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-
-		if (o == null || getClass() != o.getClass())
-			return false;
-
-		Piece piece = (Piece) o;
-		return Objects.equals(title, piece.title) && Objects.equals(composer, piece.composer);
+	protected boolean entityEquals(Object o) {
+		Piece p = (Piece) o;
+		return Objects.equals(title, p.title) && Objects.equals(composer, p.composer);
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(title, composer);
+	protected Object[] getHashCodeValues() {
+		return new Object[] { title, composer };
 	}
 }

@@ -1,23 +1,18 @@
 package com.maxkemzi.mypianolist.user.piece.model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
 
+import com.maxkemzi.mypianolist.db.BaseEntity;
 import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.user.model.UserAccount;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
@@ -25,20 +20,19 @@ import jakarta.persistence.UniqueConstraint;
 @Table(name = "user_piece", uniqueConstraints = {
 		@UniqueConstraint(columnNames = { "user_id", "piece_id" })
 })
-public class UserPiece {
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
-
+public class UserPiece extends BaseEntity {
+	@Column(name = "score")
 	private Integer score;
 
+	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
 	private UserPieceStatus status;
 
+	@Column(name = "started_at")
 	private LocalDate startedAt;
+
+	@Column(name = "finished_at")
 	private LocalDate finishedAt;
-	private LocalDateTime createdAt;
-	private LocalDateTime updatedAt;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
@@ -57,25 +51,8 @@ public class UserPiece {
 		this.status = status;
 		this.startedAt = startedAt;
 		this.finishedAt = finishedAt;
-		this.createdAt = LocalDateTime.now();
-		this.updatedAt = LocalDateTime.now();
 		this.user = user;
 		this.piece = piece;
-	}
-
-	@PrePersist
-	protected void onCreate() {
-		this.createdAt = LocalDateTime.now();
-		this.updatedAt = LocalDateTime.now();
-	}
-
-	@PreUpdate
-	protected void onUpdate() {
-		this.updatedAt = LocalDateTime.now();
-	}
-
-	public UUID getId() {
-		return id;
 	}
 
 	public Integer getScore() {
@@ -110,14 +87,6 @@ public class UserPiece {
 		this.finishedAt = finishedAt;
 	}
 
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
-
-	public LocalDateTime getUpdatedAt() {
-		return updatedAt;
-	}
-
 	public UserAccount getUser() {
 		return user;
 	}
@@ -126,20 +95,12 @@ public class UserPiece {
 		return piece;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-
-		if (o == null || getClass() != o.getClass())
-			return false;
-
-		UserPiece userPiece = (UserPiece) o;
-		return Objects.equals(user, userPiece.user) && Objects.equals(piece, userPiece.piece);
+	protected boolean entityEquals(Object o) {
+		UserPiece up = (UserPiece) o;
+		return Objects.equals(user, up.user) && Objects.equals(piece, up.piece);
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(user, piece);
+	protected Object[] getHashCodeValues() {
+		return new Object[] { user, piece };
 	}
 }

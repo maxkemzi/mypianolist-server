@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.maxkemzi.mypianolist.user.model.UserAccount;
-import com.maxkemzi.mypianolist.util.CrudRepository;
+import com.maxkemzi.mypianolist.db.CrudRepository;
 
 public interface UserAccountRepository extends CrudRepository<UserAccount, UUID> {
 	Optional<UserAccount> findByUsername(String username);

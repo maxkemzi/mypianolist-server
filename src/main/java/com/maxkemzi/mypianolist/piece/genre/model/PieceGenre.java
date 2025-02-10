@@ -1,21 +1,17 @@
 package com.maxkemzi.mypianolist.piece.genre.model;
 
 import java.util.Objects;
-import java.util.UUID;
+
+import com.maxkemzi.mypianolist.db.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
-public class PieceGenre {
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
-
-	@Column(nullable = false, unique = true)
+@Table(name = "piece_genre")
+public class PieceGenre extends BaseEntity {
+	@Column(name = "name", nullable = false, unique = true)
 	private String name;
 
 	protected PieceGenre() {
@@ -25,28 +21,16 @@ public class PieceGenre {
 		this.name = name;
 	}
 
-	public UUID getId() {
-		return id;
-	}
-
 	public String getName() {
 		return name;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-
-		if (o == null || getClass() != o.getClass())
-			return false;
-
-		PieceGenre pieceGenre = (PieceGenre) o;
-		return Objects.equals(name, pieceGenre.name);
+	protected boolean entityEquals(Object o) {
+		PieceGenre pc = (PieceGenre) o;
+		return Objects.equals(name, pc.name);
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(name);
+	protected Object[] getHashCodeValues() {
+		return new Object[] { name };
 	}
 }

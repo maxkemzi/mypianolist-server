@@ -1,4 +1,4 @@
-package com.maxkemzi.mypianolist.util;
+package com.maxkemzi.mypianolist.db;
 
 import java.util.Optional;
 

@@ -4,17 +4,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.user.favouritecomposer.model.UserFavouriteComposer;
+import com.maxkemzi.mypianolist.db.BaseEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -23,27 +20,26 @@ import jakarta.persistence.UniqueConstraint;
 @Table(name = "composer", uniqueConstraints = {
 		@UniqueConstraint(columnNames = { "first_name", "last_name" })
 })
-public class Composer {
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
-
+public class Composer extends BaseEntity {
 	@Column(name = "first_name", nullable = false)
 	private String firstName;
 
 	@Column(name = "last_name", nullable = false)
 	private String lastName;
 
+	@Column(name = "nickname")
 	private String nickname;
 
-	@Column(nullable = false, columnDefinition = "TEXT")
+	@Column(name = "biography", nullable = false, columnDefinition = "TEXT")
 	private String biography;
 
+	@Column(name = "photo")
 	private String photo;
 
-	@Column(nullable = false)
+	@Column(name = "bornAt", nullable = false)
 	private LocalDate bornAt;
 
+	@Column(name = "diedAt")
 	private LocalDate diedAt;
 
 	@OneToMany(mappedBy = "composer", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -64,10 +60,6 @@ public class Composer {
 		this.photo = photo;
 		this.bornAt = bornAt;
 		this.diedAt = diedAt;
-	}
-
-	public UUID getId() {
-		return id;
 	}
 
 	public String getFirstName() {
@@ -102,20 +94,12 @@ public class Composer {
 		return diedAt;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-
-		if (o == null || getClass() != o.getClass())
-			return false;
-
-		Composer composer = (Composer) o;
-		return Objects.equals(firstName, composer.firstName) && Objects.equals(lastName, composer.lastName);
+	protected boolean entityEquals(Object o) {
+		Composer c = (Composer) o;
+		return Objects.equals(firstName, c.firstName) && Objects.equals(lastName, c.lastName);
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(firstName, lastName);
+	protected Object[] getHashCodeValues() {
+		return new Object[] { firstName, lastName };
 	}
 }

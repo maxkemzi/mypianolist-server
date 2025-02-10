@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
-import com.maxkemzi.mypianolist.util.CrudRepository;
+import com.maxkemzi.mypianolist.db.CrudRepository;
 
 public interface ComposerRepository extends CrudRepository<Composer, UUID> {
 	Optional<Composer> findByFirstNameAndLastName(String firstName, String lastName);
