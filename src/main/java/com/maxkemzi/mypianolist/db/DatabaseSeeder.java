@@ -1,4 +1,4 @@
-package com.maxkemzi.mypianolist;
+package com.maxkemzi.mypianolist.db;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -16,15 +16,15 @@ import com.maxkemzi.mypianolist.user.repository.UserRepository;
 
 @Component
 public class DatabaseSeeder implements CommandLineRunner {
-	private final UserRepository userAccountRepository;
+	private final UserRepository userRepository;
 	private final ComposerRepository composerRepository;
 	private final PieceGenreRepository pieceGenreRepository;
 	private final PieceRepository pieceRepository;
 
-	public DatabaseSeeder(UserRepository userAccountRepository, ComposerRepository composerRepository,
+	public DatabaseSeeder(UserRepository userRepository, ComposerRepository composerRepository,
 			PieceGenreRepository pieceGenreRepository,
 			PieceRepository pieceRepository) {
-		this.userAccountRepository = userAccountRepository;
+		this.userRepository = userRepository;
 		this.composerRepository = composerRepository;
 		this.pieceGenreRepository = pieceGenreRepository;
 		this.pieceRepository = pieceRepository;
@@ -32,10 +32,10 @@ public class DatabaseSeeder implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		User account = new User("maxkemzi", "iam.maxkyrychenko@gmail.com", "qwerty77");
-		Optional<User> existingAccount = this.userAccountRepository.findByUsername(account.getUsername());
-		if (existingAccount.isEmpty()) {
-			this.userAccountRepository.save(account);
+		User user = new User("maxkemzi", "iam.maxkyrychenko@gmail.com", "qwerty77");
+		Optional<User> existingUser = this.userRepository.findByUsername(user.getUsername());
+		if (existingUser.isEmpty()) {
+			this.userRepository.save(user);
 		}
 
 		Composer composer = new Composer("Daniel", "Rosenfeld", null,
