@@ -11,17 +11,17 @@ import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
 import com.maxkemzi.mypianolist.piece.genre.repository.PieceGenreRepository;
 import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
-import com.maxkemzi.mypianolist.user.model.UserAccount;
-import com.maxkemzi.mypianolist.user.repository.UserAccountRepository;
+import com.maxkemzi.mypianolist.user.model.User;
+import com.maxkemzi.mypianolist.user.repository.UserRepository;
 
 @Component
 public class DatabaseSeeder implements CommandLineRunner {
-	private final UserAccountRepository userAccountRepository;
+	private final UserRepository userAccountRepository;
 	private final ComposerRepository composerRepository;
 	private final PieceGenreRepository pieceGenreRepository;
 	private final PieceRepository pieceRepository;
 
-	public DatabaseSeeder(UserAccountRepository userAccountRepository, ComposerRepository composerRepository,
+	public DatabaseSeeder(UserRepository userAccountRepository, ComposerRepository composerRepository,
 			PieceGenreRepository pieceGenreRepository,
 			PieceRepository pieceRepository) {
 		this.userAccountRepository = userAccountRepository;
@@ -32,8 +32,8 @@ public class DatabaseSeeder implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		UserAccount account = new UserAccount("maxkemzi", "iam.maxkyrychenko@gmail.com", "qwerty77");
-		Optional<UserAccount> existingAccount = this.userAccountRepository.findByUsername(account.getUsername());
+		User account = new User("maxkemzi", "iam.maxkyrychenko@gmail.com", "qwerty77");
+		Optional<User> existingAccount = this.userAccountRepository.findByUsername(account.getUsername());
 		if (existingAccount.isEmpty()) {
 			this.userAccountRepository.save(account);
 		}

@@ -19,8 +19,8 @@ import com.maxkemzi.mypianolist.piece.controller.PieceDoesntExistException;
 import com.maxkemzi.mypianolist.piece.controller.PieceResponseDTO;
 import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
-import com.maxkemzi.mypianolist.user.model.UserAccount;
-import com.maxkemzi.mypianolist.user.repository.UserAccountRepository;
+import com.maxkemzi.mypianolist.user.model.User;
+import com.maxkemzi.mypianolist.user.repository.UserRepository;
 import com.maxkemzi.mypianolist.user.controller.UserDoesntExistException;
 import com.maxkemzi.mypianolist.user.favouritepiece.model.UserFavouritePiece;
 import com.maxkemzi.mypianolist.user.favouritepiece.repository.UserFavouritePieceRepository;
@@ -33,10 +33,10 @@ import jakarta.validation.Valid;
 @Validated
 public class UserFavouritePieceController {
 	private final UserFavouritePieceRepository repository;
-	private final UserAccountRepository userRepository;
+	private final UserRepository userRepository;
 	private final PieceRepository pieceRepository;
 
-	public UserFavouritePieceController(UserFavouritePieceRepository repository, UserAccountRepository userRepository,
+	public UserFavouritePieceController(UserFavouritePieceRepository repository, UserRepository userRepository,
 			PieceRepository pieceRepository) {
 		this.repository = repository;
 		this.userRepository = userRepository;
@@ -46,7 +46,7 @@ public class UserFavouritePieceController {
 	@PostMapping
 	public ResponseEntity<UserFavouritePieceResponseDTO> create(@PathVariable("username") String username,
 			@Valid @RequestBody UserFavouritePieceRequestDTO reqDTO) {
-		Optional<UserAccount> user = userRepository.findByUsername(username);
+		Optional<User> user = userRepository.findByUsername(username);
 		if (user.isEmpty()) {
 			throw new UserDoesntExistException();
 		}

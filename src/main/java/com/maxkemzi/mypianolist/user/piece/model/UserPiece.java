@@ -5,7 +5,7 @@ import java.util.Objects;
 
 import com.maxkemzi.mypianolist.db.BaseEntity;
 import com.maxkemzi.mypianolist.piece.model.Piece;
-import com.maxkemzi.mypianolist.user.model.UserAccount;
+import com.maxkemzi.mypianolist.user.model.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,7 +36,7 @@ public class UserPiece extends BaseEntity {
 
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
-	private UserAccount user;
+	private User user;
 
 	@ManyToOne
 	@JoinColumn(name = "piece_id", nullable = false)
@@ -45,7 +45,7 @@ public class UserPiece extends BaseEntity {
 	protected UserPiece() {
 	}
 
-	public UserPiece(Integer score, UserPieceStatus status, LocalDate startedAt, LocalDate finishedAt, UserAccount user,
+	public UserPiece(Integer score, UserPieceStatus status, LocalDate startedAt, LocalDate finishedAt, User user,
 			Piece piece) {
 		this.score = score;
 		this.status = status;
@@ -87,7 +87,7 @@ public class UserPiece extends BaseEntity {
 		this.finishedAt = finishedAt;
 	}
 
-	public UserAccount getUser() {
+	public User getUser() {
 		return user;
 	}
 

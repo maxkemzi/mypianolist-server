@@ -8,21 +8,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.maxkemzi.mypianolist.user.model.UserAccount;
-import com.maxkemzi.mypianolist.user.repository.UserAccountRepository;
+import com.maxkemzi.mypianolist.user.model.User;
+import com.maxkemzi.mypianolist.user.repository.UserRepository;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
-	private final UserAccountRepository repository;
+	private final UserRepository repository;
 
-	public UserController(UserAccountRepository repository) {
+	public UserController(UserRepository repository) {
 		this.repository = repository;
 	}
 
 	@GetMapping("/{username}")
 	public ResponseEntity<UserResponseDTO> findByUsername(@PathVariable("username") String username) {
-		Optional<UserAccount> user = repository.findByUsername(username);
+		Optional<User> user = repository.findByUsername(username);
 		if (user.isEmpty()) {
 			throw new UserDoesntExistException();
 		}

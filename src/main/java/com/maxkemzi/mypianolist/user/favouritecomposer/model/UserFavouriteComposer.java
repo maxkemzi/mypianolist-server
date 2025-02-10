@@ -3,7 +3,7 @@ package com.maxkemzi.mypianolist.user.favouritecomposer.model;
 import java.util.Objects;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
-import com.maxkemzi.mypianolist.user.model.UserAccount;
+import com.maxkemzi.mypianolist.user.model.User;
 import com.maxkemzi.mypianolist.db.BaseEntity;
 
 import jakarta.persistence.Entity;
@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 public class UserFavouriteComposer extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
-	private UserAccount user;
+	private User user;
 
 	@ManyToOne
 	@JoinColumn(name = "composer_id", nullable = false)
@@ -25,12 +25,12 @@ public class UserFavouriteComposer extends BaseEntity {
 	protected UserFavouriteComposer() {
 	}
 
-	public UserFavouriteComposer(UserAccount user, Composer composer) {
+	public UserFavouriteComposer(User user, Composer composer) {
 		this.user = user;
 		this.composer = composer;
 	}
 
-	public UserAccount getUser() {
+	public User getUser() {
 		return user;
 	}
 

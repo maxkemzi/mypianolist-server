@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "user_account")
-public class UserAccount extends BaseEntity {
+public class User extends BaseEntity {
 	@Column(name = "username", nullable = false, unique = true)
 	private String username;
 
@@ -39,10 +39,10 @@ public class UserAccount extends BaseEntity {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<UserFavouriteComposer> favouriteComposers = new ArrayList<>();
 
-	protected UserAccount() {
+	protected User() {
 	}
 
-	public UserAccount(String username, String email, String password) {
+	public User(String username, String email, String password) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
@@ -69,7 +69,7 @@ public class UserAccount extends BaseEntity {
 	}
 
 	protected boolean entityEquals(Object o) {
-		UserAccount ua = (UserAccount) o;
+		User ua = (User) o;
 		return Objects.equals(getId(), ua.getId());
 	}
 

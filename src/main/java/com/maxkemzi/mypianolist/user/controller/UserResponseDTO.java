@@ -3,7 +3,7 @@ package com.maxkemzi.mypianolist.user.controller;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.maxkemzi.mypianolist.user.model.UserAccount;
+import com.maxkemzi.mypianolist.user.model.User;
 
 public class UserResponseDTO {
 	private UUID id;
@@ -14,7 +14,7 @@ public class UserResponseDTO {
 	protected UserResponseDTO() {
 	}
 
-	public UserResponseDTO(UserAccount user) {
+	public UserResponseDTO(User user) {
 		this.id = user.getId();
 		this.username = user.getUsername();
 		this.avatar = user.getAvatar();
