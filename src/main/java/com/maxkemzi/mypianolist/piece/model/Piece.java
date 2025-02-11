@@ -96,4 +96,13 @@ public class Piece extends BaseEntity {
 	protected Object[] getHashCodeValues() {
 		return new Object[] { title, composer };
 	}
+
+	@Override
+	public String toString() {
+		return "Piece [getId()=" + getId()
+				+ ", getTitle()=" + getTitle() + ", getDescription()=" + getDescription() + ", getImage()=" + getImage()
+				+ ", getComposedAt()=" + getComposedAt() + ", getGenre()=" + getGenre() + ", getComposer()=" + getComposer()
+				+ ", getCreatedAt()=" + getCreatedAt() + ", getUpdatedAt()=" + getUpdatedAt()
+				+ "]";
+	}
 }

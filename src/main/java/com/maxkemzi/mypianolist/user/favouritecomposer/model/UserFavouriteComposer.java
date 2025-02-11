@@ -46,4 +46,11 @@ public class UserFavouriteComposer extends BaseEntity {
 	protected Object[] getHashCodeValues() {
 		return new Object[] { getId() };
 	}
+
+	@Override
+	public String toString() {
+		return "UserFavouriteComposer [getId()=" + getId() + ", getUser()="
+				+ getUser() + ", getComposer()=" + getComposer() + ", getCreatedAt()=" + getCreatedAt()
+				+ ", getUpdatedAt()=" + getUpdatedAt() + "]";
+	}
 }

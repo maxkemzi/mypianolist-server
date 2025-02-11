@@ -76,4 +76,12 @@ public class User extends BaseEntity {
 	protected Object[] getHashCodeValues() {
 		return new Object[] { username, email };
 	}
+
+	@Override
+	public String toString() {
+		return "User [getId()=" + getId()
+				+ ", getUsername()=" + getUsername() + ", getEmail()=" + getEmail() + ", getPassword()=" + getPassword()
+				+ ", getAvatar()=" + getAvatar() + ", getCreatedAt()=" + getCreatedAt() + ", getUpdatedAt()="
+				+ getUpdatedAt() + "]";
+	}
 }

@@ -71,4 +71,10 @@ public abstract class BaseEntity {
 	}
 
 	protected abstract Object[] getHashCodeValues();
+
+	@Override
+	public String toString() {
+		return "BaseEntity [getId()=" + getId() + ", getCreatedAt()=" + getCreatedAt() + ", getUpdatedAt()="
+				+ getUpdatedAt() + "]";
+	}
 }

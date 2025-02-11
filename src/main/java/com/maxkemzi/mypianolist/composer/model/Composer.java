@@ -102,4 +102,13 @@ public class Composer extends BaseEntity {
 	protected Object[] getHashCodeValues() {
 		return new Object[] { firstName, lastName };
 	}
+
+	@Override
+	public String toString() {
+		return "Composer [getId()=" + getId() + ", getFirstName()=" + getFirstName() + ", getLastName()=" + getLastName()
+				+ ", getNickname()=" + getNickname() + ", getBiography()="
+				+ getBiography() + ", getPhoto()=" + getPhoto() + ",  getBornAt()=" + getBornAt() + ", getDiedAt()="
+				+ getDiedAt() + ", getCreatedAt()=" + getCreatedAt() + ", getUpdatedAt()="
+				+ getUpdatedAt() + "]";
+	}
 }

@@ -103,4 +103,13 @@ public class UserPiece extends BaseEntity {
 	protected Object[] getHashCodeValues() {
 		return new Object[] { user, piece };
 	}
+
+	@Override
+	public String toString() {
+		return "UserPiece [getId()=" + getId() + ", getScore()=" + getScore() + ", getStatus()=" + getStatus()
+				+ ", getStartedAt()="
+				+ getStartedAt() + ", getFinishedAt()=" + getFinishedAt() + ", getUser()=" + getUser() + ", getPiece()="
+				+ getPiece() + ", getCreatedAt()=" + getCreatedAt() + ", getUpdatedAt()="
+				+ getUpdatedAt() + "]";
+	}
 }

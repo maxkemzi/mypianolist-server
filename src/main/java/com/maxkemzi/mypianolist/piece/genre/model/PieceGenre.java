@@ -33,4 +33,10 @@ public class PieceGenre extends BaseEntity {
 	protected Object[] getHashCodeValues() {
 		return new Object[] { name };
 	}
+
+	@Override
+	public String toString() {
+		return "PieceGenre [getId()=" + getId() + ", getName()=" + getName() + ", getCreatedAt()=" + getCreatedAt()
+				+ ", getUpdatedAt()=" + getUpdatedAt() + "]";
+	}
 }

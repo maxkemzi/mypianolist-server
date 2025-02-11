@@ -46,4 +46,10 @@ public class UserFavouritePiece extends BaseEntity {
 	protected Object[] getHashCodeValues() {
 		return new Object[] { getId() };
 	}
+
+	@Override
+	public String toString() {
+		return "UserFavouritePiece [getId()=" + getId() + ", getUser()=" + getUser() + ", getPiece()=" + getPiece()
+				+ ", getCreatedAt()=" + getCreatedAt() + ", getUpdatedAt()=" + getUpdatedAt() + "]";
+	}
 }
