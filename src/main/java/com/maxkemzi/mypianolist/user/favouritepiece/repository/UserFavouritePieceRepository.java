@@ -10,4 +10,6 @@ import com.maxkemzi.mypianolist.db.CrudRepository;
 
 public interface UserFavouritePieceRepository extends CrudRepository<UserFavouritePiece, UUID> {
 	Page<UserFavouritePiece> findByUserUsername(String username, Pageable pageable);
+
+	void deleteByUserUsernameAndPieceId(String username, UUID pieceId);
 }

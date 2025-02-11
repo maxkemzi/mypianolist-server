@@ -1,6 +1,7 @@
 package com.maxkemzi.mypianolist.user.favouritepiece.controller;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +26,7 @@ import com.maxkemzi.mypianolist.user.repository.UserRepository;
 import com.maxkemzi.mypianolist.user.controller.UserDoesntExistException;
 import com.maxkemzi.mypianolist.user.favouritepiece.entity.UserFavouritePiece;
 import com.maxkemzi.mypianolist.user.favouritepiece.repository.UserFavouritePieceRepository;
+import com.maxkemzi.mypianolist.user.favouritepiece.service.UserFavouritePieceService;
 import com.maxkemzi.mypianolist.util.PageResponseDTO;
 
 import jakarta.validation.Valid;
@@ -35,12 +38,14 @@ public class UserFavouritePieceController {
 	private final UserFavouritePieceRepository repository;
 	private final UserRepository userRepository;
 	private final PieceRepository pieceRepository;
+	private final UserFavouritePieceService service;
 
 	public UserFavouritePieceController(UserFavouritePieceRepository repository, UserRepository userRepository,
-			PieceRepository pieceRepository) {
+			PieceRepository pieceRepository, UserFavouritePieceService service) {
 		this.repository = repository;
 		this.userRepository = userRepository;
 		this.pieceRepository = pieceRepository;
+		this.service = service;
 	}
 
 	@PostMapping
@@ -78,5 +83,13 @@ public class UserFavouritePieceController {
 		Page<PieceResponseDTO> resPage = page.map(ufp -> new PieceResponseDTO(ufp.getPiece()));
 
 		return new PageResponseDTO<>(resPage);
+	}
+
+	@DeleteMapping("/{pieceId}")
+	public ResponseEntity<Void> deleteByUsernameAndPieceId(@PathVariable("username") String username,
+			@PathVariable("pieceId") UUID pieceId) {
+		service.deleteByUsernameAndPieceId(username, pieceId);
+
+		return ResponseEntity.noContent().build();
 	}
 }

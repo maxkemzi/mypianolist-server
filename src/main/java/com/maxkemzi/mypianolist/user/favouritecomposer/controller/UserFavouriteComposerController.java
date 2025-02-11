@@ -87,7 +87,7 @@ public class UserFavouriteComposerController {
 	}
 
 	@DeleteMapping("/{composerId}")
-	public ResponseEntity<Void> deleteById(@PathVariable("username") String username,
+	public ResponseEntity<Void> deleteByUsernameAndComposerId(@PathVariable("username") String username,
 			@PathVariable("composerId") UUID composerId) {
 		service.deleteByUsernameAndComposerId(username, composerId);
 
