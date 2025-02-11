@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import com.maxkemzi.mypianolist.piece.controller.PieceResponseDTO;
-import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
-import com.maxkemzi.mypianolist.user.piece.model.UserPieceStatus;
+import com.maxkemzi.mypianolist.user.piece.entity.UserPiece;
+import com.maxkemzi.mypianolist.user.piece.entity.UserPieceStatus;
 
 public class UserPieceResponseDTO {
 	private UUID id;

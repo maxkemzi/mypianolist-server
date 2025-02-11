@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.composer.controller.ComposerDoesntExistException;
 import com.maxkemzi.mypianolist.composer.controller.ComposerResponseDTO;
-import com.maxkemzi.mypianolist.composer.model.Composer;
+import com.maxkemzi.mypianolist.composer.entity.Composer;
 import com.maxkemzi.mypianolist.composer.repository.ComposerRepository;
-import com.maxkemzi.mypianolist.user.model.User;
+import com.maxkemzi.mypianolist.user.entity.User;
 import com.maxkemzi.mypianolist.user.controller.UserDoesntExistException;
-import com.maxkemzi.mypianolist.user.favouritecomposer.model.UserFavouriteComposer;
+import com.maxkemzi.mypianolist.user.favouritecomposer.entity.UserFavouriteComposer;
 import com.maxkemzi.mypianolist.user.repository.UserRepository;
 import com.maxkemzi.mypianolist.user.favouritecomposer.repository.UserFavouriteComposerRepository;
 import com.maxkemzi.mypianolist.util.PageResponseDTO;

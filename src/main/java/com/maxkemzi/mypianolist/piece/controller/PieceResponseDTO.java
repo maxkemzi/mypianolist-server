@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import com.maxkemzi.mypianolist.composer.controller.ComposerResponseDTO;
 import com.maxkemzi.mypianolist.piece.genre.controller.PieceGenreResponseDTO;
-import com.maxkemzi.mypianolist.piece.model.Piece;
+import com.maxkemzi.mypianolist.piece.entity.Piece;
 
 public class PieceResponseDTO {
 	private UUID id;

@@ -1,12 +1,12 @@
-package com.maxkemzi.mypianolist.composer.model;
+package com.maxkemzi.mypianolist.composer.entity;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.maxkemzi.mypianolist.piece.model.Piece;
-import com.maxkemzi.mypianolist.user.favouritecomposer.model.UserFavouriteComposer;
+import com.maxkemzi.mypianolist.piece.entity.Piece;
+import com.maxkemzi.mypianolist.user.favouritecomposer.entity.UserFavouriteComposer;
 import com.maxkemzi.mypianolist.db.BaseEntity;
 
 import jakarta.persistence.CascadeType;

@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.piece.controller.PieceDoesntExistException;
-import com.maxkemzi.mypianolist.piece.model.Piece;
+import com.maxkemzi.mypianolist.piece.entity.Piece;
 import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
 import com.maxkemzi.mypianolist.user.controller.UserDoesntExistException;
-import com.maxkemzi.mypianolist.user.model.User;
-import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
+import com.maxkemzi.mypianolist.user.entity.User;
+import com.maxkemzi.mypianolist.user.piece.entity.UserPiece;
 import com.maxkemzi.mypianolist.user.repository.UserRepository;
 import com.maxkemzi.mypianolist.user.piece.repository.UserPieceRepository;
 import com.maxkemzi.mypianolist.util.PageResponseDTO;

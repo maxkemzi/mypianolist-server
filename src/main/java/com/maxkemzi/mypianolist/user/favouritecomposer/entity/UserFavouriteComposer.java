@@ -1,9 +1,9 @@
-package com.maxkemzi.mypianolist.user.favouritecomposer.model;
+package com.maxkemzi.mypianolist.user.favouritecomposer.entity;
 
 import java.util.Objects;
 
-import com.maxkemzi.mypianolist.composer.model.Composer;
-import com.maxkemzi.mypianolist.user.model.User;
+import com.maxkemzi.mypianolist.composer.entity.Composer;
+import com.maxkemzi.mypianolist.user.entity.User;
 import com.maxkemzi.mypianolist.db.BaseEntity;
 
 import jakarta.persistence.Entity;

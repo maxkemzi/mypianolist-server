@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import com.maxkemzi.mypianolist.piece.controller.PieceResponseDTO;
 import com.maxkemzi.mypianolist.user.controller.UserResponseDTO;
-import com.maxkemzi.mypianolist.user.favouritepiece.model.UserFavouritePiece;
+import com.maxkemzi.mypianolist.user.favouritepiece.entity.UserFavouritePiece;
 
 public class UserFavouritePieceResponseDTO {
 	private UUID id;

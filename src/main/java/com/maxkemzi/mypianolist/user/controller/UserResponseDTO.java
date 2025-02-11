@@ -3,7 +3,7 @@ package com.maxkemzi.mypianolist.user.controller;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.maxkemzi.mypianolist.user.model.User;
+import com.maxkemzi.mypianolist.user.entity.User;
 
 public class UserResponseDTO {
 	private UUID id;

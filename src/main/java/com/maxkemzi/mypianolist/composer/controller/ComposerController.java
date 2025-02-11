@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.maxkemzi.mypianolist.composer.model.Composer;
+import com.maxkemzi.mypianolist.composer.entity.Composer;
 import com.maxkemzi.mypianolist.composer.repository.ComposerRepository;
 import com.maxkemzi.mypianolist.util.PageResponseDTO;
 

@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.maxkemzi.mypianolist.db.CrudRepository;
-import com.maxkemzi.mypianolist.piece.model.Piece;
+import com.maxkemzi.mypianolist.piece.entity.Piece;
 
 public interface PieceRepository extends CrudRepository<Piece, UUID> {
 	Optional<Piece> findByTitleAndComposerId(String title, UUID id);
