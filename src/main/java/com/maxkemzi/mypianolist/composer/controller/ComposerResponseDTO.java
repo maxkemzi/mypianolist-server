@@ -4,7 +4,7 @@ package com.maxkemzi.mypianolist.composer.controller;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import com.maxkemzi.mypianolist.composer.entity.Composer;
+import com.maxkemzi.mypianolist.composer.model.Composer;
 
 public class ComposerResponseDTO {
 	private UUID id;

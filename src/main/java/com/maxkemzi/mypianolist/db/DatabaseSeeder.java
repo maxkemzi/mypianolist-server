@@ -5,13 +5,13 @@ import java.util.Optional;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import com.maxkemzi.mypianolist.composer.entity.Composer;
+import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.composer.repository.ComposerRepository;
-import com.maxkemzi.mypianolist.piece.entity.Piece;
-import com.maxkemzi.mypianolist.piece.genre.entity.PieceGenre;
+import com.maxkemzi.mypianolist.piece.model.Piece;
+import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
 import com.maxkemzi.mypianolist.piece.genre.repository.PieceGenreRepository;
 import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
-import com.maxkemzi.mypianolist.user.entity.User;
+import com.maxkemzi.mypianolist.user.model.User;
 import com.maxkemzi.mypianolist.user.repository.UserRepository;
 
 @Component

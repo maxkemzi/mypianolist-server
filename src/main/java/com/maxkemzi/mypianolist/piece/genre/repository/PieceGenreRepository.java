@@ -6,7 +6,7 @@ import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.maxkemzi.mypianolist.piece.genre.entity.PieceGenre;
+import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
 import com.maxkemzi.mypianolist.db.CrudRepository;
 
 public interface PieceGenreRepository extends CrudRepository<PieceGenre, UUID> {

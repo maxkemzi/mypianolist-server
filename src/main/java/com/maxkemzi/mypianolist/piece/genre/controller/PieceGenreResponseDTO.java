@@ -2,7 +2,7 @@ package com.maxkemzi.mypianolist.piece.genre.controller;
 
 import java.util.UUID;
 
-import com.maxkemzi.mypianolist.piece.genre.entity.PieceGenre;
+import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
 
 public class PieceGenreResponseDTO {
 	private UUID id;

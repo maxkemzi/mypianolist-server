@@ -1,4 +1,4 @@
-package com.maxkemzi.mypianolist.piece.genre.entity;
+package com.maxkemzi.mypianolist.piece.genre.model;
 
 import java.util.Objects;
 

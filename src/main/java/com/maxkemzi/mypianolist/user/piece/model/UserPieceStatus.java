@@ -1,4 +1,4 @@
-package com.maxkemzi.mypianolist.user.piece.entity;
+package com.maxkemzi.mypianolist.user.piece.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

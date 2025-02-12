@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.maxkemzi.mypianolist.user.entity.User;
+import com.maxkemzi.mypianolist.user.model.User;
 import com.maxkemzi.mypianolist.user.repository.UserRepository;
 
 @RestController

@@ -3,7 +3,7 @@ package com.maxkemzi.mypianolist.user.piece.controller;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import com.maxkemzi.mypianolist.user.piece.entity.UserPieceStatus;
+import com.maxkemzi.mypianolist.user.piece.model.UserPieceStatus;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

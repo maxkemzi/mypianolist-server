@@ -6,7 +6,7 @@ import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.maxkemzi.mypianolist.composer.entity.Composer;
+import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.db.CrudRepository;
 
 public interface ComposerRepository extends CrudRepository<Composer, UUID> {
