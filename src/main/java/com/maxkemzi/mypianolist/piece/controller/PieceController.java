@@ -1,6 +1,5 @@
 package com.maxkemzi.mypianolist.piece.controller;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -16,14 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.maxkemzi.mypianolist.composer.controller.ComposerDoesntExistException;
-import com.maxkemzi.mypianolist.composer.model.Composer;
-import com.maxkemzi.mypianolist.composer.repository.ComposerRepository;
-import com.maxkemzi.mypianolist.piece.genre.controller.PieceGenreDoesntExistException;
+
 import com.maxkemzi.mypianolist.piece.model.Piece;
-import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
-import com.maxkemzi.mypianolist.piece.genre.repository.PieceGenreRepository;
-import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
+import com.maxkemzi.mypianolist.piece.service.PieceService;
 import com.maxkemzi.mypianolist.util.PageResponseDTO;
 
 import jakarta.validation.Valid;
@@ -32,65 +26,36 @@ import jakarta.validation.Valid;
 @RequestMapping("/pieces")
 @Validated
 public class PieceController {
-	private final PieceRepository repository;
-	private final PieceGenreRepository genreRepository;
-	private final ComposerRepository composerRepository;
+	private final PieceService service;
 
-	public PieceController(PieceRepository repository, PieceGenreRepository genreRepository,
-			ComposerRepository composerRepository) {
-		this.repository = repository;
-		this.genreRepository = genreRepository;
-		this.composerRepository = composerRepository;
+	public PieceController(PieceService service) {
+		this.service = service;
+	}
+
+	@PostMapping
+	public ResponseEntity<PieceResponseDTO> create(@Valid @RequestBody PieceRequestDTO reqDTO) {
+		Piece piece = service.create(reqDTO);
+
+		PieceResponseDTO resDTO = new PieceResponseDTO(piece);
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(resDTO);
 	}
 
 	@GetMapping
-	public PageResponseDTO<PieceResponseDTO> findAll(@RequestParam(name = "genre") Optional<String> genreName,
+	public PageResponseDTO<PieceResponseDTO> findAll(@RequestParam(name = "genre", required = false) String genreName,
 			@RequestParam(name = "search", defaultValue = "") String search, @PageableDefault Pageable pageable) {
-		if (genreName.isPresent()) {
-			boolean genreExists = genreRepository.existsByName(genreName.get());
-			if (!genreExists) {
-				throw new PieceGenreDoesntExistException();
-			}
-		}
-
-		Page<Piece> page = repository.findAll(genreName.orElse(null), search, pageable);
+		Page<Piece> page = service.findAll(genreName, search, pageable);
 
 		Page<PieceResponseDTO> resPage = page.map(PieceResponseDTO::new);
 
 		return new PageResponseDTO<>(resPage);
 	}
 
-	@PostMapping
-	public ResponseEntity<PieceResponseDTO> create(@Valid @RequestBody PieceRequestDTO reqDTO) {
-		Optional<PieceGenre> genre = genreRepository.findById(reqDTO.getGenreId());
-		if (genre.isEmpty()) {
-			throw new PieceGenreDoesntExistException();
-		}
-
-		Optional<Composer> composer = composerRepository.findById(reqDTO.getComposerId());
-		if (composer.isEmpty()) {
-			throw new ComposerDoesntExistException();
-		}
-
-		Piece piece = new Piece(reqDTO.getTitle(), reqDTO.getDescription(), reqDTO.getImage(),
-				reqDTO.getComposedAt(), genre.get(),
-				composer.get());
-
-		Piece savedPiece = repository.save(piece);
-
-		PieceResponseDTO resDTO = new PieceResponseDTO(savedPiece);
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(resDTO);
-	}
-
 	@GetMapping("/{id}")
 	public ResponseEntity<PieceResponseDTO> findById(@PathVariable("id") UUID id) {
-		Optional<Piece> piece = repository.findById(id);
-		if (piece.isEmpty()) {
-			throw new PieceDoesntExistException();
-		}
+		Piece piece = service.findById(id);
 
-		PieceResponseDTO resDTO = new PieceResponseDTO(piece.get());
+		PieceResponseDTO resDTO = new PieceResponseDTO(piece);
 
 		return ResponseEntity.ok(resDTO);
 	}

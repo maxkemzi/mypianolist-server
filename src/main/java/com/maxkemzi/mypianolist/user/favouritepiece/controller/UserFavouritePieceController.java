@@ -1,6 +1,5 @@
 package com.maxkemzi.mypianolist.user.favouritepiece.controller;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -17,15 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.maxkemzi.mypianolist.piece.controller.PieceDoesntExistException;
 import com.maxkemzi.mypianolist.piece.controller.PieceResponseDTO;
-import com.maxkemzi.mypianolist.piece.model.Piece;
-import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
-import com.maxkemzi.mypianolist.user.model.User;
-import com.maxkemzi.mypianolist.user.repository.UserRepository;
-import com.maxkemzi.mypianolist.user.controller.UserDoesntExistException;
 import com.maxkemzi.mypianolist.user.favouritepiece.model.UserFavouritePiece;
-import com.maxkemzi.mypianolist.user.favouritepiece.repository.UserFavouritePieceRepository;
 import com.maxkemzi.mypianolist.user.favouritepiece.service.UserFavouritePieceService;
 import com.maxkemzi.mypianolist.util.PageResponseDTO;
 
@@ -35,37 +27,18 @@ import jakarta.validation.Valid;
 @RequestMapping("/users/{username}/favourite-pieces")
 @Validated
 public class UserFavouritePieceController {
-	private final UserFavouritePieceRepository repository;
-	private final UserRepository userRepository;
-	private final PieceRepository pieceRepository;
 	private final UserFavouritePieceService service;
 
-	public UserFavouritePieceController(UserFavouritePieceRepository repository, UserRepository userRepository,
-			PieceRepository pieceRepository, UserFavouritePieceService service) {
-		this.repository = repository;
-		this.userRepository = userRepository;
-		this.pieceRepository = pieceRepository;
+	public UserFavouritePieceController(UserFavouritePieceService service) {
 		this.service = service;
 	}
 
 	@PostMapping
 	public ResponseEntity<UserFavouritePieceResponseDTO> create(@PathVariable("username") String username,
 			@Valid @RequestBody UserFavouritePieceRequestDTO reqDTO) {
-		Optional<User> user = userRepository.findByUsername(username);
-		if (user.isEmpty()) {
-			throw new UserDoesntExistException();
-		}
+		UserFavouritePiece userFavPiece = service.create(username, reqDTO);
 
-		Optional<Piece> piece = pieceRepository.findById(reqDTO.getPieceId());
-		if (piece.isEmpty()) {
-			throw new PieceDoesntExistException();
-		}
-
-		UserFavouritePiece userFavPiece = new UserFavouritePiece(user.get(), piece.get());
-
-		UserFavouritePiece savedUserFavPiece = repository.save(userFavPiece);
-
-		UserFavouritePieceResponseDTO resDTO = new UserFavouritePieceResponseDTO(savedUserFavPiece);
+		UserFavouritePieceResponseDTO resDTO = new UserFavouritePieceResponseDTO(userFavPiece);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(resDTO);
 	}
@@ -73,12 +46,7 @@ public class UserFavouritePieceController {
 	@GetMapping
 	public PageResponseDTO<PieceResponseDTO> findByUsername(@PathVariable("username") String username,
 			@PageableDefault Pageable pageable) {
-		boolean userExists = userRepository.existsByUsername(username);
-		if (!userExists) {
-			throw new UserDoesntExistException();
-		}
-
-		Page<UserFavouritePiece> page = repository.findByUserUsername(username, pageable);
+		Page<UserFavouritePiece> page = service.findByUsername(username, pageable);
 
 		Page<PieceResponseDTO> resPage = page.map(ufp -> new PieceResponseDTO(ufp.getPiece()));
 

@@ -1,7 +1,5 @@
 package com.maxkemzi.mypianolist.user.controller;
 
-import java.util.Optional;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,25 +7,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.user.model.User;
-import com.maxkemzi.mypianolist.user.repository.UserRepository;
+import com.maxkemzi.mypianolist.user.service.UserService;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
-	private final UserRepository repository;
+	private final UserService service;
 
-	public UserController(UserRepository repository) {
-		this.repository = repository;
+	public UserController(UserService service) {
+		this.service = service;
 	}
 
 	@GetMapping("/{username}")
 	public ResponseEntity<UserResponseDTO> findByUsername(@PathVariable("username") String username) {
-		Optional<User> user = repository.findByUsername(username);
-		if (user.isEmpty()) {
-			throw new UserDoesntExistException();
-		}
+		User user = service.findByUsername(username);
 
-		UserResponseDTO responseDTO = new UserResponseDTO(user.get());
+		UserResponseDTO responseDTO = new UserResponseDTO(user);
 
 		return ResponseEntity.ok(responseDTO);
 	}

@@ -1,6 +1,5 @@
 package com.maxkemzi.mypianolist.user.piece.controller;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -17,14 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.maxkemzi.mypianolist.piece.controller.PieceDoesntExistException;
-import com.maxkemzi.mypianolist.piece.model.Piece;
-import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
-import com.maxkemzi.mypianolist.user.controller.UserDoesntExistException;
-import com.maxkemzi.mypianolist.user.model.User;
 import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
-import com.maxkemzi.mypianolist.user.repository.UserRepository;
-import com.maxkemzi.mypianolist.user.piece.repository.UserPieceRepository;
+import com.maxkemzi.mypianolist.user.piece.service.UserPieceService;
 import com.maxkemzi.mypianolist.util.PageResponseDTO;
 
 import jakarta.validation.Valid;
@@ -33,36 +26,18 @@ import jakarta.validation.Valid;
 @RequestMapping("/users/{username}/pieces")
 @Validated
 public class UserPieceController {
-	private final UserPieceRepository repository;
-	private final UserRepository userRepository;
-	private final PieceRepository pieceRepository;
+	private final UserPieceService service;
 
-	public UserPieceController(UserPieceRepository repository, UserRepository userRepository,
-			PieceRepository pieceRepository) {
-		this.repository = repository;
-		this.userRepository = userRepository;
-		this.pieceRepository = pieceRepository;
+	public UserPieceController(UserPieceService service) {
+		this.service = service;
 	}
 
 	@PostMapping
 	public ResponseEntity<UserPieceResponseDTO> create(@PathVariable("username") String username,
 			@Valid @RequestBody UserPieceRequestDTO reqDTO) {
-		Optional<User> user = userRepository.findByUsername(username);
-		if (user.isEmpty()) {
-			throw new UserDoesntExistException();
-		}
+		UserPiece userPiece = service.create(username, reqDTO);
 
-		Optional<Piece> piece = pieceRepository.findById(reqDTO.getPieceId());
-		if (piece.isEmpty()) {
-			throw new PieceDoesntExistException();
-		}
-
-		UserPiece userPiece = new UserPiece(reqDTO.getScore(), reqDTO.getStatus(), reqDTO.getStartedAt(),
-				reqDTO.getFinishedAt(), user.get(), piece.get());
-
-		UserPiece savedUserPiece = repository.save(userPiece);
-
-		UserPieceResponseDTO resDTO = new UserPieceResponseDTO(savedUserPiece);
+		UserPieceResponseDTO resDTO = new UserPieceResponseDTO(userPiece);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(resDTO);
 	}
@@ -70,7 +45,7 @@ public class UserPieceController {
 	@GetMapping
 	public PageResponseDTO<UserPieceResponseDTO> findByUsername(@PathVariable("username") String username,
 			@PageableDefault Pageable pageable) {
-		Page<UserPiece> page = repository.findByUserUsername(username, pageable);
+		Page<UserPiece> page = service.findByUsername(username, pageable);
 
 		Page<UserPieceResponseDTO> resPage = page.map(UserPieceResponseDTO::new);
 
@@ -79,7 +54,7 @@ public class UserPieceController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteById(@PathVariable("id") UUID id) {
-		repository.deleteById(id);
+		service.deleteById(id);
 
 		return ResponseEntity.noContent().build();
 	}

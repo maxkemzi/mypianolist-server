@@ -29,6 +29,15 @@ public class ComposerController {
 		this.service = service;
 	}
 
+	@PostMapping
+	public ResponseEntity<ComposerResponseDTO> create(@Valid @RequestBody ComposerRequestDTO reqDTO) {
+		Composer composer = service.create(reqDTO);
+
+		ComposerResponseDTO resDTO = new ComposerResponseDTO(composer);
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(resDTO);
+	}
+
 	@GetMapping
 	public PageResponseDTO<ComposerResponseDTO> findAll(@PageableDefault Pageable pageable) {
 		Page<Composer> page = service.findAll(pageable);
@@ -38,15 +47,4 @@ public class ComposerController {
 		return new PageResponseDTO<>(resPage);
 	}
 
-	@PostMapping
-	public ResponseEntity<ComposerResponseDTO> create(@Valid @RequestBody ComposerRequestDTO reqDTO) {
-		Composer composer = new Composer(reqDTO.getFirstName(), reqDTO.getLastName(), reqDTO.getNickname(),
-				reqDTO.getBiography(), reqDTO.getPhoto(), reqDTO.getBornAt(), reqDTO.getDiedAt());
-
-		Composer createdComposer = service.create(composer);
-
-		ComposerResponseDTO resDTO = new ComposerResponseDTO(createdComposer);
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(resDTO);
-	}
 }
