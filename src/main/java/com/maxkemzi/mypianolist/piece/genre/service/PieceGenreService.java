@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.maxkemzi.mypianolist.piece.genre.controller.PieceGenreRequestDTO;
 import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
 import com.maxkemzi.mypianolist.piece.genre.repository.PieceGenreRepository;
 
@@ -22,8 +21,8 @@ public class PieceGenreService {
 	}
 
 	@Transactional
-	public PieceGenre create(PieceGenreRequestDTO reqDTO) {
-		PieceGenre genre = new PieceGenre(reqDTO.getName());
+	public PieceGenre create(PieceGenreCreatePayload payload) {
+		PieceGenre genre = new PieceGenre(payload.getName());
 
 		return repository.save(genre);
 	}

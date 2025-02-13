@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
-public class ComposerRequestDTO {
+public class ComposerRequest {
 	@NotBlank(message = "First name is required.")
 	@Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters.")
 	private String firstName;
@@ -35,10 +35,10 @@ public class ComposerRequestDTO {
 	@Past(message = "Died date must be in the past.")
 	private LocalDate diedAt;
 
-	protected ComposerRequestDTO() {
+	protected ComposerRequest() {
 	}
 
-	public ComposerRequestDTO(String firstName, String lastName, String nickname, String biography, String photo,
+	public ComposerRequest(String firstName, String lastName, String nickname, String biography, String photo,
 			LocalDate bornAt, LocalDate diedAt) {
 		this.firstName = firstName;
 		this.lastName = lastName;

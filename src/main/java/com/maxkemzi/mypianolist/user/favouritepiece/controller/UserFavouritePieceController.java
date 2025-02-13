@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.piece.controller.PieceResponseDTO;
 import com.maxkemzi.mypianolist.user.favouritepiece.model.UserFavouritePiece;
+import com.maxkemzi.mypianolist.user.favouritepiece.service.UserFavouritePieceCreatePayload;
 import com.maxkemzi.mypianolist.user.favouritepiece.service.UserFavouritePieceService;
 import com.maxkemzi.mypianolist.util.PageResponseDTO;
 
@@ -35,8 +36,10 @@ public class UserFavouritePieceController {
 
 	@PostMapping
 	public ResponseEntity<UserFavouritePieceResponseDTO> create(@PathVariable("username") String username,
-			@Valid @RequestBody UserFavouritePieceRequestDTO reqDTO) {
-		UserFavouritePiece userFavPiece = service.create(username, reqDTO);
+			@Valid @RequestBody UserFavouritePieceRequest req) {
+		UserFavouritePieceCreatePayload payload = new UserFavouritePieceCreatePayload(username, req.getPieceId());
+
+		UserFavouritePiece userFavPiece = service.create(payload);
 
 		UserFavouritePieceResponseDTO resDTO = new UserFavouritePieceResponseDTO(userFavPiece);
 

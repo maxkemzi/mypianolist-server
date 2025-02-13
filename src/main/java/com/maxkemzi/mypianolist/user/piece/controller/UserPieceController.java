@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
+import com.maxkemzi.mypianolist.user.piece.service.UserPieceCreatePayload;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceService;
 import com.maxkemzi.mypianolist.util.PageResponseDTO;
 
@@ -34,8 +35,12 @@ public class UserPieceController {
 
 	@PostMapping
 	public ResponseEntity<UserPieceResponseDTO> create(@PathVariable("username") String username,
-			@Valid @RequestBody UserPieceRequestDTO reqDTO) {
-		UserPiece userPiece = service.create(username, reqDTO);
+			@Valid @RequestBody UserPieceRequest req) {
+		UserPieceCreatePayload payload = new UserPieceCreatePayload(req.getScore(), req.getStatus(),
+				req.getStartedAt(),
+				req.getFinishedAt(), username, req.getPieceId());
+
+		UserPiece userPiece = service.create(payload);
 
 		UserPieceResponseDTO resDTO = new UserPieceResponseDTO(userPiece);
 

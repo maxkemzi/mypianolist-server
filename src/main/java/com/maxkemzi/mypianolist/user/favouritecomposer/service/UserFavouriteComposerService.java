@@ -6,10 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.maxkemzi.mypianolist.composer.controller.ComposerResponseDTO;
 import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.composer.service.ComposerService;
-import com.maxkemzi.mypianolist.user.favouritecomposer.controller.UserFavouriteComposerRequestDTO;
+import com.maxkemzi.mypianolist.user.favouritecomposer.controller.UserFavouriteComposerRequest;
 import com.maxkemzi.mypianolist.user.favouritecomposer.model.UserFavouriteComposer;
 import com.maxkemzi.mypianolist.user.favouritecomposer.repository.UserFavouriteComposerRepository;
 import com.maxkemzi.mypianolist.user.model.User;
@@ -32,11 +31,12 @@ public class UserFavouriteComposerService {
 	}
 
 	@Transactional
-	public UserFavouriteComposer create(String username, UserFavouriteComposerRequestDTO reqDTO) {
-		User user = userService.findByUsername(username);
-		Composer composer = composerService.findById(reqDTO.getComposerId());
+	public UserFavouriteComposer create(UserFavouriteComposerCreatePayload payload) {
+		User user = userService.findByUsername(payload.getUsername());
+		Composer composer = composerService.findById(payload.getComposerId());
 
 		UserFavouriteComposer userFavComposer = new UserFavouriteComposer(user, composer);
+
 		return repository.save(userFavComposer);
 	}
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
+import com.maxkemzi.mypianolist.composer.service.ComposerCreatePayload;
 import com.maxkemzi.mypianolist.composer.service.ComposerService;
 import com.maxkemzi.mypianolist.util.PageResponseDTO;
 
@@ -30,8 +31,12 @@ public class ComposerController {
 	}
 
 	@PostMapping
-	public ResponseEntity<ComposerResponseDTO> create(@Valid @RequestBody ComposerRequestDTO reqDTO) {
-		Composer composer = service.create(reqDTO);
+	public ResponseEntity<ComposerResponseDTO> create(@Valid @RequestBody ComposerRequest req) {
+		ComposerCreatePayload payload = new ComposerCreatePayload(req.getFirstName(), req.getLastName(),
+				req.getNickname(),
+				req.getBiography(), req.getPhoto(), req.getBornAt(), req.getDiedAt());
+
+		Composer composer = service.create(payload);
 
 		ComposerResponseDTO resDTO = new ComposerResponseDTO(composer);
 

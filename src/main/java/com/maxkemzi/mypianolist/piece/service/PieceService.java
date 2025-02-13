@@ -8,11 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
-import com.maxkemzi.mypianolist.composer.service.ComposerDoesntExistException;
 import com.maxkemzi.mypianolist.composer.service.ComposerService;
-import com.maxkemzi.mypianolist.piece.controller.PieceRequestDTO;
 import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
-import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreDoesntExistException;
 import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreService;
 import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
@@ -25,20 +22,20 @@ public class PieceService {
 	private final PieceGenreService genreService;
 	private final ComposerService composerService;
 
-	public PieceService(PieceRepository repository, PieceGenreService genreService,
-			ComposerService composerService) {
+	public PieceService(PieceRepository repository, PieceGenreService genreService, ComposerService composerService) {
 		this.repository = repository;
 		this.genreService = genreService;
 		this.composerService = composerService;
 	}
 
 	@Transactional
-	public Piece create(PieceRequestDTO reqDTO) throws PieceGenreDoesntExistException, ComposerDoesntExistException {
-		PieceGenre genre = genreService.findById(reqDTO.getGenreId());
-		Composer composer = composerService.findById(reqDTO.getComposerId());
+	public Piece create(PieceCreatePayload payload) {
+		PieceGenre genre = genreService.findById(payload.getGenreId());
+		Composer composer = composerService.findById(payload.getComposerId());
 
-		Piece piece = new Piece(reqDTO.getTitle(), reqDTO.getDescription(), reqDTO.getImage(), reqDTO.getComposedAt(),
+		Piece piece = new Piece(payload.getTitle(), payload.getDescription(), payload.getImage(), payload.getComposedAt(),
 				genre, composer);
+
 		return repository.save(piece);
 	}
 

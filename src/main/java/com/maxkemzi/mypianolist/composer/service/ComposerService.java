@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.maxkemzi.mypianolist.composer.controller.ComposerRequestDTO;
 import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.composer.repository.ComposerRepository;
 
@@ -22,9 +21,9 @@ public class ComposerService {
 	}
 
 	@Transactional
-	public Composer create(ComposerRequestDTO reqDTO) {
-		Composer composer = new Composer(reqDTO.getFirstName(), reqDTO.getLastName(), reqDTO.getNickname(),
-				reqDTO.getBiography(), reqDTO.getPhoto(), reqDTO.getBornAt(), reqDTO.getDiedAt());
+	public Composer create(ComposerCreatePayload payload) {
+		Composer composer = new Composer(payload.getFirstName(), payload.getLastName(), payload.getNickname(),
+				payload.getBiography(), payload.getPhoto(), payload.getBornAt(), payload.getDiedAt());
 
 		return repository.save(composer);
 	}

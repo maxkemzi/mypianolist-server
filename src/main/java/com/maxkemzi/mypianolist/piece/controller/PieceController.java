@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.piece.model.Piece;
+import com.maxkemzi.mypianolist.piece.service.PieceCreatePayload;
 import com.maxkemzi.mypianolist.piece.service.PieceService;
 import com.maxkemzi.mypianolist.util.PageResponseDTO;
 
@@ -33,8 +34,11 @@ public class PieceController {
 	}
 
 	@PostMapping
-	public ResponseEntity<PieceResponseDTO> create(@Valid @RequestBody PieceRequestDTO reqDTO) {
-		Piece piece = service.create(reqDTO);
+	public ResponseEntity<PieceResponseDTO> create(@Valid @RequestBody PieceRequest req) {
+		PieceCreatePayload payload = new PieceCreatePayload(req.getTitle(), req.getDescription(), req.getImage(),
+				req.getComposedAt(), req.getComposerId(), req.getGenreId());
+
+		Piece piece = service.create(payload);
 
 		PieceResponseDTO resDTO = new PieceResponseDTO(piece);
 

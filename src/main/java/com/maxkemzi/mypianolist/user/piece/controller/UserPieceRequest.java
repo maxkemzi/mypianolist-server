@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 
-public class UserPieceRequestDTO {
+public class UserPieceRequest {
 	@Min(value = 0, message = "Score must be at least 0.")
 	@Max(value = 10, message = "Score must not exceed 10.")
 	private Integer score;
@@ -26,10 +26,10 @@ public class UserPieceRequestDTO {
 	@NotNull(message = "Piece id is required.")
 	private UUID pieceId;
 
-	protected UserPieceRequestDTO() {
+	protected UserPieceRequest() {
 	}
 
-	public UserPieceRequestDTO(Integer score, UserPieceStatus status, LocalDate startedAt, LocalDate finishedAt,
+	public UserPieceRequest(Integer score, UserPieceStatus status, LocalDate startedAt, LocalDate finishedAt,
 			UUID pieceId) {
 		this.score = score;
 		this.status = status;

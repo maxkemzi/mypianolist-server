@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
+import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreCreatePayload;
 import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreService;
 import com.maxkemzi.mypianolist.util.PageResponseDTO;
 
@@ -29,8 +30,10 @@ public class PieceGenreController {
 	}
 
 	@PostMapping
-	public ResponseEntity<PieceGenreResponseDTO> create(@Valid @RequestBody PieceGenreRequestDTO reqDTO) {
-		PieceGenre genre = service.create(reqDTO);
+	public ResponseEntity<PieceGenreResponseDTO> create(@Valid @RequestBody PieceGenreRequest req) {
+		PieceGenreCreatePayload payload = new PieceGenreCreatePayload(req.getName());
+
+		PieceGenre genre = service.create(payload);
 
 		PieceGenreResponseDTO resDTO = new PieceGenreResponseDTO(genre);
 

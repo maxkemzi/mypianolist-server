@@ -4,14 +4,14 @@ import java.util.UUID;
 
 import jakarta.validation.constraints.NotNull;
 
-public class UserFavouriteComposerRequestDTO {
+public class UserFavouriteComposerRequest {
 	@NotNull(message = "Composer id is required.")
 	private UUID composerId;
 
-	protected UserFavouriteComposerRequestDTO() {
+	protected UserFavouriteComposerRequest() {
 	}
 
-	public UserFavouriteComposerRequestDTO(UUID composerId) {
+	public UserFavouriteComposerRequest(UUID composerId) {
 		this.composerId = composerId;
 	}
 

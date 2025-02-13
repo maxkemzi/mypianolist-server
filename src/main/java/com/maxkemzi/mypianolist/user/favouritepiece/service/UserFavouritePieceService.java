@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.piece.service.PieceService;
-import com.maxkemzi.mypianolist.user.favouritepiece.controller.UserFavouritePieceRequestDTO;
 import com.maxkemzi.mypianolist.user.favouritepiece.model.UserFavouritePiece;
 import com.maxkemzi.mypianolist.user.favouritepiece.repository.UserFavouritePieceRepository;
 import com.maxkemzi.mypianolist.user.model.User;
@@ -31,11 +30,12 @@ public class UserFavouritePieceService {
 	}
 
 	@Transactional
-	public UserFavouritePiece create(String username, UserFavouritePieceRequestDTO reqDTO) {
-		User user = userService.findByUsername(username);
-		Piece piece = pieceService.findById(reqDTO.getPieceId());
+	public UserFavouritePiece create(UserFavouritePieceCreatePayload payload) {
+		User user = userService.findByUsername(payload.getUsername());
+		Piece piece = pieceService.findById(payload.getPieceId());
 
 		UserFavouritePiece userFavComposer = new UserFavouritePiece(user, piece);
+
 		return repository.save(userFavComposer);
 	}
 

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.piece.service.PieceService;
 import com.maxkemzi.mypianolist.user.model.User;
-import com.maxkemzi.mypianolist.user.piece.controller.UserPieceRequestDTO;
 import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
 import com.maxkemzi.mypianolist.user.piece.repository.UserPieceRepository;
 import com.maxkemzi.mypianolist.user.service.UserService;
@@ -30,12 +29,14 @@ public class UserPieceService {
 	}
 
 	@Transactional
-	public UserPiece create(String username, UserPieceRequestDTO reqDTO) {
-		User user = userService.findByUsername(username);
-		Piece piece = pieceService.findById(reqDTO.getPieceId());
+	public UserPiece create(UserPieceCreatePayload payload) {
+		User user = userService.findByUsername(payload.getUsername());
+		Piece piece = pieceService.findById(payload.getPieceId());
 
-		UserPiece userPiece = new UserPiece(reqDTO.getScore(), reqDTO.getStatus(), reqDTO.getStartedAt(),
-				reqDTO.getFinishedAt(), user, piece);
+		UserPiece userPiece = new UserPiece(payload.getScore(), payload.getStatus(),
+				payload.getStartedAt(),
+				payload.getFinishedAt(), user, piece);
+
 		return repository.save(userPiece);
 	}
 
