@@ -43,10 +43,10 @@ public class PieceService {
 		return repository.findAll(genreName, search, pageable);
 	}
 
-	public Piece findById(UUID id) throws PieceDoesntExistException {
+	public Piece findById(UUID id) throws PieceNotFoundException {
 		Optional<Piece> piece = repository.findById(id);
 		if (piece.isEmpty()) {
-			throw new PieceDoesntExistException();
+			throw new PieceNotFoundException();
 		}
 
 		return piece.get();

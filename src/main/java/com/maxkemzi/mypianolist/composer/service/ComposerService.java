@@ -32,10 +32,10 @@ public class ComposerService {
 		return repository.findAll(pageable);
 	}
 
-	public Composer findById(UUID id) throws ComposerDoesntExistException {
+	public Composer findById(UUID id) throws ComposerNotFoundException {
 		Optional<Composer> composer = repository.findById(id);
 		if (composer.isEmpty()) {
-			throw new ComposerDoesntExistException();
+			throw new ComposerNotFoundException();
 		}
 
 		return composer.get();

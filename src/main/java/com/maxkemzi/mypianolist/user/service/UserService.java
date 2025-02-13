@@ -15,10 +15,10 @@ public class UserService {
 		this.repository = repository;
 	}
 
-	public User findByUsername(String username) {
+	public User findByUsername(String username) throws UserNotFoundException {
 		Optional<User> user = repository.findByUsername(username);
 		if (user.isEmpty()) {
-			throw new UserDoesntExistException();
+			throw new UserNotFoundException();
 		}
 
 		return user.get();

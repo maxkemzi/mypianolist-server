@@ -8,11 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.composer.service.ComposerService;
-import com.maxkemzi.mypianolist.user.favouritecomposer.controller.UserFavouriteComposerRequest;
 import com.maxkemzi.mypianolist.user.favouritecomposer.model.UserFavouriteComposer;
 import com.maxkemzi.mypianolist.user.favouritecomposer.repository.UserFavouriteComposerRepository;
 import com.maxkemzi.mypianolist.user.model.User;
-import com.maxkemzi.mypianolist.user.service.UserDoesntExistException;
+import com.maxkemzi.mypianolist.user.service.UserNotFoundException;
 import com.maxkemzi.mypianolist.user.service.UserService;
 
 import jakarta.transaction.Transactional;
@@ -40,10 +39,10 @@ public class UserFavouriteComposerService {
 		return repository.save(userFavComposer);
 	}
 
-	public Page<UserFavouriteComposer> findByUsername(String username, Pageable pageable) {
+	public Page<UserFavouriteComposer> findByUsername(String username, Pageable pageable) throws UserNotFoundException {
 		boolean userExists = userService.existsByUsername(username);
 		if (!userExists) {
-			throw new UserDoesntExistException();
+			throw new UserNotFoundException();
 		}
 
 		return repository.findByUserUsername(username, pageable);

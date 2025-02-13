@@ -31,10 +31,10 @@ public class PieceGenreService {
 		return repository.findAll(pageable);
 	}
 
-	public PieceGenre findById(UUID id) throws PieceGenreDoesntExistException {
+	public PieceGenre findById(UUID id) throws PieceGenreNotFoundException {
 		Optional<PieceGenre> genre = repository.findById(id);
 		if (genre.isEmpty()) {
-			throw new PieceGenreDoesntExistException();
+			throw new PieceGenreNotFoundException();
 		}
 
 		return genre.get();
