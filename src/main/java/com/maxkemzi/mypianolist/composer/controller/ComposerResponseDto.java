@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
 
-public class ComposerResponseDTO {
+public class ComposerResponseDto {
 	private UUID id;
 	private String firstName;
 	private String lastName;
@@ -16,10 +16,10 @@ public class ComposerResponseDTO {
 	private LocalDate bornAt;
 	private LocalDate diedAt;
 
-	protected ComposerResponseDTO() {
+	protected ComposerResponseDto() {
 	}
 
-	public ComposerResponseDTO(Composer composer) {
+	public ComposerResponseDto(Composer composer) {
 		this.id = composer.getId();
 		this.firstName = composer.getFirstName();
 		this.lastName = composer.getLastName();

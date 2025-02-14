@@ -4,14 +4,14 @@ import java.util.UUID;
 
 import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
 
-public class PieceGenreResponseDTO {
+public class PieceGenreResponseDto {
 	private UUID id;
 	private String name;
 
-	protected PieceGenreResponseDTO() {
+	protected PieceGenreResponseDto() {
 	}
 
-	public PieceGenreResponseDTO(PieceGenre genre) {
+	public PieceGenreResponseDto(PieceGenre genre) {
 		this.id = genre.getId();
 		this.name = genre.getName();
 	}

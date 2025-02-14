@@ -21,7 +21,7 @@ import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceCreatePayload;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceService;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceUpdatePayload;
-import com.maxkemzi.mypianolist.util.PageResponseDTO;
+import com.maxkemzi.mypianolist.util.PageResponseDto;
 
 import jakarta.validation.Valid;
 
@@ -36,7 +36,7 @@ public class UserPieceController {
 	}
 
 	@PostMapping
-	public ResponseEntity<UserPieceResponseDTO> create(@PathVariable("username") String username,
+	public ResponseEntity<UserPieceResponseDto> create(@PathVariable("username") String username,
 			@Valid @RequestBody UserPieceCreateRequest req) {
 		UserPieceCreatePayload payload = new UserPieceCreatePayload(req.getScore(), req.getStatus(),
 				req.getStartedAt(),
@@ -44,32 +44,32 @@ public class UserPieceController {
 
 		UserPiece userPiece = service.create(payload);
 
-		UserPieceResponseDTO resDTO = new UserPieceResponseDTO(userPiece);
+		UserPieceResponseDto resDto = new UserPieceResponseDto(userPiece);
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(resDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(resDto);
 	}
 
 	@GetMapping
-	public PageResponseDTO<UserPieceResponseDTO> findByUsername(@PathVariable("username") String username,
+	public PageResponseDto<UserPieceResponseDto> findByUsername(@PathVariable("username") String username,
 			@PageableDefault Pageable pageable) {
 		Page<UserPiece> page = service.findByUsername(username, pageable);
 
-		Page<UserPieceResponseDTO> resPage = page.map(UserPieceResponseDTO::new);
+		Page<UserPieceResponseDto> resPage = page.map(UserPieceResponseDto::new);
 
-		return new PageResponseDTO<>(resPage);
+		return new PageResponseDto<>(resPage);
 	}
 
 	@PatchMapping("/{id}")
-	public ResponseEntity<UserPieceResponseDTO> update(@PathVariable("id") UUID id,
+	public ResponseEntity<UserPieceResponseDto> update(@PathVariable("id") UUID id,
 			@Valid @RequestBody UserPieceUpdateRequest req) {
 		UserPieceUpdatePayload payload = new UserPieceUpdatePayload(req.getScore(), req.getStatus(), req.getStartedAt(),
 				req.getFinishedAt());
 
 		UserPiece userPiece = service.updateById(id, payload);
 
-		UserPieceResponseDTO resDTO = new UserPieceResponseDTO(userPiece);
+		UserPieceResponseDto resDto = new UserPieceResponseDto(userPiece);
 
-		return ResponseEntity.ok(resDTO);
+		return ResponseEntity.ok(resDto);
 	}
 
 	@DeleteMapping("/{id}")

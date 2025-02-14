@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.maxkemzi.mypianolist.composer.controller.ComposerResponseDTO;
+import com.maxkemzi.mypianolist.composer.controller.ComposerResponseDto;
 import com.maxkemzi.mypianolist.user.favouritecomposer.model.UserFavouriteComposer;
 import com.maxkemzi.mypianolist.user.favouritecomposer.service.UserFavouriteComposerCreatePayload;
 import com.maxkemzi.mypianolist.user.favouritecomposer.service.UserFavouriteComposerService;
-import com.maxkemzi.mypianolist.util.PageResponseDTO;
+import com.maxkemzi.mypianolist.util.PageResponseDto;
 
 import jakarta.validation.Valid;
 
@@ -35,26 +35,26 @@ public class UserFavouriteComposerController {
 	}
 
 	@PostMapping
-	public ResponseEntity<UserFavouriteComposerResponseDTO> create(@PathVariable("username") String username,
+	public ResponseEntity<UserFavouriteComposerResponseDto> create(@PathVariable("username") String username,
 			@Valid @RequestBody UserFavouriteComposerRequest req) {
 		UserFavouriteComposerCreatePayload payload = new UserFavouriteComposerCreatePayload(username,
 				req.getComposerId());
 
 		UserFavouriteComposer userFavComposer = service.create(payload);
 
-		UserFavouriteComposerResponseDTO resDTO = new UserFavouriteComposerResponseDTO(userFavComposer);
+		UserFavouriteComposerResponseDto resDto = new UserFavouriteComposerResponseDto(userFavComposer);
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(resDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(resDto);
 	}
 
 	@GetMapping
-	public PageResponseDTO<ComposerResponseDTO> findByUsername(@PathVariable("username") String username,
+	public PageResponseDto<ComposerResponseDto> findByUsername(@PathVariable("username") String username,
 			@PageableDefault Pageable pageable) {
 		Page<UserFavouriteComposer> page = service.findByUsername(username, pageable);
 
-		Page<ComposerResponseDTO> resPage = page.map(ufc -> new ComposerResponseDTO(ufc.getComposer()));
+		Page<ComposerResponseDto> resPage = page.map(ufc -> new ComposerResponseDto(ufc.getComposer()));
 
-		return new PageResponseDTO<>(resPage);
+		return new PageResponseDto<>(resPage);
 	}
 
 	@DeleteMapping("/{composerId}")

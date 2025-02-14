@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.maxkemzi.mypianolist.piece.controller.PieceResponseDTO;
+import com.maxkemzi.mypianolist.piece.controller.PieceResponseDto;
 import com.maxkemzi.mypianolist.user.favouritepiece.model.UserFavouritePiece;
 import com.maxkemzi.mypianolist.user.favouritepiece.service.UserFavouritePieceCreatePayload;
 import com.maxkemzi.mypianolist.user.favouritepiece.service.UserFavouritePieceService;
-import com.maxkemzi.mypianolist.util.PageResponseDTO;
+import com.maxkemzi.mypianolist.util.PageResponseDto;
 
 import jakarta.validation.Valid;
 
@@ -35,25 +35,25 @@ public class UserFavouritePieceController {
 	}
 
 	@PostMapping
-	public ResponseEntity<UserFavouritePieceResponseDTO> create(@PathVariable("username") String username,
+	public ResponseEntity<UserFavouritePieceResponseDto> create(@PathVariable("username") String username,
 			@Valid @RequestBody UserFavouritePieceRequest req) {
 		UserFavouritePieceCreatePayload payload = new UserFavouritePieceCreatePayload(username, req.getPieceId());
 
 		UserFavouritePiece userFavPiece = service.create(payload);
 
-		UserFavouritePieceResponseDTO resDTO = new UserFavouritePieceResponseDTO(userFavPiece);
+		UserFavouritePieceResponseDto resDto = new UserFavouritePieceResponseDto(userFavPiece);
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(resDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(resDto);
 	}
 
 	@GetMapping
-	public PageResponseDTO<PieceResponseDTO> findByUsername(@PathVariable("username") String username,
+	public PageResponseDto<PieceResponseDto> findByUsername(@PathVariable("username") String username,
 			@PageableDefault Pageable pageable) {
 		Page<UserFavouritePiece> page = service.findByUsername(username, pageable);
 
-		Page<PieceResponseDTO> resPage = page.map(ufp -> new PieceResponseDTO(ufp.getPiece()));
+		Page<PieceResponseDto> resPage = page.map(ufp -> new PieceResponseDto(ufp.getPiece()));
 
-		return new PageResponseDTO<>(resPage);
+		return new PageResponseDto<>(resPage);
 	}
 
 	@DeleteMapping("/{pieceId}")

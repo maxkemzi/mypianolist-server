@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.composer.service.ComposerCreatePayload;
 import com.maxkemzi.mypianolist.composer.service.ComposerService;
-import com.maxkemzi.mypianolist.util.PageResponseDTO;
+import com.maxkemzi.mypianolist.util.PageResponseDto;
 
 import jakarta.validation.Valid;
 
@@ -31,25 +31,25 @@ public class ComposerController {
 	}
 
 	@PostMapping
-	public ResponseEntity<ComposerResponseDTO> create(@Valid @RequestBody ComposerRequest req) {
+	public ResponseEntity<ComposerResponseDto> create(@Valid @RequestBody ComposerRequest req) {
 		ComposerCreatePayload payload = new ComposerCreatePayload(req.getFirstName(), req.getLastName(),
 				req.getNickname(),
 				req.getBiography(), req.getPhoto(), req.getBornAt(), req.getDiedAt());
 
 		Composer composer = service.create(payload);
 
-		ComposerResponseDTO resDTO = new ComposerResponseDTO(composer);
+		ComposerResponseDto resDto = new ComposerResponseDto(composer);
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(resDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(resDto);
 	}
 
 	@GetMapping
-	public PageResponseDTO<ComposerResponseDTO> findAll(@PageableDefault Pageable pageable) {
+	public PageResponseDto<ComposerResponseDto> findAll(@PageableDefault Pageable pageable) {
 		Page<Composer> page = service.findAll(pageable);
 
-		Page<ComposerResponseDTO> resPage = page.map(ComposerResponseDTO::new);
+		Page<ComposerResponseDto> resPage = page.map(ComposerResponseDto::new);
 
-		return new PageResponseDTO<>(resPage);
+		return new PageResponseDto<>(resPage);
 	}
 
 }

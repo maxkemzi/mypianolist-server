@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
 import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreCreatePayload;
 import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreService;
-import com.maxkemzi.mypianolist.util.PageResponseDTO;
+import com.maxkemzi.mypianolist.util.PageResponseDto;
 
 import jakarta.validation.Valid;
 
@@ -30,22 +30,22 @@ public class PieceGenreController {
 	}
 
 	@PostMapping
-	public ResponseEntity<PieceGenreResponseDTO> create(@Valid @RequestBody PieceGenreRequest req) {
+	public ResponseEntity<PieceGenreResponseDto> create(@Valid @RequestBody PieceGenreRequest req) {
 		PieceGenreCreatePayload payload = new PieceGenreCreatePayload(req.getName());
 
 		PieceGenre genre = service.create(payload);
 
-		PieceGenreResponseDTO resDTO = new PieceGenreResponseDTO(genre);
+		PieceGenreResponseDto resDto = new PieceGenreResponseDto(genre);
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(resDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(resDto);
 	}
 
 	@GetMapping
-	public PageResponseDTO<PieceGenreResponseDTO> findAll(@PageableDefault(sort = "name") Pageable pageable) {
+	public PageResponseDto<PieceGenreResponseDto> findAll(@PageableDefault(sort = "name") Pageable pageable) {
 		Page<PieceGenre> page = service.findAll(pageable);
 
-		Page<PieceGenreResponseDTO> resPage = page.map(PieceGenreResponseDTO::new);
+		Page<PieceGenreResponseDto> resPage = page.map(PieceGenreResponseDto::new);
 
-		return new PageResponseDTO<>(resPage);
+		return new PageResponseDto<>(resPage);
 	}
 }

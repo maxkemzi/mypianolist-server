@@ -19,11 +19,11 @@ public class UserController {
 	}
 
 	@GetMapping("/{username}")
-	public ResponseEntity<UserResponseDTO> findByUsername(@PathVariable("username") String username) {
+	public ResponseEntity<UserResponseDto> findByUsername(@PathVariable("username") String username) {
 		User user = service.findByUsername(username);
 
-		UserResponseDTO responseDTO = new UserResponseDTO(user);
+		UserResponseDto resDto = new UserResponseDto(user);
 
-		return ResponseEntity.ok(responseDTO);
+		return ResponseEntity.ok(resDto);
 	}
 }

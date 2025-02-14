@@ -5,16 +5,16 @@ import java.util.UUID;
 
 import com.maxkemzi.mypianolist.user.model.User;
 
-public class UserResponseDTO {
+public class UserResponseDto {
 	private UUID id;
 	private String username;
 	private String avatar;
 	private LocalDateTime createdAt;
 
-	protected UserResponseDTO() {
+	protected UserResponseDto() {
 	}
 
-	public UserResponseDTO(User user) {
+	public UserResponseDto(User user) {
 		this.id = user.getId();
 		this.username = user.getUsername();
 		this.avatar = user.getAvatar();

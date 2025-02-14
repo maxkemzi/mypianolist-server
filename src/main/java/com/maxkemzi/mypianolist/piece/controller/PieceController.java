@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.piece.service.PieceCreatePayload;
 import com.maxkemzi.mypianolist.piece.service.PieceService;
-import com.maxkemzi.mypianolist.util.PageResponseDTO;
+import com.maxkemzi.mypianolist.util.PageResponseDto;
 
 import jakarta.validation.Valid;
 
@@ -34,33 +34,33 @@ public class PieceController {
 	}
 
 	@PostMapping
-	public ResponseEntity<PieceResponseDTO> create(@Valid @RequestBody PieceRequest req) {
+	public ResponseEntity<PieceResponseDto> create(@Valid @RequestBody PieceRequest req) {
 		PieceCreatePayload payload = new PieceCreatePayload(req.getTitle(), req.getDescription(), req.getImage(),
 				req.getComposedAt(), req.getComposerId(), req.getGenreId());
 
 		Piece piece = service.create(payload);
 
-		PieceResponseDTO resDTO = new PieceResponseDTO(piece);
+		PieceResponseDto resDto = new PieceResponseDto(piece);
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(resDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(resDto);
 	}
 
 	@GetMapping
-	public PageResponseDTO<PieceResponseDTO> findAll(@RequestParam(name = "genre", required = false) String genreName,
+	public PageResponseDto<PieceResponseDto> findAll(@RequestParam(name = "genre", required = false) String genreName,
 			@RequestParam(name = "search", defaultValue = "") String search, @PageableDefault Pageable pageable) {
 		Page<Piece> page = service.findAll(genreName, search, pageable);
 
-		Page<PieceResponseDTO> resPage = page.map(PieceResponseDTO::new);
+		Page<PieceResponseDto> resPage = page.map(PieceResponseDto::new);
 
-		return new PageResponseDTO<>(resPage);
+		return new PageResponseDto<>(resPage);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<PieceResponseDTO> findById(@PathVariable("id") UUID id) {
+	public ResponseEntity<PieceResponseDto> findById(@PathVariable("id") UUID id) {
 		Piece piece = service.findById(id);
 
-		PieceResponseDTO resDTO = new PieceResponseDTO(piece);
+		PieceResponseDto resDto = new PieceResponseDto(piece);
 
-		return ResponseEntity.ok(resDTO);
+		return ResponseEntity.ok(resDto);
 	}
 }

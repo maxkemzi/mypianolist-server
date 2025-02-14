@@ -3,30 +3,30 @@ package com.maxkemzi.mypianolist.piece.controller;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import com.maxkemzi.mypianolist.composer.controller.ComposerResponseDTO;
-import com.maxkemzi.mypianolist.piece.genre.controller.PieceGenreResponseDTO;
+import com.maxkemzi.mypianolist.composer.controller.ComposerResponseDto;
+import com.maxkemzi.mypianolist.piece.genre.controller.PieceGenreResponseDto;
 import com.maxkemzi.mypianolist.piece.model.Piece;
 
-public class PieceResponseDTO {
+public class PieceResponseDto {
 	private UUID id;
 	private String title;
 	private String description;
 	private String image;
 	private LocalDate composedAt;
-	private PieceGenreResponseDTO genre;
-	private ComposerResponseDTO composer;
+	private PieceGenreResponseDto genre;
+	private ComposerResponseDto composer;
 
-	protected PieceResponseDTO() {
+	protected PieceResponseDto() {
 	}
 
-	public PieceResponseDTO(Piece piece) {
+	public PieceResponseDto(Piece piece) {
 		this.id = piece.getId();
 		this.title = piece.getTitle();
 		this.description = piece.getDescription();
 		this.image = piece.getImage();
 		this.composedAt = piece.getComposedAt();
-		this.genre = new PieceGenreResponseDTO(piece.getGenre());
-		this.composer = new ComposerResponseDTO(piece.getComposer());
+		this.genre = new PieceGenreResponseDto(piece.getGenre());
+		this.composer = new ComposerResponseDto(piece.getComposer());
 	}
 
 	public UUID getId() {
@@ -49,11 +49,11 @@ public class PieceResponseDTO {
 		return composedAt;
 	}
 
-	public PieceGenreResponseDTO getGenre() {
+	public PieceGenreResponseDto getGenre() {
 		return genre;
 	}
 
-	public ComposerResponseDTO getComposer() {
+	public ComposerResponseDto getComposer() {
 		return composer;
 	}
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
-public class PageResponseDTO<T> {
+public class PageResponseDto<T> {
 	private List<T> content;
 	private Integer page;
 	private Integer limit;
@@ -12,10 +12,10 @@ public class PageResponseDTO<T> {
 	private Integer totalPages;
 	public Boolean hasMore;
 
-	protected PageResponseDTO() {
+	protected PageResponseDto() {
 	}
 
-	public PageResponseDTO(Page<T> page) {
+	public PageResponseDto(Page<T> page) {
 		this.content = page.getContent();
 		this.page = page.getNumber();
 		this.limit = page.getSize();
