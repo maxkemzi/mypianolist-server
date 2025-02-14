@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceCreatePayload;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceService;
+import com.maxkemzi.mypianolist.user.piece.service.UserPieceUpdatePayload;
 import com.maxkemzi.mypianolist.util.PageResponseDTO;
 
 import jakarta.validation.Valid;
@@ -35,7 +37,7 @@ public class UserPieceController {
 
 	@PostMapping
 	public ResponseEntity<UserPieceResponseDTO> create(@PathVariable("username") String username,
-			@Valid @RequestBody UserPieceRequest req) {
+			@Valid @RequestBody UserPieceCreateRequest req) {
 		UserPieceCreatePayload payload = new UserPieceCreatePayload(req.getScore(), req.getStatus(),
 				req.getStartedAt(),
 				req.getFinishedAt(), username, req.getPieceId());
@@ -55,6 +57,19 @@ public class UserPieceController {
 		Page<UserPieceResponseDTO> resPage = page.map(UserPieceResponseDTO::new);
 
 		return new PageResponseDTO<>(resPage);
+	}
+
+	@PatchMapping("/{id}")
+	public ResponseEntity<UserPieceResponseDTO> update(@PathVariable("id") UUID id,
+			@Valid @RequestBody UserPieceUpdateRequest req) {
+		UserPieceUpdatePayload payload = new UserPieceUpdatePayload(req.getScore(), req.getStatus(), req.getStartedAt(),
+				req.getFinishedAt());
+
+		UserPiece userPiece = service.updateById(id, payload);
+
+		UserPieceResponseDTO resDTO = new UserPieceResponseDTO(userPiece);
+
+		return ResponseEntity.ok(resDTO);
 	}
 
 	@DeleteMapping("/{id}")

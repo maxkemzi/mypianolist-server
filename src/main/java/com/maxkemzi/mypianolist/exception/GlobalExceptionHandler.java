@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.maxkemzi.mypianolist.composer.service.ComposerNotFoundException;
 import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreNotFoundException;
 import com.maxkemzi.mypianolist.piece.service.PieceNotFoundException;
+import com.maxkemzi.mypianolist.user.piece.service.UserPieceNotFoundException;
 import com.maxkemzi.mypianolist.user.service.UserNotFoundException;
 
 @ControllerAdvice
@@ -26,6 +27,12 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(PieceNotFoundException.class)
 	public ResponseEntity<ErrorResponse> handlePieceNotFound(PieceNotFoundException e) {
 		return new ResponseEntity<>(new ErrorResponse("The piece was not found.", "piece_not_found"),
+				HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(UserPieceNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleUserPieceNotFound(UserPieceNotFoundException e) {
+		return new ResponseEntity<>(new ErrorResponse("The user piece was not found.", "user_piece_not_found"),
 				HttpStatus.NOT_FOUND);
 	}
 

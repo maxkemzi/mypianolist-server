@@ -1,5 +1,6 @@
 package com.maxkemzi.mypianolist.user.piece.service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -42,6 +43,26 @@ public class UserPieceService {
 
 	public Page<UserPiece> findByUsername(String username, Pageable pageable) {
 		return repository.findByUserUsername(username, pageable);
+	}
+
+	@Transactional
+	public UserPiece updateById(UUID id, UserPieceUpdatePayload payload) throws UserPieceNotFoundException {
+		UserPiece userPiece = repository.findById(id).orElseThrow(UserPieceNotFoundException::new);
+
+		if (payload.getScore() != null) {
+			userPiece.setScore(payload.getScore());
+		}
+		if (payload.getStatus() != null) {
+			userPiece.setStatus(payload.getStatus());
+		}
+		if (payload.getStartedAt() != null) {
+			userPiece.setStartedAt(payload.getStartedAt());
+		}
+		if (payload.getFinishedAt() != null) {
+			userPiece.setFinishedAt(payload.getFinishedAt());
+		}
+
+		return repository.save(userPiece);
 	}
 
 	@Transactional
