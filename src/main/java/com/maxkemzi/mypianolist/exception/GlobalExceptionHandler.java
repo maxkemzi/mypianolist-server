@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.maxkemzi.mypianolist.auth.service.WrongCredentialsException;
 import com.maxkemzi.mypianolist.composer.service.ComposerNotFoundException;
 import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreNotFoundException;
 import com.maxkemzi.mypianolist.piece.service.PieceNotFoundException;
@@ -46,5 +47,11 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorResponse> handleComposerNotFound(ComposerNotFoundException e) {
 		return new ResponseEntity<>(new ErrorResponse("The composer was not found.", "composer_not_found"),
 				HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(WrongCredentialsException.class)
+	public ResponseEntity<ErrorResponse> handleWrongCredentials(WrongCredentialsException e) {
+		return new ResponseEntity<>(new ErrorResponse("Wrong credentials.", "wrong_credentials"),
+				HttpStatus.BAD_REQUEST);
 	}
 }
