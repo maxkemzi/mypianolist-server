@@ -1,5 +1,7 @@
 package com.maxkemzi.mypianolist.exception;
 
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -11,6 +13,7 @@ import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreNotFoundException;
 import com.maxkemzi.mypianolist.piece.service.PieceNotFoundException;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceNotFoundException;
 import com.maxkemzi.mypianolist.user.service.UserNotFoundException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -18,6 +21,19 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorResponse> handleGlobal(Exception e) {
 		return new ResponseEntity<>(new ErrorResponse("An unexpected error occurred.", "internal_server_error"),
 				HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	public ResponseEntity<ErrorResponse> handleTypeMismatch(MethodArgumentTypeMismatchException e) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+
+		if (e.getRequiredType() != null && e.getRequiredType().equals(UUID.class)) {
+			String message = String.format("Invalid UUID format: %s.", e.getValue());
+			return new ResponseEntity<>(new ErrorResponse(message, "invalid_uuid_format"), status);
+		}
+
+		String message = String.format("Invalid parameter: %s.", e.getValue());
+		return new ResponseEntity<>(new ErrorResponse(message, "invalid_parameter"), status);
 	}
 
 	@ExceptionHandler(UserNotFoundException.class)
