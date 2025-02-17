@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.maxkemzi.mypianolist.auth.service.UserPrincipal;
@@ -14,20 +15,16 @@ import com.maxkemzi.mypianolist.auth.service.UserPrincipal;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
-	private final SecretKey accessTokenKey;
-	private final SecretKey refreshTokenKey;
+	@Value("${jwt.access-token.key}")
+	private String accessTokenKey;
 
-	public JwtService() {
-		this.accessTokenKey = generateKey();
-		this.refreshTokenKey = generateKey();
-	}
-
-	private SecretKey generateKey() {
-		return Jwts.SIG.HS256.key().build();
-	}
+	@Value("${jwt.refresh-token.key}")
+	private String refreshTokenKey;
 
 	public JwtTokens generateAccessAndRefreshTokens(UserPrincipal userPrincipal) {
 		String accessToken = generateAccessToken(userPrincipal);
@@ -37,11 +34,11 @@ public class JwtService {
 	}
 
 	private String generateAccessToken(UserPrincipal userPrincipal) {
-		return generateToken(userPrincipal, accessTokenKey, TimeUnit.MINUTES.toMillis(30)); // 30 minutes
+		return generateToken(userPrincipal, getAccessTokenKey(), TimeUnit.MINUTES.toMillis(30)); // 30 minutes
 	}
 
 	private String generateRefreshToken(UserPrincipal userPrincipal) {
-		return generateToken(userPrincipal, refreshTokenKey, TimeUnit.DAYS.toMillis(30)); // 30 days
+		return generateToken(userPrincipal, getRefreshTokenKey(), TimeUnit.DAYS.toMillis(30)); // 30 days
 	}
 
 	private String generateToken(UserPrincipal user, SecretKey key, long expireInMs) {
@@ -64,11 +61,26 @@ public class JwtService {
 
 	public JwtUser verifyAccessToken(String token) {
 		try {
-			Claims claims = Jwts.parser().verifyWith(accessTokenKey).build().parseSignedClaims(token).getPayload();
+			Claims claims = Jwts.parser().verifyWith(getAccessTokenKey()).build().parseSignedClaims(token)
+					.getPayload();
 
 			return new JwtUser(claims.get("username", String.class), claims.get("avatar", String.class));
 		} catch (JwtException e) {
+			System.out.println(e.getMessage());
 			return null;
 		}
+	}
+
+	private SecretKey getAccessTokenKey() {
+		return getSigningKey(accessTokenKey);
+	}
+
+	private SecretKey getRefreshTokenKey() {
+		return getSigningKey(refreshTokenKey);
+	}
+
+	private SecretKey getSigningKey(String key) {
+		byte[] decodedKey = Decoders.BASE64.decode(key);
+		return Keys.hmacShaKeyFor(decodedKey);
 	}
 }
