@@ -27,7 +27,7 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain)
 			throws ServletException, IOException {
-		if (req.getRequestURI().equals("/auth/refresh")) {
+		if (req.getRequestURI().matches("/auth/refresh|/auth/logout")) {
 			Cookie[] cookies = req.getCookies();
 			if (cookies == null) {
 				res.sendError(HttpServletResponse.SC_UNAUTHORIZED);

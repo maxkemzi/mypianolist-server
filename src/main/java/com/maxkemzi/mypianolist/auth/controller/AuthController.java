@@ -1,11 +1,11 @@
 package com.maxkemzi.mypianolist.auth.controller;
 
-import java.net.http.HttpHeaders;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,9 +68,30 @@ public class AuthController {
 		return ResponseEntity.ok(new LoginResponse(user, tokens));
 	}
 
+	@DeleteMapping("/logout")
+	public ResponseEntity<Void> logout(@CookieValue String refreshToken, HttpServletResponse res) {
+		service.logOut(refreshToken);
+
+		// Delete refresh token cookie
+		Cookie refreshTokenCookie = createExpiredRefreshTokenCookie();
+		res.addCookie(refreshTokenCookie);
+
+		return ResponseEntity.noContent().build();
+	}
+
 	private Cookie createRefreshTokenCookie(String refreshToken) {
 		Cookie cookie = new Cookie("refreshToken", refreshToken);
 		cookie.setMaxAge((int) TimeUnit.DAYS.toSeconds(30)); // 30 days
+		// TODO: centralize common cookie properties
+		cookie.setHttpOnly(true);
+		cookie.setSecure(false);
+		cookie.setPath("/");
+		return cookie;
+	}
+
+	private Cookie createExpiredRefreshTokenCookie() {
+		Cookie cookie = new Cookie("refreshToken", null);
+		cookie.setMaxAge(0);
 		cookie.setHttpOnly(true);
 		cookie.setSecure(false);
 		cookie.setPath("/");

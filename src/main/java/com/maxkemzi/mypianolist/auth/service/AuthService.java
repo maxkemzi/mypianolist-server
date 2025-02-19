@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.maxkemzi.mypianolist.auth.service.jwt.JwtUser;
+import com.maxkemzi.mypianolist.refreshtoken.model.RefreshToken;
 import com.maxkemzi.mypianolist.refreshtoken.service.RefreshTokenCreatePayload;
 import com.maxkemzi.mypianolist.refreshtoken.service.RefreshTokenService;
 import com.maxkemzi.mypianolist.auth.service.jwt.JwtService;
@@ -68,5 +69,9 @@ public class AuthService {
 		refreshTokenService.upsert(refreshTokenPayload);
 
 		return new LoginData(user, tokens);
+	}
+
+	public void logOut(String refreshToken) {
+		refreshTokenService.deleteByToken(refreshToken);
 	}
 }

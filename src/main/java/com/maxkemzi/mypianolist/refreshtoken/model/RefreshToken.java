@@ -47,7 +47,7 @@ public class RefreshToken extends BaseEntity {
 	}
 
 	protected Object[] getHashCodeValues() {
-		return new Object[] { token };
+		return new Object[] { token, user };
 	}
 
 	@Override

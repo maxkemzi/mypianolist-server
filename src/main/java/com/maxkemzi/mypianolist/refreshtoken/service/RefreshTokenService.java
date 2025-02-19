@@ -38,6 +38,16 @@ public class RefreshTokenService {
 		return repository.save(token);
 	}
 
+	@Transactional
+	public void deleteByToken(String token) throws RefreshTokenNotFoundException {
+		boolean exists = repository.existsByToken(token);
+		if (!exists) {
+			throw new RefreshTokenNotFoundException();
+		}
+
+		repository.deleteByToken(token);
+	}
+
 	public RefreshToken findByUsername(String username) throws RefreshTokenNotFoundException {
 		Optional<RefreshToken> token = repository.findByUserUsername(username);
 		if (token.isEmpty()) {

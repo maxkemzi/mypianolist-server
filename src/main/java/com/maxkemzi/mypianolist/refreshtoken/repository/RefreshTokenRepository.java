@@ -8,4 +8,8 @@ import com.maxkemzi.mypianolist.refreshtoken.model.RefreshToken;
 
 public interface RefreshTokenRepository extends CrudRepository<RefreshToken, UUID> {
 	Optional<RefreshToken> findByUserUsername(String username);
+
+	void deleteByToken(String token);
+
+	boolean existsByToken(String token);
 }
