@@ -8,6 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.maxkemzi.mypianolist.auth.service.jwt.JwtUser;
+import com.maxkemzi.mypianolist.refreshtoken.service.RefreshTokenCreatePayload;
+import com.maxkemzi.mypianolist.refreshtoken.service.RefreshTokenService;
 import com.maxkemzi.mypianolist.auth.service.jwt.JwtService;
 import com.maxkemzi.mypianolist.auth.service.jwt.JwtTokens;
 import com.maxkemzi.mypianolist.user.model.User;
@@ -20,12 +22,15 @@ public class AuthService {
 	private final BCryptPasswordEncoder passwordEncoder;
 	private final AuthenticationManager authManager;
 	private final JwtService jwtService;
+	private final RefreshTokenService refreshTokenService;
 
-	public AuthService(UserService userService, AuthenticationManager authManager, JwtService jwtService) {
+	public AuthService(UserService userService, AuthenticationManager authManager, JwtService jwtService,
+			RefreshTokenService refreshTokenService) {
 		this.userService = userService;
 		this.passwordEncoder = new BCryptPasswordEncoder();
 		this.authManager = authManager;
 		this.jwtService = jwtService;
+		this.refreshTokenService = refreshTokenService;
 	}
 
 	public User register(RegisterPayload payload) {
@@ -41,12 +46,27 @@ public class AuthService {
 					.authenticate(new UsernamePasswordAuthenticationToken(payload.getUsername(), payload.getPassword()));
 			UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
 
-			JwtTokens tokens = jwtService.generateAccessAndRefreshTokens(userPrincipal);
-			JwtUser user = jwtService.verifyAccessToken(tokens.getAccess());
+			JwtUser user = new JwtUser(userPrincipal.getUsername(), userPrincipal.getPassword());
+			JwtTokens tokens = jwtService.generateAccessAndRefreshTokens(user);
+
+			RefreshTokenCreatePayload refreshTokenPayload = new RefreshTokenCreatePayload(tokens.getRefresh(),
+					user.getUsername());
+			refreshTokenService.upsert(refreshTokenPayload);
 
 			return new LoginData(user, tokens);
 		} catch (BadCredentialsException e) {
 			throw new WrongCredentialsException();
 		}
+	}
+
+	public LoginData refresh(String refreshToken) {
+		JwtUser user = jwtService.verifyRefreshToken(refreshToken);
+		JwtTokens tokens = jwtService.generateAccessAndRefreshTokens(user);
+
+		RefreshTokenCreatePayload refreshTokenPayload = new RefreshTokenCreatePayload(tokens.getRefresh(),
+				user.getUsername());
+		refreshTokenService.upsert(refreshTokenPayload);
+
+		return new LoginData(user, tokens);
 	}
 }

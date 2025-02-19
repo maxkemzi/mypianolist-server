@@ -16,15 +16,19 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.maxkemzi.mypianolist.filter.JwtFilter;
+import com.maxkemzi.mypianolist.filter.RefreshTokenFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 	private final JwtFilter jwtFilter;
+	private final RefreshTokenFilter refreshTokenFilter;
 	private final UserDetailsService userDetailsService;
 
-	public SecurityConfig(JwtFilter jwtFilter, UserDetailsService userDetailsService) {
+	public SecurityConfig(JwtFilter jwtFilter, RefreshTokenFilter refreshTokenFilter,
+			UserDetailsService userDetailsService) {
 		this.jwtFilter = jwtFilter;
+		this.refreshTokenFilter = refreshTokenFilter;
 		this.userDetailsService = userDetailsService;
 	}
 
@@ -33,11 +37,12 @@ public class SecurityConfig {
 		return http
 				.csrf(customizer -> customizer.disable())
 				.authorizeHttpRequests(req -> req
-						.requestMatchers("/auth/register", "/auth/login").permitAll()
+						.requestMatchers("/auth/register", "/auth/login", "/auth/refresh").permitAll()
 						.anyRequest().authenticated())
 				.httpBasic(Customizer.withDefaults())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(refreshTokenFilter, JwtFilter.class)
 				.build();
 	}
 
