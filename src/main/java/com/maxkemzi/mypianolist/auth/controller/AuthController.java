@@ -1,7 +1,5 @@
 package com.maxkemzi.mypianolist.auth.controller;
 
-import java.util.concurrent.TimeUnit;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -19,7 +17,6 @@ import com.maxkemzi.mypianolist.auth.service.jwt.JwtTokens;
 import com.maxkemzi.mypianolist.auth.service.jwt.JwtUser;
 import com.maxkemzi.mypianolist.user.model.User;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
@@ -49,8 +46,7 @@ public class AuthController {
 		JwtUser user = data.getUser();
 		JwtTokens tokens = data.getTokens();
 
-		Cookie refreshTokenCookie = createRefreshTokenCookie(tokens.getRefresh());
-		res.addCookie(refreshTokenCookie);
+		res.addCookie(new RefreshTokenCookie(tokens.getRefresh()));
 
 		return ResponseEntity.ok(new LoginResponse(user, tokens));
 	}
@@ -62,8 +58,7 @@ public class AuthController {
 		JwtUser user = data.getUser();
 		JwtTokens tokens = data.getTokens();
 
-		Cookie refreshTokenCookie = createRefreshTokenCookie(tokens.getRefresh());
-		res.addCookie(refreshTokenCookie);
+		res.addCookie(new RefreshTokenCookie(tokens.getRefresh()));
 
 		return ResponseEntity.ok(new LoginResponse(user, tokens));
 	}
@@ -73,28 +68,8 @@ public class AuthController {
 		service.logOut(refreshToken);
 
 		// Delete refresh token cookie
-		Cookie refreshTokenCookie = createExpiredRefreshTokenCookie();
-		res.addCookie(refreshTokenCookie);
+		res.addCookie(RefreshTokenCookie.createExpired());
 
 		return ResponseEntity.noContent().build();
-	}
-
-	private Cookie createRefreshTokenCookie(String refreshToken) {
-		Cookie cookie = new Cookie("refreshToken", refreshToken);
-		cookie.setMaxAge((int) TimeUnit.DAYS.toSeconds(30)); // 30 days
-		// TODO: centralize common cookie properties
-		cookie.setHttpOnly(true);
-		cookie.setSecure(false);
-		cookie.setPath("/");
-		return cookie;
-	}
-
-	private Cookie createExpiredRefreshTokenCookie() {
-		Cookie cookie = new Cookie("refreshToken", null);
-		cookie.setMaxAge(0);
-		cookie.setHttpOnly(true);
-		cookie.setSecure(false);
-		cookie.setPath("/");
-		return cookie;
 	}
 }

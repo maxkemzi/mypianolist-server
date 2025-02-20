@@ -15,6 +15,7 @@ import com.maxkemzi.mypianolist.auth.service.jwt.JwtService;
 import com.maxkemzi.mypianolist.auth.service.jwt.JwtTokens;
 import com.maxkemzi.mypianolist.user.model.User;
 import com.maxkemzi.mypianolist.user.service.UserCreatePayload;
+import com.maxkemzi.mypianolist.user.service.UserNotFoundException;
 import com.maxkemzi.mypianolist.user.service.UserService;
 
 @Service
