@@ -15,8 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.maxkemzi.mypianolist.filter.JwtFilter;
-import com.maxkemzi.mypianolist.filter.RefreshTokenFilter;
+import com.maxkemzi.mypianolist.auth.filter.JwtFilter;
+import com.maxkemzi.mypianolist.auth.filter.RefreshTokenFilter;
 
 @Configuration
 @EnableWebSecurity

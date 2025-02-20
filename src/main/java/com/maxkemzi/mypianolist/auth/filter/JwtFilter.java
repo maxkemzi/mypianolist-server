@@ -1,4 +1,4 @@
-package com.maxkemzi.mypianolist.filter;
+package com.maxkemzi.mypianolist.auth.filter;
 
 import java.io.IOException;
 
