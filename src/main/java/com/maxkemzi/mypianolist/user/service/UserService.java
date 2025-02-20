@@ -24,6 +24,23 @@ public class UserService {
 		return repository.save(user);
 	}
 
+	@Transactional
+	public User updateByUsername(String username, UserUpdatePayload payload) {
+		User user = findByUsername(username);
+
+		if (payload.getUsername() != null) {
+			user.setUsername(payload.getUsername());
+		}
+		if (payload.getEmail() != null) {
+			user.setEmail(payload.getUsername());
+		}
+		if (payload.getPassword() != null) {
+			user.setPassword(payload.getPassword());
+		}
+
+		return repository.save(user);
+	}
+
 	public User findByUsername(String username) throws UserNotFoundException {
 		Optional<User> user = repository.findByUsername(username);
 		if (user.isEmpty()) {
