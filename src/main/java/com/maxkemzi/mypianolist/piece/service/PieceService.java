@@ -29,7 +29,12 @@ public class PieceService {
 	}
 
 	@Transactional
-	public Piece create(PieceCreatePayload payload) {
+	public Piece create(PieceCreatePayload payload) throws PieceAlreadyExistsException {
+		Optional<Piece> existingPiece = repository.findByTitleAndComposerId(payload.getTitle(), payload.getComposerId());
+		if (existingPiece.isPresent()) {
+			throw new PieceAlreadyExistsException();
+		}
+
 		PieceGenre genre = genreService.findById(payload.getGenreId());
 		Composer composer = composerService.findById(payload.getComposerId());
 

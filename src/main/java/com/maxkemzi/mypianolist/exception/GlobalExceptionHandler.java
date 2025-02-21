@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.maxkemzi.mypianolist.auth.service.WrongCredentialsException;
+import com.maxkemzi.mypianolist.composer.service.ComposerAlreadyExistsException;
 import com.maxkemzi.mypianolist.composer.service.ComposerNotFoundException;
+import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreAlreadyExistsException;
 import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreNotFoundException;
+import com.maxkemzi.mypianolist.piece.service.PieceAlreadyExistsException;
 import com.maxkemzi.mypianolist.piece.service.PieceNotFoundException;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceNotFoundException;
 import com.maxkemzi.mypianolist.user.service.UserNotFoundException;
@@ -47,6 +50,12 @@ public class GlobalExceptionHandler {
 				HttpStatus.NOT_FOUND);
 	}
 
+	@ExceptionHandler(PieceAlreadyExistsException.class)
+	public ResponseEntity<ErrorResponse> handlePieceAlreadyExists(PieceAlreadyExistsException e) {
+		return new ResponseEntity<>(new ErrorResponse("The piece already exists.", "piece_already_exists"),
+				HttpStatus.CONFLICT);
+	}
+
 	@ExceptionHandler(UserPieceNotFoundException.class)
 	public ResponseEntity<ErrorResponse> handleUserPieceNotFound(UserPieceNotFoundException e) {
 		return new ResponseEntity<>(new ErrorResponse("The user piece was not found.", "user_piece_not_found"),
@@ -59,10 +68,22 @@ public class GlobalExceptionHandler {
 				HttpStatus.NOT_FOUND);
 	}
 
+	@ExceptionHandler(PieceGenreAlreadyExistsException.class)
+	public ResponseEntity<ErrorResponse> handlePieceGenreAlreadyExists(PieceGenreAlreadyExistsException e) {
+		return new ResponseEntity<>(new ErrorResponse("The genre already exists.", "genre_already_exists"),
+				HttpStatus.CONFLICT);
+	}
+
 	@ExceptionHandler(ComposerNotFoundException.class)
 	public ResponseEntity<ErrorResponse> handleComposerNotFound(ComposerNotFoundException e) {
 		return new ResponseEntity<>(new ErrorResponse("The composer was not found.", "composer_not_found"),
 				HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(ComposerAlreadyExistsException.class)
+	public ResponseEntity<ErrorResponse> handleComposerAlreadyExists(ComposerAlreadyExistsException e) {
+		return new ResponseEntity<>(new ErrorResponse("The composer already exists.", "composer_already_exists"),
+				HttpStatus.CONFLICT);
 	}
 
 	@ExceptionHandler(WrongCredentialsException.class)

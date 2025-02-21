@@ -18,7 +18,7 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "composer", uniqueConstraints = {
-		@UniqueConstraint(columnNames = { "first_name", "last_name" })
+		@UniqueConstraint(columnNames = { "first_name", "last_name", "bornAt" })
 })
 public class Composer extends BaseEntity {
 	@Column(name = "first_name", nullable = false)
