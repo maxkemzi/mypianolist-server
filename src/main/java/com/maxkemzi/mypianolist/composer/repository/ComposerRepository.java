@@ -14,4 +14,6 @@ public interface ComposerRepository extends CrudRepository<Composer, UUID> {
 	Optional<Composer> findByFirstNameAndLastNameAndBornAt(String firstName, String lastName, LocalDate bornAt);
 
 	Page<Composer> findAll(Pageable pageable);
+
+	boolean existsByFirstNameAndLastNameAndBornAt(String firstName, String lastName, LocalDate bornAt);
 }

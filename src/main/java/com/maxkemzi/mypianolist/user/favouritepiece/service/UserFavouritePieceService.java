@@ -1,5 +1,7 @@
 package com.maxkemzi.mypianolist.user.favouritepiece.service;
 
+import java.lang.foreign.Linker.Option;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -30,7 +32,13 @@ public class UserFavouritePieceService {
 	}
 
 	@Transactional
-	public UserFavouritePiece create(UserFavouritePieceCreatePayload payload) {
+	public UserFavouritePiece create(UserFavouritePieceCreatePayload payload)
+			throws UserFavouritePieceAlreadyExistsException {
+		boolean alreadyExists = repository.existsByUserUsernameAndPieceId(payload.getUsername(), payload.getPieceId());
+		if (alreadyExists) {
+			throw new UserFavouritePieceAlreadyExistsException();
+		}
+
 		User user = userService.findByUsername(payload.getUsername());
 		Piece piece = pieceService.findById(payload.getPieceId());
 

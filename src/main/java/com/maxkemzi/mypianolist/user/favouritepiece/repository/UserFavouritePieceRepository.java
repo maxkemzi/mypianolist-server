@@ -12,4 +12,6 @@ public interface UserFavouritePieceRepository extends CrudRepository<UserFavouri
 	Page<UserFavouritePiece> findByUserUsername(String username, Pageable pageable);
 
 	void deleteByUserUsernameAndPieceId(String username, UUID pieceId);
+
+	boolean existsByUserUsernameAndPieceId(String username, UUID pieceId);
 }

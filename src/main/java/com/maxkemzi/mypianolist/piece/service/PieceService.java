@@ -30,8 +30,8 @@ public class PieceService {
 
 	@Transactional
 	public Piece create(PieceCreatePayload payload) throws PieceAlreadyExistsException {
-		Optional<Piece> existingPiece = repository.findByTitleAndComposerId(payload.getTitle(), payload.getComposerId());
-		if (existingPiece.isPresent()) {
+		boolean alreadyExists = repository.existsByTitleAndComposerId(payload.getTitle(), payload.getComposerId());
+		if (alreadyExists) {
 			throw new PieceAlreadyExistsException();
 		}
 

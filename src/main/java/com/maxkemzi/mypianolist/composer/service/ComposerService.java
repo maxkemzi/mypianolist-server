@@ -22,9 +22,9 @@ public class ComposerService {
 
 	@Transactional
 	public Composer create(ComposerCreatePayload payload) throws ComposerAlreadyExistsException {
-		Optional<Composer> existingComposer = repository.findByFirstNameAndLastNameAndBornAt(payload.getFirstName(),
+		boolean alreadyExists = repository.existsByFirstNameAndLastNameAndBornAt(payload.getFirstName(),
 				payload.getLastName(), payload.getBornAt());
-		if (existingComposer.isPresent()) {
+		if (alreadyExists) {
 			throw new ComposerAlreadyExistsException();
 		}
 

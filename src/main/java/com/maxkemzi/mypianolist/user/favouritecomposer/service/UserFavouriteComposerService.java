@@ -30,7 +30,14 @@ public class UserFavouriteComposerService {
 	}
 
 	@Transactional
-	public UserFavouriteComposer create(UserFavouriteComposerCreatePayload payload) {
+	public UserFavouriteComposer create(UserFavouriteComposerCreatePayload payload)
+			throws UserFavouriteComposerAlreadyExistsException {
+		boolean alreadyExists = repository.existsByUserUsernameAndComposerId(payload.getUsername(),
+				payload.getComposerId());
+		if (alreadyExists) {
+			throw new UserFavouriteComposerAlreadyExistsException();
+		}
+
 		User user = userService.findByUsername(payload.getUsername());
 		Composer composer = composerService.findById(payload.getComposerId());
 

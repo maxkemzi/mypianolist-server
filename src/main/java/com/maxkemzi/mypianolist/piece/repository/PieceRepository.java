@@ -16,4 +16,6 @@ public interface PieceRepository extends CrudRepository<Piece, UUID> {
 
 	@Query("SELECT p FROM Piece p WHERE (:genreName IS NULL OR p.genre.name = :genreName) AND (:search IS NULL OR LOWER(p.title) LIKE LOWER(CONCAT('%', :search, '%')))")
 	Page<Piece> findAll(@Param("genreName") String genreName, @Param("search") String search, Pageable pageable);
+
+	boolean existsByTitleAndComposerId(String title, UUID id);
 }

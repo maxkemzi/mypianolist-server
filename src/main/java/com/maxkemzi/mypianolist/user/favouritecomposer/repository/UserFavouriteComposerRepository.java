@@ -12,4 +12,6 @@ public interface UserFavouriteComposerRepository extends CrudRepository<UserFavo
 	Page<UserFavouriteComposer> findByUserUsername(String username, Pageable pageable);
 
 	void deleteByUserUsernameAndComposerId(String username, UUID composerId);
+
+	boolean existsByUserUsernameAndComposerId(String username, UUID composerId);
 }

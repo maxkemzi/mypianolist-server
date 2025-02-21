@@ -10,4 +10,6 @@ import com.maxkemzi.mypianolist.db.CrudRepository;
 
 public interface UserPieceRepository extends CrudRepository<UserPiece, UUID> {
 	Page<UserPiece> findByUserUsername(String username, Pageable pageable);
+
+	boolean existsByUserUsernameAndPieceId(String username, UUID id);
 }

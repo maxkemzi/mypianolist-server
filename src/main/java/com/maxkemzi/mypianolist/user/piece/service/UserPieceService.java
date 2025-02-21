@@ -1,6 +1,5 @@
 package com.maxkemzi.mypianolist.user.piece.service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -30,7 +29,12 @@ public class UserPieceService {
 	}
 
 	@Transactional
-	public UserPiece create(UserPieceCreatePayload payload) {
+	public UserPiece create(UserPieceCreatePayload payload) throws UserPieceAlreadyExistsException {
+		boolean alreadyExists = repository.existsByUserUsernameAndPieceId(payload.getUsername(), payload.getPieceId());
+		if (alreadyExists) {
+			throw new UserPieceAlreadyExistsException();
+		}
+
 		User user = userService.findByUsername(payload.getUsername());
 		Piece piece = pieceService.findById(payload.getPieceId());
 

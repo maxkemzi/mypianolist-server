@@ -15,6 +15,9 @@ import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreAlreadyExistsExcep
 import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreNotFoundException;
 import com.maxkemzi.mypianolist.piece.service.PieceAlreadyExistsException;
 import com.maxkemzi.mypianolist.piece.service.PieceNotFoundException;
+import com.maxkemzi.mypianolist.user.favouritecomposer.service.UserFavouriteComposerAlreadyExistsException;
+import com.maxkemzi.mypianolist.user.favouritepiece.service.UserFavouritePieceAlreadyExistsException;
+import com.maxkemzi.mypianolist.user.piece.service.UserPieceAlreadyExistsException;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceNotFoundException;
 import com.maxkemzi.mypianolist.user.service.UserNotFoundException;
 
@@ -60,6 +63,28 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorResponse> handleUserPieceNotFound(UserPieceNotFoundException e) {
 		return new ResponseEntity<>(new ErrorResponse("The user piece was not found.", "user_piece_not_found"),
 				HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(UserPieceAlreadyExistsException.class)
+	public ResponseEntity<ErrorResponse> handleUserPieceAlreadyExists(UserPieceAlreadyExistsException e) {
+		return new ResponseEntity<>(new ErrorResponse("The piece is already in your list.", "user_piece_already_exists"),
+				HttpStatus.CONFLICT);
+	}
+
+	@ExceptionHandler(UserFavouritePieceAlreadyExistsException.class)
+	public ResponseEntity<ErrorResponse> handleUserFavouritePieceAlreadyExists(
+			UserFavouritePieceAlreadyExistsException e) {
+		return new ResponseEntity<>(
+				new ErrorResponse("The piece is already in your favourites.", "favourite_piece_already_exists"),
+				HttpStatus.CONFLICT);
+	}
+
+	@ExceptionHandler(UserFavouriteComposerAlreadyExistsException.class)
+	public ResponseEntity<ErrorResponse> handleUserFavouriteComposerAlreadyExists(
+			UserFavouriteComposerAlreadyExistsException e) {
+		return new ResponseEntity<>(
+				new ErrorResponse("The composer is already in your favourites.", "favourite_composer_already_exists"),
+				HttpStatus.CONFLICT);
 	}
 
 	@ExceptionHandler(PieceGenreNotFoundException.class)

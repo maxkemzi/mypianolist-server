@@ -22,8 +22,8 @@ public class PieceGenreService {
 
 	@Transactional
 	public PieceGenre create(PieceGenreCreatePayload payload) throws PieceGenreAlreadyExistsException {
-		Optional<PieceGenre> existingGenre = repository.findByName(payload.getName());
-		if (existingGenre.isPresent()) {
+		boolean alreadyExists = repository.existsByName(payload.getName());
+		if (alreadyExists) {
 			throw new PieceGenreAlreadyExistsException();
 		}
 
