@@ -2,6 +2,7 @@ package com.maxkemzi.mypianolist.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -17,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.maxkemzi.mypianolist.auth.filter.JwtFilter;
 import com.maxkemzi.mypianolist.auth.filter.RefreshTokenFilter;
+import com.maxkemzi.mypianolist.user.model.UserRole;
 
 @Configuration
 @EnableWebSecurity
@@ -37,8 +39,12 @@ public class SecurityConfig {
 		return http
 				.csrf(customizer -> customizer.disable())
 				.authorizeHttpRequests(req -> req
-						.requestMatchers("/auth/register", "/auth/login", "/auth/refresh", "/auth/logout").permitAll()
-						.anyRequest().authenticated())
+						.requestMatchers("/auth/register", "/auth/login", "/auth/refresh", "/auth/logout")
+						.permitAll()
+						.requestMatchers(HttpMethod.POST, "/pieces", "/pieces/genres", "/composers")
+						.hasAuthority(UserRole.ADMIN.name())
+						.anyRequest()
+						.hasAnyAuthority(UserRole.USER.name(), UserRole.ADMIN.name()))
 				.httpBasic(Customizer.withDefaults())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

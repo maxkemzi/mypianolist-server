@@ -12,6 +12,8 @@ import com.maxkemzi.mypianolist.db.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -26,6 +28,10 @@ public class User extends BaseEntity {
 
 	@Column(name = "password", nullable = false)
 	private String password;
+
+	@Column(name = "role")
+	@Enumerated(EnumType.STRING)
+	private UserRole role = UserRole.USER;
 
 	@Column(name = "avatar")
 	private String avatar;
@@ -70,6 +76,14 @@ public class User extends BaseEntity {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public UserRole getRole() {
+		return role;
+	}
+
+	public void setRole(UserRole role) {
+		this.role = role;
 	}
 
 	public String getAvatar() {

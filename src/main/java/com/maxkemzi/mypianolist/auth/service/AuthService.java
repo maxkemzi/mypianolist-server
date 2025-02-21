@@ -7,15 +7,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.maxkemzi.mypianolist.auth.service.jwt.JwtUser;
-import com.maxkemzi.mypianolist.refreshtoken.model.RefreshToken;
-import com.maxkemzi.mypianolist.refreshtoken.service.RefreshTokenCreatePayload;
-import com.maxkemzi.mypianolist.refreshtoken.service.RefreshTokenService;
 import com.maxkemzi.mypianolist.auth.service.jwt.JwtService;
 import com.maxkemzi.mypianolist.auth.service.jwt.JwtTokens;
+import com.maxkemzi.mypianolist.auth.service.jwt.JwtUser;
+import com.maxkemzi.mypianolist.refreshtoken.service.RefreshTokenCreatePayload;
+import com.maxkemzi.mypianolist.refreshtoken.service.RefreshTokenService;
 import com.maxkemzi.mypianolist.user.model.User;
 import com.maxkemzi.mypianolist.user.service.UserCreatePayload;
-import com.maxkemzi.mypianolist.user.service.UserNotFoundException;
 import com.maxkemzi.mypianolist.user.service.UserService;
 
 @Service
