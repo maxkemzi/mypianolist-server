@@ -70,7 +70,12 @@ public class UserPieceService {
 	}
 
 	@Transactional
-	public void deleteById(UUID id) {
+	public void deleteById(UUID id) throws UserPieceNotFoundException {
+		boolean exists = repository.existsById(id);
+		if (!exists) {
+			throw new UserPieceNotFoundException();
+		}
+
 		repository.deleteById(id);
 	}
 }
