@@ -4,20 +4,20 @@ import java.util.UUID;
 
 import com.maxkemzi.mypianolist.piece.controller.PieceResponseDto;
 import com.maxkemzi.mypianolist.user.controller.UserResponseDto;
-import com.maxkemzi.mypianolist.user.favouritepiece.model.UserFavouritePiece;
+import com.maxkemzi.mypianolist.user.favouritepiece.model.FavouritePiece;
 
-public class UserFavouritePieceResponseDto {
+public class FavouritePieceResponseDto {
 	private UUID id;
 	private UserResponseDto user;
 	private PieceResponseDto piece;
 
-	protected UserFavouritePieceResponseDto() {
+	protected FavouritePieceResponseDto() {
 	}
 
-	public UserFavouritePieceResponseDto(UserFavouritePiece ufp) {
-		this.id = ufp.getId();
-		this.user = new UserResponseDto(ufp.getUser());
-		this.piece = new PieceResponseDto(ufp.getPiece());
+	public FavouritePieceResponseDto(FavouritePiece fp) {
+		this.id = fp.getId();
+		this.user = new UserResponseDto(fp.getUser());
+		this.piece = new PieceResponseDto(fp.getPiece());
 	}
 
 	public UUID getId() {

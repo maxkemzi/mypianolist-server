@@ -4,14 +4,14 @@ import java.util.UUID;
 
 import jakarta.validation.constraints.NotNull;
 
-public class UserFavouritePieceRequest {
+public class FavouritePieceRequest {
 	@NotNull(message = "Piece id is required.")
 	private UUID pieceId;
 
-	protected UserFavouritePieceRequest() {
+	protected FavouritePieceRequest() {
 	}
 
-	public UserFavouritePieceRequest(UUID pieceId) {
+	public FavouritePieceRequest(UUID pieceId) {
 		this.pieceId = pieceId;
 	}
 

@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.composer.controller.ComposerResponseDto;
-import com.maxkemzi.mypianolist.user.favouritecomposer.model.UserFavouriteComposer;
-import com.maxkemzi.mypianolist.user.favouritecomposer.service.UserFavouriteComposerCreatePayload;
-import com.maxkemzi.mypianolist.user.favouritecomposer.service.UserFavouriteComposerService;
+import com.maxkemzi.mypianolist.user.favouritecomposer.model.FavouriteComposer;
+import com.maxkemzi.mypianolist.user.favouritecomposer.service.FavouriteComposerCreatePayload;
+import com.maxkemzi.mypianolist.user.favouritecomposer.service.FavouriteComposerService;
 import com.maxkemzi.mypianolist.util.PageResponseDto;
 
 import jakarta.validation.Valid;
@@ -27,22 +27,22 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/users/{username}/favourite-composers")
 @Validated
-public class UserFavouriteComposerController {
-	private final UserFavouriteComposerService service;
+public class FavouriteComposerController {
+	private final FavouriteComposerService service;
 
-	public UserFavouriteComposerController(UserFavouriteComposerService service) {
+	public FavouriteComposerController(FavouriteComposerService service) {
 		this.service = service;
 	}
 
 	@PostMapping
-	public ResponseEntity<UserFavouriteComposerResponseDto> create(@PathVariable("username") String username,
-			@Valid @RequestBody UserFavouriteComposerRequest req) {
-		UserFavouriteComposerCreatePayload payload = new UserFavouriteComposerCreatePayload(username,
+	public ResponseEntity<FavouriteComposerResponseDto> create(@PathVariable("username") String username,
+			@Valid @RequestBody FavouriteComposerRequest req) {
+		FavouriteComposerCreatePayload payload = new FavouriteComposerCreatePayload(username,
 				req.getComposerId());
 
-		UserFavouriteComposer userFavComposer = service.create(payload);
+		FavouriteComposer favComposer = service.create(payload);
 
-		UserFavouriteComposerResponseDto resDto = new UserFavouriteComposerResponseDto(userFavComposer);
+		FavouriteComposerResponseDto resDto = new FavouriteComposerResponseDto(favComposer);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(resDto);
 	}
@@ -50,7 +50,7 @@ public class UserFavouriteComposerController {
 	@GetMapping
 	public PageResponseDto<ComposerResponseDto> findByUsername(@PathVariable("username") String username,
 			@PageableDefault Pageable pageable) {
-		Page<UserFavouriteComposer> page = service.findByUsername(username, pageable);
+		Page<FavouriteComposer> page = service.findByUsername(username, pageable);
 
 		Page<ComposerResponseDto> resPage = page.map(ufc -> new ComposerResponseDto(ufc.getComposer()));
 

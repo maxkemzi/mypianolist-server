@@ -5,11 +5,11 @@ import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.maxkemzi.mypianolist.user.favouritepiece.model.UserFavouritePiece;
+import com.maxkemzi.mypianolist.user.favouritepiece.model.FavouritePiece;
 import com.maxkemzi.mypianolist.db.CrudRepository;
 
-public interface UserFavouritePieceRepository extends CrudRepository<UserFavouritePiece, UUID> {
-	Page<UserFavouritePiece> findByUserUsername(String username, Pageable pageable);
+public interface FavouritePieceRepository extends CrudRepository<FavouritePiece, UUID> {
+	Page<FavouritePiece> findByUserUsername(String username, Pageable pageable);
 
 	void deleteByUserUsernameAndPieceId(String username, UUID pieceId);
 

@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.piece.controller.PieceResponseDto;
-import com.maxkemzi.mypianolist.user.favouritepiece.model.UserFavouritePiece;
-import com.maxkemzi.mypianolist.user.favouritepiece.service.UserFavouritePieceCreatePayload;
-import com.maxkemzi.mypianolist.user.favouritepiece.service.UserFavouritePieceService;
+import com.maxkemzi.mypianolist.user.favouritepiece.model.FavouritePiece;
+import com.maxkemzi.mypianolist.user.favouritepiece.service.FavouritePieceCreatePayload;
+import com.maxkemzi.mypianolist.user.favouritepiece.service.FavouritePieceService;
 import com.maxkemzi.mypianolist.util.PageResponseDto;
 
 import jakarta.validation.Valid;
@@ -27,21 +27,21 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/users/{username}/favourite-pieces")
 @Validated
-public class UserFavouritePieceController {
-	private final UserFavouritePieceService service;
+public class FavouritePieceController {
+	private final FavouritePieceService service;
 
-	public UserFavouritePieceController(UserFavouritePieceService service) {
+	public FavouritePieceController(FavouritePieceService service) {
 		this.service = service;
 	}
 
 	@PostMapping
-	public ResponseEntity<UserFavouritePieceResponseDto> create(@PathVariable("username") String username,
-			@Valid @RequestBody UserFavouritePieceRequest req) {
-		UserFavouritePieceCreatePayload payload = new UserFavouritePieceCreatePayload(username, req.getPieceId());
+	public ResponseEntity<FavouritePieceResponseDto> create(@PathVariable("username") String username,
+			@Valid @RequestBody FavouritePieceRequest req) {
+		FavouritePieceCreatePayload payload = new FavouritePieceCreatePayload(username, req.getPieceId());
 
-		UserFavouritePiece userFavPiece = service.create(payload);
+		FavouritePiece favPiece = service.create(payload);
 
-		UserFavouritePieceResponseDto resDto = new UserFavouritePieceResponseDto(userFavPiece);
+		FavouritePieceResponseDto resDto = new FavouritePieceResponseDto(favPiece);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(resDto);
 	}
@@ -49,7 +49,7 @@ public class UserFavouritePieceController {
 	@GetMapping
 	public PageResponseDto<PieceResponseDto> findByUsername(@PathVariable("username") String username,
 			@PageableDefault Pageable pageable) {
-		Page<UserFavouritePiece> page = service.findByUsername(username, pageable);
+		Page<FavouritePiece> page = service.findByUsername(username, pageable);
 
 		Page<PieceResponseDto> resPage = page.map(ufp -> new PieceResponseDto(ufp.getPiece()));
 

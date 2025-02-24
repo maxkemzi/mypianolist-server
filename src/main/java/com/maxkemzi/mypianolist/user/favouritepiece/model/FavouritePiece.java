@@ -12,8 +12,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "user_favourite_piece")
-public class UserFavouritePiece extends BaseEntity {
+@Table(name = "favourite_piece")
+public class FavouritePiece extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
@@ -22,10 +22,10 @@ public class UserFavouritePiece extends BaseEntity {
 	@JoinColumn(name = "piece_id", nullable = false)
 	private Piece piece;
 
-	protected UserFavouritePiece() {
+	protected FavouritePiece() {
 	}
 
-	public UserFavouritePiece(User user, Piece piece) {
+	public FavouritePiece(User user, Piece piece) {
 		this.user = user;
 		this.piece = piece;
 	}
@@ -39,8 +39,8 @@ public class UserFavouritePiece extends BaseEntity {
 	}
 
 	protected boolean entityEquals(Object o) {
-		UserFavouritePiece ufp = (UserFavouritePiece) o;
-		return Objects.equals(getId(), ufp.getId());
+		FavouritePiece fp = (FavouritePiece) o;
+		return Objects.equals(getId(), fp.getId());
 	}
 
 	protected Object[] getHashCodeValues() {
@@ -49,7 +49,7 @@ public class UserFavouritePiece extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return "UserFavouritePiece [getId()=" + getId() + ", getUser()=" + getUser() + ", getPiece()=" + getPiece()
+		return "FavouritePiece [getId()=" + getId() + ", getUser()=" + getUser() + ", getPiece()=" + getPiece()
 				+ ", getCreatedAt()=" + getCreatedAt() + ", getUpdatedAt()=" + getUpdatedAt() + "]";
 	}
 }

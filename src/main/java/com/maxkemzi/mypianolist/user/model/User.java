@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.maxkemzi.mypianolist.user.favouritecomposer.model.UserFavouriteComposer;
-import com.maxkemzi.mypianolist.user.favouritepiece.model.UserFavouritePiece;
+import com.maxkemzi.mypianolist.user.favouritecomposer.model.FavouriteComposer;
+import com.maxkemzi.mypianolist.user.favouritepiece.model.FavouritePiece;
 import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
 import com.maxkemzi.mypianolist.db.BaseEntity;
 
@@ -40,10 +40,10 @@ public class User extends BaseEntity {
 	private List<UserPiece> userPieces = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<UserFavouritePiece> favouritePieces = new ArrayList<>();
+	private List<FavouritePiece> favouritePieces = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<UserFavouriteComposer> favouriteComposers = new ArrayList<>();
+	private List<FavouriteComposer> favouriteComposers = new ArrayList<>();
 
 	protected User() {
 	}

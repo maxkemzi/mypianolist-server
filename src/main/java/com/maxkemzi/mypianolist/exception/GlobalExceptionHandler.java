@@ -15,10 +15,10 @@ import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreAlreadyExistsExcep
 import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreNotFoundException;
 import com.maxkemzi.mypianolist.piece.service.PieceAlreadyExistsException;
 import com.maxkemzi.mypianolist.piece.service.PieceNotFoundException;
-import com.maxkemzi.mypianolist.user.favouritecomposer.service.UserFavouriteComposerAlreadyExistsException;
-import com.maxkemzi.mypianolist.user.favouritecomposer.service.UserFavouriteComposerNotFoundException;
-import com.maxkemzi.mypianolist.user.favouritepiece.service.UserFavouritePieceAlreadyExistsException;
-import com.maxkemzi.mypianolist.user.favouritepiece.service.UserFavouritePieceNotFoundException;
+import com.maxkemzi.mypianolist.user.favouritecomposer.service.FavouriteComposerAlreadyExistsException;
+import com.maxkemzi.mypianolist.user.favouritecomposer.service.FavouriteComposerNotFoundException;
+import com.maxkemzi.mypianolist.user.favouritepiece.service.FavouritePieceAlreadyExistsException;
+import com.maxkemzi.mypianolist.user.favouritepiece.service.FavouritePieceNotFoundException;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceAlreadyExistsException;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceNotFoundException;
 import com.maxkemzi.mypianolist.user.service.UserNotFoundException;
@@ -73,34 +73,32 @@ public class GlobalExceptionHandler {
 				HttpStatus.CONFLICT);
 	}
 
-	@ExceptionHandler(UserFavouritePieceAlreadyExistsException.class)
-	public ResponseEntity<ErrorResponse> handleUserFavouritePieceAlreadyExists(
-			UserFavouritePieceAlreadyExistsException e) {
+	@ExceptionHandler(FavouritePieceAlreadyExistsException.class)
+	public ResponseEntity<ErrorResponse> handleFavouritePieceAlreadyExists(FavouritePieceAlreadyExistsException e) {
 		return new ResponseEntity<>(
-				new ErrorResponse("The piece is already in your favourites.", "favourite_piece_already_exists"),
+				new ErrorResponse("The piece is already in your favourites.", "piece_already_in_favourites"),
 				HttpStatus.CONFLICT);
 	}
 
-	@ExceptionHandler(UserFavouritePieceNotFoundException.class)
-	public ResponseEntity<ErrorResponse> handleUserFavouritePieceNotFound(UserFavouritePieceNotFoundException e) {
+	@ExceptionHandler(FavouritePieceNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleFavouritePieceNotFound(FavouritePieceNotFoundException e) {
 		return new ResponseEntity<>(
-				new ErrorResponse("The piece is not in your favourites.", "favourite_piece_not_found"),
+				new ErrorResponse("The piece is not in your favourites.", "piece_not_in_favourites"),
 				HttpStatus.CONFLICT);
 	}
 
-	@ExceptionHandler(UserFavouriteComposerAlreadyExistsException.class)
-	public ResponseEntity<ErrorResponse> handleUserFavouriteComposerAlreadyExists(
-			UserFavouriteComposerAlreadyExistsException e) {
+	@ExceptionHandler(FavouriteComposerAlreadyExistsException.class)
+	public ResponseEntity<ErrorResponse> handleFavouriteComposerAlreadyExists(
+			FavouriteComposerAlreadyExistsException e) {
 		return new ResponseEntity<>(
-				new ErrorResponse("The composer is already in your favourites.", "favourite_composer_already_exists"),
+				new ErrorResponse("The composer is already in your favourites.", "composer_already_in_favourites"),
 				HttpStatus.CONFLICT);
 	}
 
-	@ExceptionHandler(UserFavouriteComposerNotFoundException.class)
-	public ResponseEntity<ErrorResponse> handleUserFavouriteComposerNotFound(
-			UserFavouriteComposerNotFoundException e) {
+	@ExceptionHandler(FavouriteComposerNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleFavouriteComposerNotFound(FavouriteComposerNotFoundException e) {
 		return new ResponseEntity<>(
-				new ErrorResponse("The composer is not in your favourites.", "favourite_composer_not_found"),
+				new ErrorResponse("The composer is not in your favourites.", "composer_not_in_favourites"),
 				HttpStatus.CONFLICT);
 	}
 

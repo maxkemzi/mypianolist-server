@@ -2,14 +2,14 @@ package com.maxkemzi.mypianolist.user.favouritecomposer.service;
 
 import java.util.UUID;
 
-public class UserFavouriteComposerCreatePayload {
+public class FavouriteComposerCreatePayload {
 	private String username;
 	private UUID composerId;
 
-	protected UserFavouriteComposerCreatePayload() {
+	protected FavouriteComposerCreatePayload() {
 	}
 
-	public UserFavouriteComposerCreatePayload(String username, UUID composerId) {
+	public FavouriteComposerCreatePayload(String username, UUID composerId) {
 		this.username = username;
 		this.composerId = composerId;
 	}

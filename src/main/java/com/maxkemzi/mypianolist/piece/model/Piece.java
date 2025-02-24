@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
-import com.maxkemzi.mypianolist.user.favouritepiece.model.UserFavouritePiece;
+import com.maxkemzi.mypianolist.user.favouritepiece.model.FavouritePiece;
 import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
 import com.maxkemzi.mypianolist.db.BaseEntity;
 
@@ -49,7 +49,7 @@ public class Piece extends BaseEntity {
 	private List<UserPiece> userPieces = new ArrayList<>();
 
 	@OneToMany(mappedBy = "piece", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<UserFavouritePiece> favouritePieces = new ArrayList<>();
+	private List<FavouritePiece> favouritePieces = new ArrayList<>();
 
 	protected Piece() {
 	}

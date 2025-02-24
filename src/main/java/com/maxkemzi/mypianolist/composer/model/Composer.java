@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.maxkemzi.mypianolist.piece.model.Piece;
-import com.maxkemzi.mypianolist.user.favouritecomposer.model.UserFavouriteComposer;
+import com.maxkemzi.mypianolist.user.favouritecomposer.model.FavouriteComposer;
 import com.maxkemzi.mypianolist.db.BaseEntity;
 
 import jakarta.persistence.CascadeType;
@@ -46,7 +46,7 @@ public class Composer extends BaseEntity {
 	private List<Piece> pieces = new ArrayList<>();
 
 	@OneToMany(mappedBy = "composer", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<UserFavouriteComposer> favouriteComposers = new ArrayList<>();
+	private List<FavouriteComposer> favouriteComposers = new ArrayList<>();
 
 	protected Composer() {
 	}

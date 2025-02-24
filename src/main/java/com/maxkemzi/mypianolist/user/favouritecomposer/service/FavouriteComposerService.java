@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.composer.service.ComposerService;
-import com.maxkemzi.mypianolist.user.favouritecomposer.model.UserFavouriteComposer;
-import com.maxkemzi.mypianolist.user.favouritecomposer.repository.UserFavouriteComposerRepository;
+import com.maxkemzi.mypianolist.user.favouritecomposer.model.FavouriteComposer;
+import com.maxkemzi.mypianolist.user.favouritecomposer.repository.FavouriteComposerRepository;
 import com.maxkemzi.mypianolist.user.model.User;
 import com.maxkemzi.mypianolist.user.service.UserNotFoundException;
 import com.maxkemzi.mypianolist.user.service.UserService;
@@ -17,12 +17,12 @@ import com.maxkemzi.mypianolist.user.service.UserService;
 import jakarta.transaction.Transactional;
 
 @Service
-public class UserFavouriteComposerService {
-	private final UserFavouriteComposerRepository repository;
+public class FavouriteComposerService {
+	private final FavouriteComposerRepository repository;
 	private final UserService userService;
 	private final ComposerService composerService;
 
-	public UserFavouriteComposerService(UserFavouriteComposerRepository repository, UserService userService,
+	public FavouriteComposerService(FavouriteComposerRepository repository, UserService userService,
 			ComposerService composerService) {
 		this.repository = repository;
 		this.userService = userService;
@@ -30,23 +30,23 @@ public class UserFavouriteComposerService {
 	}
 
 	@Transactional
-	public UserFavouriteComposer create(UserFavouriteComposerCreatePayload payload)
-			throws UserFavouriteComposerAlreadyExistsException {
+	public FavouriteComposer create(FavouriteComposerCreatePayload payload)
+			throws FavouriteComposerAlreadyExistsException {
 		boolean alreadyExists = repository.existsByUserUsernameAndComposerId(payload.getUsername(),
 				payload.getComposerId());
 		if (alreadyExists) {
-			throw new UserFavouriteComposerAlreadyExistsException();
+			throw new FavouriteComposerAlreadyExistsException();
 		}
 
 		User user = userService.findByUsername(payload.getUsername());
 		Composer composer = composerService.findById(payload.getComposerId());
 
-		UserFavouriteComposer userFavComposer = new UserFavouriteComposer(user, composer);
+		FavouriteComposer favComposer = new FavouriteComposer(user, composer);
 
-		return repository.save(userFavComposer);
+		return repository.save(favComposer);
 	}
 
-	public Page<UserFavouriteComposer> findByUsername(String username, Pageable pageable) throws UserNotFoundException {
+	public Page<FavouriteComposer> findByUsername(String username, Pageable pageable) throws UserNotFoundException {
 		boolean userExists = userService.existsByUsername(username);
 		if (!userExists) {
 			throw new UserNotFoundException();
@@ -57,10 +57,10 @@ public class UserFavouriteComposerService {
 
 	@Transactional
 	public void deleteByUsernameAndComposerId(String username, UUID composerId)
-			throws UserFavouriteComposerNotFoundException {
+			throws FavouriteComposerNotFoundException {
 		boolean exists = repository.existsByUserUsernameAndComposerId(username, composerId);
 		if (!exists) {
-			throw new UserFavouriteComposerNotFoundException();
+			throw new FavouriteComposerNotFoundException();
 		}
 
 		repository.deleteByUserUsernameAndComposerId(username, composerId);
