@@ -9,15 +9,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "piece_genre")
-public class PieceGenre extends BaseEntity {
+@Table(name = "genre")
+public class Genre extends BaseEntity {
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;
 
-	protected PieceGenre() {
+	protected Genre() {
 	}
 
-	public PieceGenre(String name) {
+	public Genre(String name) {
 		this.name = name;
 	}
 
@@ -26,8 +26,8 @@ public class PieceGenre extends BaseEntity {
 	}
 
 	protected boolean entityEquals(Object o) {
-		PieceGenre pc = (PieceGenre) o;
-		return Objects.equals(name, pc.name);
+		Genre g = (Genre) o;
+		return Objects.equals(name, g.name);
 	}
 
 	protected Object[] getHashCodeValues() {
@@ -36,7 +36,7 @@ public class PieceGenre extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return "PieceGenre [getId()=" + getId() + ", getName()=" + getName() + ", getCreatedAt()=" + getCreatedAt()
+		return "Genre [getId()=" + getId() + ", getName()=" + getName() + ", getCreatedAt()=" + getCreatedAt()
 				+ ", getUpdatedAt()=" + getUpdatedAt() + "]";
 	}
 }

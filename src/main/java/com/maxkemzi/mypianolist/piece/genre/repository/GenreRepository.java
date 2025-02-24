@@ -7,12 +7,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.maxkemzi.mypianolist.db.CrudRepository;
-import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
+import com.maxkemzi.mypianolist.piece.genre.model.Genre;
 
-public interface PieceGenreRepository extends CrudRepository<PieceGenre, UUID> {
-	Optional<PieceGenre> findByName(String name);
+public interface GenreRepository extends CrudRepository<Genre, UUID> {
+	Optional<Genre> findByName(String name);
 
-	Page<PieceGenre> findAll(Pageable pageable);
+	Page<Genre> findAll(Pageable pageable);
 
 	boolean existsByName(String name);
 }

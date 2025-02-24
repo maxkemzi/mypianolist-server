@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
-import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreCreatePayload;
-import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreService;
+import com.maxkemzi.mypianolist.piece.genre.model.Genre;
+import com.maxkemzi.mypianolist.piece.genre.service.GenreCreatePayload;
+import com.maxkemzi.mypianolist.piece.genre.service.GenreService;
 import com.maxkemzi.mypianolist.util.PageResponseDto;
 
 import jakarta.validation.Valid;
@@ -22,29 +22,29 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/pieces/genres")
 @Validated
-public class PieceGenreController {
-	private final PieceGenreService service;
+public class GenreController {
+	private final GenreService service;
 
-	public PieceGenreController(PieceGenreService service) {
+	public GenreController(GenreService service) {
 		this.service = service;
 	}
 
 	@PostMapping
-	public ResponseEntity<PieceGenreResponseDto> create(@Valid @RequestBody PieceGenreRequest req) {
-		PieceGenreCreatePayload payload = new PieceGenreCreatePayload(req.getName());
+	public ResponseEntity<GenreResponseDto> create(@Valid @RequestBody GenreRequest req) {
+		GenreCreatePayload payload = new GenreCreatePayload(req.getName());
 
-		PieceGenre genre = service.create(payload);
+		Genre genre = service.create(payload);
 
-		PieceGenreResponseDto resDto = new PieceGenreResponseDto(genre);
+		GenreResponseDto resDto = new GenreResponseDto(genre);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(resDto);
 	}
 
 	@GetMapping
-	public PageResponseDto<PieceGenreResponseDto> findAll(@PageableDefault(sort = "name") Pageable pageable) {
-		Page<PieceGenre> page = service.findAll(pageable);
+	public PageResponseDto<GenreResponseDto> findAll(@PageableDefault(sort = "name") Pageable pageable) {
+		Page<Genre> page = service.findAll(pageable);
 
-		Page<PieceGenreResponseDto> resPage = page.map(PieceGenreResponseDto::new);
+		Page<GenreResponseDto> resPage = page.map(GenreResponseDto::new);
 
 		return new PageResponseDto<>(resPage);
 	}

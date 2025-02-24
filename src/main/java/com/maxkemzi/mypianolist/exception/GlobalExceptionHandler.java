@@ -11,8 +11,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import com.maxkemzi.mypianolist.auth.service.WrongCredentialsException;
 import com.maxkemzi.mypianolist.composer.service.ComposerAlreadyExistsException;
 import com.maxkemzi.mypianolist.composer.service.ComposerNotFoundException;
-import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreAlreadyExistsException;
-import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreNotFoundException;
+import com.maxkemzi.mypianolist.piece.genre.service.GenreAlreadyExistsException;
+import com.maxkemzi.mypianolist.piece.genre.service.GenreNotFoundException;
 import com.maxkemzi.mypianolist.piece.service.PieceAlreadyExistsException;
 import com.maxkemzi.mypianolist.piece.service.PieceNotFoundException;
 import com.maxkemzi.mypianolist.user.favouritecomposer.service.FavouriteComposerAlreadyExistsException;
@@ -102,14 +102,14 @@ public class GlobalExceptionHandler {
 				HttpStatus.CONFLICT);
 	}
 
-	@ExceptionHandler(PieceGenreNotFoundException.class)
-	public ResponseEntity<ErrorResponse> handlePieceGenreNotFound(PieceGenreNotFoundException e) {
+	@ExceptionHandler(GenreNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleGenreNotFound(GenreNotFoundException e) {
 		return new ResponseEntity<>(new ErrorResponse("The genre was not found.", "genre_not_found"),
 				HttpStatus.NOT_FOUND);
 	}
 
-	@ExceptionHandler(PieceGenreAlreadyExistsException.class)
-	public ResponseEntity<ErrorResponse> handlePieceGenreAlreadyExists(PieceGenreAlreadyExistsException e) {
+	@ExceptionHandler(GenreAlreadyExistsException.class)
+	public ResponseEntity<ErrorResponse> handleGenreAlreadyExists(GenreAlreadyExistsException e) {
 		return new ResponseEntity<>(new ErrorResponse("The genre already exists.", "genre_already_exists"),
 				HttpStatus.CONFLICT);
 	}

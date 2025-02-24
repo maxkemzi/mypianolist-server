@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
-import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
+import com.maxkemzi.mypianolist.piece.genre.model.Genre;
 import com.maxkemzi.mypianolist.user.favouritepiece.model.FavouritePiece;
 import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
 import com.maxkemzi.mypianolist.db.BaseEntity;
@@ -39,7 +39,7 @@ public class Piece extends BaseEntity {
 
 	@ManyToOne
 	@JoinColumn(name = "genre_id")
-	private PieceGenre genre;
+	private Genre genre;
 
 	@ManyToOne
 	@JoinColumn(name = "composer_id", nullable = false)
@@ -54,7 +54,7 @@ public class Piece extends BaseEntity {
 	protected Piece() {
 	}
 
-	public Piece(String title, String description, String image, LocalDate composedAt, PieceGenre genre,
+	public Piece(String title, String description, String image, LocalDate composedAt, Genre genre,
 			Composer composer) {
 		this.title = title;
 		this.description = description;
@@ -80,7 +80,7 @@ public class Piece extends BaseEntity {
 		return composedAt;
 	}
 
-	public PieceGenre getGenre() {
+	public Genre getGenre() {
 		return genre;
 	}
 

@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.composer.service.ComposerService;
-import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
-import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreService;
+import com.maxkemzi.mypianolist.piece.genre.model.Genre;
+import com.maxkemzi.mypianolist.piece.genre.service.GenreService;
 import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
 
@@ -19,10 +19,10 @@ import jakarta.transaction.Transactional;
 @Service
 public class PieceService {
 	private final PieceRepository repository;
-	private final PieceGenreService genreService;
+	private final GenreService genreService;
 	private final ComposerService composerService;
 
-	public PieceService(PieceRepository repository, PieceGenreService genreService, ComposerService composerService) {
+	public PieceService(PieceRepository repository, GenreService genreService, ComposerService composerService) {
 		this.repository = repository;
 		this.genreService = genreService;
 		this.composerService = composerService;
@@ -35,7 +35,7 @@ public class PieceService {
 			throw new PieceAlreadyExistsException();
 		}
 
-		PieceGenre genre = genreService.findById(payload.getGenreId());
+		Genre genre = genreService.findById(payload.getGenreId());
 		Composer composer = composerService.findById(payload.getComposerId());
 
 		Piece piece = new Piece(payload.getTitle(), payload.getDescription(), payload.getImage(), payload.getComposedAt(),

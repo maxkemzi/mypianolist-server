@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.composer.repository.ComposerRepository;
 import com.maxkemzi.mypianolist.piece.model.Piece;
-import com.maxkemzi.mypianolist.piece.genre.model.PieceGenre;
-import com.maxkemzi.mypianolist.piece.genre.repository.PieceGenreRepository;
+import com.maxkemzi.mypianolist.piece.genre.model.Genre;
+import com.maxkemzi.mypianolist.piece.genre.repository.GenreRepository;
 import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
 import com.maxkemzi.mypianolist.user.model.User;
 import com.maxkemzi.mypianolist.user.repository.UserRepository;
@@ -18,15 +18,15 @@ import com.maxkemzi.mypianolist.user.repository.UserRepository;
 public class DatabaseSeeder implements CommandLineRunner {
 	private final UserRepository userRepository;
 	private final ComposerRepository composerRepository;
-	private final PieceGenreRepository pieceGenreRepository;
+	private final GenreRepository genreRepository;
 	private final PieceRepository pieceRepository;
 
 	public DatabaseSeeder(UserRepository userRepository, ComposerRepository composerRepository,
-			PieceGenreRepository pieceGenreRepository,
+			GenreRepository genreRepository,
 			PieceRepository pieceRepository) {
 		this.userRepository = userRepository;
 		this.composerRepository = composerRepository;
-		this.pieceGenreRepository = pieceGenreRepository;
+		this.genreRepository = genreRepository;
 		this.pieceRepository = pieceRepository;
 	}
 
@@ -50,10 +50,10 @@ public class DatabaseSeeder implements CommandLineRunner {
 			composer = existingComposer.get();
 		}
 
-		PieceGenre genre = new PieceGenre("ambient");
-		Optional<PieceGenre> existingGenre = this.pieceGenreRepository.findByName(genre.getName());
+		Genre genre = new Genre("ambient");
+		Optional<Genre> existingGenre = this.genreRepository.findByName(genre.getName());
 		if (existingGenre.isEmpty()) {
-			genre = this.pieceGenreRepository.save(genre);
+			genre = this.genreRepository.save(genre);
 		} else {
 			genre = existingGenre.get();
 		}

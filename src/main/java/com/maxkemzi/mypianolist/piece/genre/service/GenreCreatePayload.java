@@ -1,12 +1,12 @@
 package com.maxkemzi.mypianolist.piece.genre.service;
 
-public class PieceGenreCreatePayload {
+public class GenreCreatePayload {
 	private String name;
 
-	protected PieceGenreCreatePayload() {
+	protected GenreCreatePayload() {
 	}
 
-	public PieceGenreCreatePayload(String name) {
+	public GenreCreatePayload(String name) {
 		this.name = name;
 	}
 
