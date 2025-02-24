@@ -56,7 +56,13 @@ public class UserFavouriteComposerService {
 	}
 
 	@Transactional
-	public void deleteByUsernameAndComposerId(String username, UUID composerId) {
+	public void deleteByUsernameAndComposerId(String username, UUID composerId)
+			throws UserFavouriteComposerNotFoundException {
+		boolean exists = repository.existsByUserUsernameAndComposerId(username, composerId);
+		if (!exists) {
+			throw new UserFavouriteComposerNotFoundException();
+		}
+
 		repository.deleteByUserUsernameAndComposerId(username, composerId);
 	}
 }

@@ -16,7 +16,9 @@ import com.maxkemzi.mypianolist.piece.genre.service.PieceGenreNotFoundException;
 import com.maxkemzi.mypianolist.piece.service.PieceAlreadyExistsException;
 import com.maxkemzi.mypianolist.piece.service.PieceNotFoundException;
 import com.maxkemzi.mypianolist.user.favouritecomposer.service.UserFavouriteComposerAlreadyExistsException;
+import com.maxkemzi.mypianolist.user.favouritecomposer.service.UserFavouriteComposerNotFoundException;
 import com.maxkemzi.mypianolist.user.favouritepiece.service.UserFavouritePieceAlreadyExistsException;
+import com.maxkemzi.mypianolist.user.favouritepiece.service.UserFavouritePieceNotFoundException;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceAlreadyExistsException;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceNotFoundException;
 import com.maxkemzi.mypianolist.user.service.UserNotFoundException;
@@ -79,11 +81,26 @@ public class GlobalExceptionHandler {
 				HttpStatus.CONFLICT);
 	}
 
+	@ExceptionHandler(UserFavouritePieceNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleUserFavouritePieceNotFound(UserFavouritePieceNotFoundException e) {
+		return new ResponseEntity<>(
+				new ErrorResponse("The piece is not in your favourites.", "favourite_piece_not_found"),
+				HttpStatus.CONFLICT);
+	}
+
 	@ExceptionHandler(UserFavouriteComposerAlreadyExistsException.class)
 	public ResponseEntity<ErrorResponse> handleUserFavouriteComposerAlreadyExists(
 			UserFavouriteComposerAlreadyExistsException e) {
 		return new ResponseEntity<>(
 				new ErrorResponse("The composer is already in your favourites.", "favourite_composer_already_exists"),
+				HttpStatus.CONFLICT);
+	}
+
+	@ExceptionHandler(UserFavouriteComposerNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleUserFavouriteComposerNotFound(
+			UserFavouriteComposerNotFoundException e) {
+		return new ResponseEntity<>(
+				new ErrorResponse("The composer is not in your favourites.", "favourite_composer_not_found"),
 				HttpStatus.CONFLICT);
 	}
 

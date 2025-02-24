@@ -1,7 +1,5 @@
 package com.maxkemzi.mypianolist.user.favouritepiece.service;
 
-import java.lang.foreign.Linker.Option;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -57,7 +55,12 @@ public class UserFavouritePieceService {
 	}
 
 	@Transactional
-	public void deleteByUsernameAndPieceId(String username, UUID pieceId) {
+	public void deleteByUsernameAndPieceId(String username, UUID pieceId) throws UserFavouritePieceNotFoundException {
+		boolean exists = repository.existsByUserUsernameAndPieceId(username, pieceId);
+		if (!exists) {
+			throw new UserFavouritePieceNotFoundException();
+		}
+
 		repository.deleteByUserUsernameAndPieceId(username, pieceId);
 	}
 }
