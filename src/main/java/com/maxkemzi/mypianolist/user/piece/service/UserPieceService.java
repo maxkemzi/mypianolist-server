@@ -50,8 +50,10 @@ public class UserPieceService {
 	}
 
 	@Transactional
-	public UserPiece updateById(UUID id, UserPieceUpdatePayload payload) throws UserPieceNotFoundException {
-		UserPiece userPiece = repository.findById(id).orElseThrow(UserPieceNotFoundException::new);
+	public UserPiece updateByUsernameAndId(String username, UUID id, UserPieceUpdatePayload payload)
+			throws UserPieceNotFoundException {
+		UserPiece userPiece = repository.findByUserUsernameAndId(username, id)
+				.orElseThrow(UserPieceNotFoundException::new);
 
 		if (payload.getScore() != null) {
 			userPiece.setScore(payload.getScore());
@@ -70,8 +72,8 @@ public class UserPieceService {
 	}
 
 	@Transactional
-	public void deleteById(UUID id) throws UserPieceNotFoundException {
-		boolean exists = repository.existsById(id);
+	public void deleteByUsernameAndId(String username, UUID id) throws UserPieceNotFoundException {
+		boolean exists = repository.existsByUserUsernameAndId(username, id);
 		if (!exists) {
 			throw new UserPieceNotFoundException();
 		}

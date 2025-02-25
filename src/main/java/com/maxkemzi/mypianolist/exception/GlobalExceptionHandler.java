@@ -63,13 +63,13 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(UserPieceNotFoundException.class)
 	public ResponseEntity<ErrorResponse> handleUserPieceNotFound(UserPieceNotFoundException e) {
-		return new ResponseEntity<>(new ErrorResponse("The user piece was not found.", "user_piece_not_found"),
+		return new ResponseEntity<>(new ErrorResponse("The piece is not in your list.", "piece_not_in_list"),
 				HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(UserPieceAlreadyExistsException.class)
 	public ResponseEntity<ErrorResponse> handleUserPieceAlreadyExists(UserPieceAlreadyExistsException e) {
-		return new ResponseEntity<>(new ErrorResponse("The piece is already in your list.", "user_piece_already_exists"),
+		return new ResponseEntity<>(new ErrorResponse("The piece is already in your list.", "piece_already_in_list"),
 				HttpStatus.CONFLICT);
 	}
 

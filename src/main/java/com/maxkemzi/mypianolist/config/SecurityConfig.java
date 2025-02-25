@@ -39,10 +39,18 @@ public class SecurityConfig {
 		return http
 				.csrf(customizer -> customizer.disable())
 				.authorizeHttpRequests(req -> req
+						// Auth
 						.requestMatchers("/auth/register", "/auth/login", "/auth/refresh", "/auth/logout")
 						.permitAll()
+						// Public
+						.requestMatchers(HttpMethod.GET, "/pieces", "/pieces/{id}", "/pieces/genres", "/composers",
+								"/users/{username}/favourite-pieces", "/users/{username}/favourite-composers",
+								"/users/{username}/pieces")
+						.permitAll()
+						// Admin
 						.requestMatchers(HttpMethod.POST, "/pieces", "/pieces/genres", "/composers")
 						.hasAuthority(UserRole.ADMIN.name())
+						// Other
 						.anyRequest()
 						.hasAnyAuthority(UserRole.USER.name(), UserRole.ADMIN.name()))
 				.httpBasic(Customizer.withDefaults())
