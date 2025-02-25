@@ -46,7 +46,7 @@ public class AuthService {
 					.authenticate(new UsernamePasswordAuthenticationToken(payload.getUsername(), payload.getPassword()));
 			UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
 
-			JwtUser user = new JwtUser(userPrincipal.getUsername(), userPrincipal.getPassword());
+			JwtUser user = new JwtUser(userPrincipal.getUsername(), userPrincipal.getAvatar());
 			JwtTokens tokens = jwtService.generateAccessAndRefreshTokens(user);
 
 			RefreshTokenCreatePayload refreshTokenPayload = new RefreshTokenCreatePayload(tokens.getRefresh(),
