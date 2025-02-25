@@ -70,7 +70,7 @@ public class UserPieceController {
 		UserPieceUpdatePayload payload = new UserPieceUpdatePayload(req.getScore(), req.getStatus(), req.getStartedAt(),
 				req.getFinishedAt());
 
-		UserPiece userPiece = service.updateByUsernameAndId(auth.getName(), id, payload);
+		UserPiece userPiece = service.updateByUsernameAndPieceId(auth.getName(), id, payload);
 
 		UserPieceResponseDto resDto = new UserPieceResponseDto(userPiece);
 
@@ -81,7 +81,7 @@ public class UserPieceController {
 	public ResponseEntity<Void> deleteById(@PathVariable("id") UUID id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-		service.deleteByUsernameAndId(auth.getName(), id);
+		service.deleteByUsernameAndPieceId(auth.getName(), id);
 
 		return ResponseEntity.noContent().build();
 	}

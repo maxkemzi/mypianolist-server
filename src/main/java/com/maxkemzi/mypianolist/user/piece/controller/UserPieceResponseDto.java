@@ -1,34 +1,26 @@
 package com.maxkemzi.mypianolist.user.piece.controller;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 import com.maxkemzi.mypianolist.piece.controller.PieceResponseDto;
 import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
 import com.maxkemzi.mypianolist.user.piece.model.UserPieceStatus;
 
-public class UserPieceResponseDto {
-	private UUID id;
+public class UserPieceResponseDto extends PieceResponseDto {
 	private Integer score;
 	private UserPieceStatus status;
 	private LocalDate startedAt;
 	private LocalDate finishedAt;
-	private PieceResponseDto piece;
 
 	protected UserPieceResponseDto() {
 	}
 
-	public UserPieceResponseDto(UserPiece userPiece) {
-		this.id = userPiece.getId();
-		this.score = userPiece.getScore();
-		this.status = userPiece.getStatus();
-		this.startedAt = userPiece.getStartedAt();
-		this.finishedAt = userPiece.getFinishedAt();
-		this.piece = new PieceResponseDto(userPiece.getPiece());
-	}
-
-	public UUID getId() {
-		return id;
+	public UserPieceResponseDto(UserPiece up) {
+		super(up.getPiece());
+		this.score = up.getScore();
+		this.status = up.getStatus();
+		this.startedAt = up.getStartedAt();
+		this.finishedAt = up.getFinishedAt();
 	}
 
 	public Integer getScore() {
@@ -45,9 +37,5 @@ public class UserPieceResponseDto {
 
 	public LocalDate getFinishedAt() {
 		return finishedAt;
-	}
-
-	public PieceResponseDto getPiece() {
-		return piece;
 	}
 }

@@ -11,6 +11,7 @@ import com.maxkemzi.mypianolist.piece.service.PieceService;
 import com.maxkemzi.mypianolist.user.model.User;
 import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
 import com.maxkemzi.mypianolist.user.piece.repository.UserPieceRepository;
+import com.maxkemzi.mypianolist.user.service.UserNotFoundException;
 import com.maxkemzi.mypianolist.user.service.UserService;
 
 import jakarta.transaction.Transactional;
@@ -46,13 +47,18 @@ public class UserPieceService {
 	}
 
 	public Page<UserPiece> findByUsername(String username, Pageable pageable) {
+		boolean userExists = userService.existsByUsername(username);
+		if (!userExists) {
+			throw new UserNotFoundException();
+		}
+
 		return repository.findByUserUsername(username, pageable);
 	}
 
 	@Transactional
-	public UserPiece updateByUsernameAndId(String username, UUID id, UserPieceUpdatePayload payload)
+	public UserPiece updateByUsernameAndPieceId(String username, UUID pieceId, UserPieceUpdatePayload payload)
 			throws UserPieceNotFoundException {
-		UserPiece userPiece = repository.findByUserUsernameAndId(username, id)
+		UserPiece userPiece = repository.findByUserUsernameAndPieceId(username, pieceId)
 				.orElseThrow(UserPieceNotFoundException::new);
 
 		if (payload.getScore() != null) {
@@ -72,12 +78,12 @@ public class UserPieceService {
 	}
 
 	@Transactional
-	public void deleteByUsernameAndId(String username, UUID id) throws UserPieceNotFoundException {
-		boolean exists = repository.existsByUserUsernameAndId(username, id);
+	public void deleteByUsernameAndPieceId(String username, UUID pieceId) throws UserPieceNotFoundException {
+		boolean exists = repository.existsByUserUsernameAndPieceId(username, pieceId);
 		if (!exists) {
 			throw new UserPieceNotFoundException();
 		}
 
-		repository.deleteById(id);
+		repository.deleteByUserUsernameAndPieceId(username, pieceId);
 	}
 }
