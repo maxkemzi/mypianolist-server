@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import com.maxkemzi.mypianolist.auth.service.WrongCredentialsException;
 import com.maxkemzi.mypianolist.composer.service.ComposerAlreadyExistsException;
 import com.maxkemzi.mypianolist.composer.service.ComposerNotFoundException;
