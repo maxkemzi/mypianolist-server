@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import com.maxkemzi.mypianolist.auth.service.WrongCredentialsException;
 import com.maxkemzi.mypianolist.composer.service.ComposerAlreadyExistsException;
@@ -39,26 +40,28 @@ public class GlobalExceptionHandler {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 
 		if (e.getRequiredType() != null && e.getRequiredType().equals(UUID.class)) {
-			String message = String.format("Invalid UUID format: %s.", e.getValue());
-			return new ResponseEntity<>(new ErrorResponse(message, "invalid_uuid_format"), status);
+			return new ResponseEntity<>(new ErrorResponse("Invalid UUID format.", "invalid_uuid_format"), status);
 		}
 
-		String message = String.format("Invalid parameter: %s.", e.getValue());
-		return new ResponseEntity<>(new ErrorResponse(message, "invalid_parameter"), status);
+		return new ResponseEntity<>(new ErrorResponse("Invalid parameter.", "invalid_parameter"), status);
 	}
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+		Throwable cause = e.getMostSpecificCause();
+		HttpStatus status = HttpStatus.BAD_REQUEST;
 
-		if (e.getCause() instanceof ValueInstantiationException vie) {
-			if (vie.getCause() instanceof InvalidUserPieceStatusException) {
-				return new ResponseEntity<>(new ErrorResponse("Invalid piece status.", "invalid_piece_status"),
-						HttpStatus.BAD_REQUEST);
+		if (cause instanceof InvalidFormatException ife) {
+			if (ife.getTargetType() != null && ife.getTargetType().equals(UUID.class)) {
+				return new ResponseEntity<>(new ErrorResponse("Invalid UUID format.", "invalid_uuid_format"), status);
 			}
 		}
 
-		return new ResponseEntity<>(new ErrorResponse("Malformed JSON request.", "invalid_input_format"),
-				HttpStatus.BAD_REQUEST);
+		if (cause instanceof InvalidUserPieceStatusException) {
+			return new ResponseEntity<>(new ErrorResponse("Invalid piece status.", "invalid_piece_status"), status);
+		}
+
+		return new ResponseEntity<>(new ErrorResponse("Invalid input format.", "invalid_input_format"), status);
 	}
 
 	@ExceptionHandler(UserNotFoundException.class)
