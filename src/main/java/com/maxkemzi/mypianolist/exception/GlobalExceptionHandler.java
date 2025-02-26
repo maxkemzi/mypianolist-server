@@ -4,10 +4,12 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import com.maxkemzi.mypianolist.auth.service.WrongCredentialsException;
 import com.maxkemzi.mypianolist.composer.service.ComposerAlreadyExistsException;
 import com.maxkemzi.mypianolist.composer.service.ComposerNotFoundException;
@@ -19,6 +21,7 @@ import com.maxkemzi.mypianolist.user.favouritecomposer.service.FavouriteComposer
 import com.maxkemzi.mypianolist.user.favouritecomposer.service.FavouriteComposerNotFoundException;
 import com.maxkemzi.mypianolist.user.favouritepiece.service.FavouritePieceAlreadyExistsException;
 import com.maxkemzi.mypianolist.user.favouritepiece.service.FavouritePieceNotFoundException;
+import com.maxkemzi.mypianolist.user.piece.model.InvalidUserPieceStatusException;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceAlreadyExistsException;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceNotFoundException;
 import com.maxkemzi.mypianolist.user.service.UserNotFoundException;
@@ -42,6 +45,20 @@ public class GlobalExceptionHandler {
 
 		String message = String.format("Invalid parameter: %s.", e.getValue());
 		return new ResponseEntity<>(new ErrorResponse(message, "invalid_parameter"), status);
+	}
+
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+
+		if (e.getCause() instanceof ValueInstantiationException vie) {
+			if (vie.getCause() instanceof InvalidUserPieceStatusException) {
+				return new ResponseEntity<>(new ErrorResponse("Invalid piece status.", "invalid_piece_status"),
+						HttpStatus.BAD_REQUEST);
+			}
+		}
+
+		return new ResponseEntity<>(new ErrorResponse("Malformed JSON request.", "invalid_input_format"),
+				HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(UserNotFoundException.class)
