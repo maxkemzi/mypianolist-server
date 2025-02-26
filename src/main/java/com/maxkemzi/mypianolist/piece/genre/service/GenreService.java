@@ -44,4 +44,14 @@ public class GenreService {
 
 		return genre.get();
 	}
+
+	@Transactional
+	public void deleteById(UUID id) throws GenreNotFoundException {
+		boolean exists = repository.existsById(id);
+		if (!exists) {
+			throw new GenreNotFoundException();
+		}
+
+		repository.deleteById(id);
+	}
 }

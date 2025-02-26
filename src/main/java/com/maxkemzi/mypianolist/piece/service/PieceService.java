@@ -56,4 +56,14 @@ public class PieceService {
 
 		return piece.get();
 	}
+
+	@Transactional
+	public void deleteById(UUID id) throws PieceNotFoundException {
+		boolean exists = repository.existsById(id);
+		if (!exists) {
+			throw new PieceNotFoundException();
+		}
+
+		repository.deleteById(id);
+	}
 }

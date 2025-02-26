@@ -46,4 +46,14 @@ public class ComposerService {
 
 		return composer.get();
 	}
+
+	@Transactional
+	public void deleteById(UUID id) throws ComposerNotFoundException {
+		boolean exists = repository.existsById(id);
+		if (!exists) {
+			throw new ComposerNotFoundException();
+		}
+
+		repository.deleteById(id);
+	}
 }

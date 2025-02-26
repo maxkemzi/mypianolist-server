@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import com.maxkemzi.mypianolist.auth.filter.JwtFilter;
 import com.maxkemzi.mypianolist.auth.filter.RefreshTokenFilter;
@@ -49,6 +50,8 @@ public class SecurityConfig {
 						.permitAll()
 						// Admin
 						.requestMatchers(HttpMethod.POST, "/pieces", "/pieces/genres", "/composers")
+						.hasAuthority(UserRole.ADMIN.name())
+						.requestMatchers(HttpMethod.DELETE, "/pieces", "/pieces/genres", "/composers")
 						.hasAuthority(UserRole.ADMIN.name())
 						// Other
 						.anyRequest()
