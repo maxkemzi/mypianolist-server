@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.maxkemzi.mypianolist.auth.controller.RefreshTokenCookie;
+import com.maxkemzi.mypianolist.auth.controller.RefreshTokenCookieFactory;
 import com.maxkemzi.mypianolist.auth.service.AuthService;
 import com.maxkemzi.mypianolist.user.model.User;
 import com.maxkemzi.mypianolist.user.service.UserService;
@@ -24,10 +24,13 @@ import jakarta.servlet.http.HttpServletResponse;
 public class UserController {
 	private final UserService service;
 	private final AuthService authService;
+	private final RefreshTokenCookieFactory refreshTokenCookieFactory;
 
-	public UserController(UserService service, AuthService authService) {
+	public UserController(UserService service, AuthService authService,
+			RefreshTokenCookieFactory refreshTokenCookieFactory) {
 		this.service = service;
 		this.authService = authService;
+		this.refreshTokenCookieFactory = refreshTokenCookieFactory;
 	}
 
 	@GetMapping("/{username}")
@@ -51,7 +54,7 @@ public class UserController {
 		authService.logOut(refreshToken);
 
 		// Delete refresh token cookie
-		res.addCookie(RefreshTokenCookie.createExpired());
+		res.addCookie(refreshTokenCookieFactory.createExpired());
 
 		return ResponseEntity.noContent().build();
 	}

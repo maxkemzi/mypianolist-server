@@ -23,9 +23,11 @@ import jakarta.servlet.http.HttpServletResponse;
 @RequestMapping("/auth")
 public class AuthController {
 	private final AuthService service;
+	private final RefreshTokenCookieFactory refreshTokenCookieFactory;
 
-	public AuthController(AuthService service) {
+	public AuthController(AuthService service, RefreshTokenCookieFactory refreshTokenCookieFactory) {
 		this.service = service;
+		this.refreshTokenCookieFactory = refreshTokenCookieFactory;
 	}
 
 	@PostMapping("/register")
@@ -46,7 +48,7 @@ public class AuthController {
 		JwtUser user = data.getUser();
 		JwtTokens tokens = data.getTokens();
 
-		res.addCookie(new RefreshTokenCookie(tokens.getRefresh()));
+		res.addCookie(refreshTokenCookieFactory.create(tokens.getRefresh()));
 
 		return ResponseEntity.ok(new LoginResponse(user, tokens));
 	}
@@ -58,8 +60,7 @@ public class AuthController {
 		JwtUser user = data.getUser();
 		JwtTokens tokens = data.getTokens();
 
-		res.addCookie(new RefreshTokenCookie(tokens.getRefresh()));
-
+		res.addCookie(refreshTokenCookieFactory.create(tokens.getRefresh()));
 		return ResponseEntity.ok(new LoginResponse(user, tokens));
 	}
 
@@ -68,7 +69,7 @@ public class AuthController {
 		service.logOut(refreshToken);
 
 		// Delete refresh token cookie
-		res.addCookie(RefreshTokenCookie.createExpired());
+		res.addCookie(refreshTokenCookieFactory.createExpired());
 
 		return ResponseEntity.noContent().build();
 	}

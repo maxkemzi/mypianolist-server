@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import com.maxkemzi.mypianolist.auth.filter.JwtFilter;
 import com.maxkemzi.mypianolist.auth.filter.RefreshTokenFilter;
@@ -40,10 +39,9 @@ public class SecurityConfig {
 		return http
 				.csrf(customizer -> customizer.disable())
 				.authorizeHttpRequests(req -> req
-						// Auth
+						// Public
 						.requestMatchers("/auth/register", "/auth/login", "/auth/refresh", "/auth/logout")
 						.permitAll()
-						// Public
 						.requestMatchers(HttpMethod.GET, "/pieces", "/pieces/{id}", "/pieces/genres", "/composers",
 								"/users/{username}/favourite-pieces", "/users/{username}/favourite-composers",
 								"/users/{username}/pieces")
