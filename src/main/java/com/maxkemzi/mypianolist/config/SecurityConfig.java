@@ -40,16 +40,17 @@ public class SecurityConfig {
 				.csrf(customizer -> customizer.disable())
 				.authorizeHttpRequests(req -> req
 						// Public
-						.requestMatchers("/auth/register", "/auth/login", "/auth/refresh", "/auth/logout")
+						.requestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/refresh", "/api/auth/logout")
 						.permitAll()
-						.requestMatchers(HttpMethod.GET, "/pieces", "/pieces/{id}", "/pieces/genres", "/composers",
-								"/users/{username}/favourite-pieces", "/users/{username}/favourite-composers",
-								"/users/{username}/pieces")
+						.requestMatchers(HttpMethod.GET, "/api/pieces", "/api/pieces/{id}", "/api/pieces/genres",
+								"/api/composers",
+								"/api/users/{username}/favourite-pieces", "/api/users/{username}/favourite-composers",
+								"/api/users/{username}/pieces")
 						.permitAll()
 						// Admin
-						.requestMatchers(HttpMethod.POST, "/pieces", "/pieces/genres", "/composers")
+						.requestMatchers(HttpMethod.POST, "/api/pieces", "/api/pieces/genres", "/api/composers")
 						.hasAuthority(UserRole.ADMIN.name())
-						.requestMatchers(HttpMethod.DELETE, "/pieces", "/pieces/genres", "/composers")
+						.requestMatchers(HttpMethod.DELETE, "/api/pieces", "/api/pieces/genres", "/api/composers")
 						.hasAuthority(UserRole.ADMIN.name())
 						// Other
 						.anyRequest()

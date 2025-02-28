@@ -20,7 +20,7 @@ import com.maxkemzi.mypianolist.user.model.User;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 	private final AuthService service;
 	private final RefreshTokenCookieFactory refreshTokenCookieFactory;

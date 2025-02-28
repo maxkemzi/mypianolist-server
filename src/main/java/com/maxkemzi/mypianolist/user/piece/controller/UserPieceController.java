@@ -28,7 +28,7 @@ import com.maxkemzi.mypianolist.util.PageResponseDto;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @Validated
 public class UserPieceController {
 	private final UserPieceService service;

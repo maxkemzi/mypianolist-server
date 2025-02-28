@@ -24,7 +24,7 @@ import com.maxkemzi.mypianolist.util.PageResponseDto;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/pieces/genres")
+@RequestMapping("/api/pieces/genres")
 @Validated
 public class GenreController {
 	private final GenreService service;

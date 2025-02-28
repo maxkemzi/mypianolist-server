@@ -20,7 +20,7 @@ import com.maxkemzi.mypianolist.user.service.UserUpdatePayload;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 	private final UserService service;
 	private final AuthService authService;

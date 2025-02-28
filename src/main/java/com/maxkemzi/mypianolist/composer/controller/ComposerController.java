@@ -25,7 +25,7 @@ import com.maxkemzi.mypianolist.util.PageResponseDto;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/composers")
+@RequestMapping("/api/composers")
 @Validated
 public class ComposerController {
 	private final ComposerService service;
