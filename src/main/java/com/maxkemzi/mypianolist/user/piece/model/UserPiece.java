@@ -3,10 +3,14 @@ package com.maxkemzi.mypianolist.user.piece.model;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.maxkemzi.mypianolist.db.BaseEntity;
 import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.user.model.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -36,10 +40,12 @@ public class UserPiece extends BaseEntity {
 
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
 
 	@ManyToOne
 	@JoinColumn(name = "piece_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Piece piece;
 
 	protected UserPiece() {

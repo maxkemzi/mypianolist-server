@@ -2,9 +2,12 @@ package com.maxkemzi.mypianolist.user.favouritecomposer.model;
 
 import java.util.Objects;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.maxkemzi.mypianolist.composer.model.Composer;
-import com.maxkemzi.mypianolist.user.model.User;
 import com.maxkemzi.mypianolist.db.BaseEntity;
+import com.maxkemzi.mypianolist.user.model.User;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -16,10 +19,12 @@ import jakarta.persistence.Table;
 public class FavouriteComposer extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
 
 	@ManyToOne
 	@JoinColumn(name = "composer_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Composer composer;
 
 	protected FavouriteComposer() {

@@ -2,6 +2,9 @@ package com.maxkemzi.mypianolist.refreshtoken.model;
 
 import java.util.Objects;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.maxkemzi.mypianolist.db.BaseEntity;
 import com.maxkemzi.mypianolist.user.model.User;
 
@@ -19,6 +22,7 @@ public class RefreshToken extends BaseEntity {
 
 	@OneToOne
 	@JoinColumn(name = "user_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
 
 	protected RefreshToken() {

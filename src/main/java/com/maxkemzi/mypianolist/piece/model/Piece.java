@@ -36,7 +36,7 @@ public class Piece extends BaseEntity {
 	private Genre genre;
 
 	@ManyToOne
-	@JoinColumn(name = "composer_id", nullable = false)
+	@JoinColumn(name = "composer_id")
 	private Composer composer;
 
 	protected Piece() {
