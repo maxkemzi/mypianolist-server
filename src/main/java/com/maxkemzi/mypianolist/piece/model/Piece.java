@@ -1,22 +1,16 @@
 package com.maxkemzi.mypianolist.piece.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
-import com.maxkemzi.mypianolist.piece.genre.model.Genre;
-import com.maxkemzi.mypianolist.user.favouritepiece.model.FavouritePiece;
-import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
 import com.maxkemzi.mypianolist.db.BaseEntity;
+import com.maxkemzi.mypianolist.piece.genre.model.Genre;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
@@ -44,12 +38,6 @@ public class Piece extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "composer_id", nullable = false)
 	private Composer composer;
-
-	@OneToMany(mappedBy = "piece", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<UserPiece> userPieces = new ArrayList<>();
-
-	@OneToMany(mappedBy = "piece", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<FavouritePiece> favouritePieces = new ArrayList<>();
 
 	protected Piece() {
 	}

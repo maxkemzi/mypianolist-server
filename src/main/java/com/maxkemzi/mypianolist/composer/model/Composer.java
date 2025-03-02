@@ -1,18 +1,12 @@
 package com.maxkemzi.mypianolist.composer.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-import com.maxkemzi.mypianolist.piece.model.Piece;
-import com.maxkemzi.mypianolist.user.favouritecomposer.model.FavouriteComposer;
 import com.maxkemzi.mypianolist.db.BaseEntity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
@@ -41,12 +35,6 @@ public class Composer extends BaseEntity {
 
 	@Column(name = "diedAt")
 	private LocalDate diedAt;
-
-	@OneToMany(mappedBy = "composer", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Piece> pieces = new ArrayList<>();
-
-	@OneToMany(mappedBy = "composer", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<FavouriteComposer> favouriteComposers = new ArrayList<>();
 
 	protected Composer() {
 	}

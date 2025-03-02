@@ -1,20 +1,13 @@
 package com.maxkemzi.mypianolist.user.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-import com.maxkemzi.mypianolist.user.favouritecomposer.model.FavouriteComposer;
-import com.maxkemzi.mypianolist.user.favouritepiece.model.FavouritePiece;
-import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
 import com.maxkemzi.mypianolist.db.BaseEntity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -35,15 +28,6 @@ public class User extends BaseEntity {
 
 	@Column(name = "avatar")
 	private String avatar;
-
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<UserPiece> userPieces = new ArrayList<>();
-
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<FavouritePiece> favouritePieces = new ArrayList<>();
-
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<FavouriteComposer> favouriteComposers = new ArrayList<>();
 
 	protected User() {
 	}
