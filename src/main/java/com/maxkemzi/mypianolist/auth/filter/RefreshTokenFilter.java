@@ -7,8 +7,10 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maxkemzi.mypianolist.auth.service.jwt.JwtService;
 import com.maxkemzi.mypianolist.auth.service.jwt.JwtUser;
+import com.maxkemzi.mypianolist.exception.ErrorResponse;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,27 +29,38 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain)
 			throws ServletException, IOException {
-		if (req.getRequestURI().matches("/auth/refresh|/auth/logout")) {
+		if (req.getRequestURI().matches("/api/auth/refresh|/api/auth/logout")) {
 			Cookie[] cookies = req.getCookies();
 			if (cookies == null) {
-				res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+				sendUnauthorizedError(res);
 				return;
 			}
 
 			String refreshToken = getRefreshTokenFromCookies(cookies);
 			if (refreshToken.isBlank()) {
-				res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+				sendUnauthorizedError(res);
 				return;
 			}
 
 			JwtUser user = jwtService.verifyRefreshToken(refreshToken);
 			if (user == null) {
-				res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+				sendUnauthorizedError(res);
 				return;
 			}
 		}
 
 		filterChain.doFilter(req, res);
+	}
+
+	private void sendUnauthorizedError(HttpServletResponse res) throws IOException {
+		ErrorResponse errorResponse = new ErrorResponse("Unauthorized.", "unauthorized");
+
+		res.setContentType("application/json");
+		res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		res.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+		res.getWriter().flush();
 	}
 
 	private String getRefreshTokenFromCookies(Cookie[] cookies) {

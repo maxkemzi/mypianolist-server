@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.maxkemzi.mypianolist.user.model.UserRole;
 import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceCreatePayload;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceService;
@@ -37,6 +39,7 @@ public class UserPieceController {
 		this.service = service;
 	}
 
+	@Secured(UserRole.Constants.USER)
 	@PostMapping("/pieces")
 	public ResponseEntity<UserPieceResponseDto> create(@Valid @RequestBody UserPieceCreateRequest req) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -62,6 +65,7 @@ public class UserPieceController {
 		return new PageResponseDto<>(resPage);
 	}
 
+	@Secured(UserRole.Constants.USER)
 	@PatchMapping("/pieces/{id}")
 	public ResponseEntity<UserPieceResponseDto> update(@PathVariable("id") UUID id,
 			@Valid @RequestBody UserPieceUpdateRequest req) {
@@ -77,6 +81,7 @@ public class UserPieceController {
 		return ResponseEntity.ok(resDto);
 	}
 
+	@Secured(UserRole.Constants.USER)
 	@DeleteMapping("/pieces/{id}")
 	public ResponseEntity<Void> deleteById(@PathVariable("id") UUID id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();

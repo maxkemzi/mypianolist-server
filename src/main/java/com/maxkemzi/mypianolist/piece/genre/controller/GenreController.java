@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.maxkemzi.mypianolist.piece.genre.model.Genre;
 import com.maxkemzi.mypianolist.piece.genre.service.GenreCreatePayload;
 import com.maxkemzi.mypianolist.piece.genre.service.GenreService;
+import com.maxkemzi.mypianolist.user.model.UserRole;
 import com.maxkemzi.mypianolist.util.PageResponseDto;
 
 import jakarta.validation.Valid;
@@ -33,6 +35,7 @@ public class GenreController {
 		this.service = service;
 	}
 
+	@Secured(UserRole.Constants.ADMIN)
 	@PostMapping
 	public ResponseEntity<GenreResponseDto> create(@Valid @RequestBody GenreRequest req) {
 		GenreCreatePayload payload = new GenreCreatePayload(req.getName());
@@ -53,6 +56,7 @@ public class GenreController {
 		return new PageResponseDto<>(resPage);
 	}
 
+	@Secured(UserRole.Constants.ADMIN)
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteById(@PathVariable("id") UUID id) {
 		service.deleteById(id);

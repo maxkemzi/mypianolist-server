@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +23,7 @@ import com.maxkemzi.mypianolist.composer.controller.ComposerResponseDto;
 import com.maxkemzi.mypianolist.user.favouritecomposer.model.FavouriteComposer;
 import com.maxkemzi.mypianolist.user.favouritecomposer.service.FavouriteComposerCreatePayload;
 import com.maxkemzi.mypianolist.user.favouritecomposer.service.FavouriteComposerService;
+import com.maxkemzi.mypianolist.user.model.UserRole;
 import com.maxkemzi.mypianolist.util.PageResponseDto;
 
 import jakarta.validation.Valid;
@@ -36,6 +38,7 @@ public class FavouriteComposerController {
 		this.service = service;
 	}
 
+	@Secured(UserRole.Constants.USER)
 	@PostMapping("/favourite-composers")
 	public ResponseEntity<FavouriteComposerResponseDto> create(@Valid @RequestBody FavouriteComposerRequest req) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -60,6 +63,7 @@ public class FavouriteComposerController {
 		return new PageResponseDto<>(resPage);
 	}
 
+	@Secured(UserRole.Constants.USER)
 	@DeleteMapping("/favourite-composers/{composerId}")
 	public ResponseEntity<Void> deleteByUsernameAndComposerId(@PathVariable("composerId") UUID composerId) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.composer.service.ComposerCreatePayload;
 import com.maxkemzi.mypianolist.composer.service.ComposerService;
+import com.maxkemzi.mypianolist.user.model.UserRole;
 import com.maxkemzi.mypianolist.util.PageResponseDto;
 
 import jakarta.validation.Valid;
@@ -34,6 +36,7 @@ public class ComposerController {
 		this.service = service;
 	}
 
+	@Secured(UserRole.Constants.ADMIN)
 	@PostMapping
 	public ResponseEntity<ComposerResponseDto> create(@Valid @RequestBody ComposerRequest req) {
 		ComposerCreatePayload payload = new ComposerCreatePayload(req.getFirstName(), req.getLastName(),
@@ -56,6 +59,7 @@ public class ComposerController {
 		return new PageResponseDto<>(resPage);
 	}
 
+	@Secured(UserRole.Constants.ADMIN)
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteById(@PathVariable("id") UUID id) {
 		service.deleteById(id);

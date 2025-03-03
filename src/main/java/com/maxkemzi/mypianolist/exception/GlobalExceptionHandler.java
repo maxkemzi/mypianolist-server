@@ -5,8 +5,10 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
@@ -26,7 +28,7 @@ import com.maxkemzi.mypianolist.user.piece.service.UserPieceAlreadyExistsExcepti
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceNotFoundException;
 import com.maxkemzi.mypianolist.user.service.UserNotFoundException;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorResponse> handleGlobal(Exception e) {
@@ -61,6 +63,17 @@ public class GlobalExceptionHandler {
 		}
 
 		return new ResponseEntity<>(new ErrorResponse("Invalid input format.", "invalid_input_format"), status);
+	}
+
+	@ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleAuthenticationCredentialsNotFound(
+			AuthenticationCredentialsNotFoundException e) {
+		return new ResponseEntity<>(new ErrorResponse("Unauthorized.", "unauthorized"), HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler(AuthorizationDeniedException.class)
+	public ResponseEntity<ErrorResponse> handleAuthorizationDenied(AuthorizationDeniedException e) {
+		return new ResponseEntity<>(new ErrorResponse("Access denied.", "access_denied"), HttpStatus.FORBIDDEN);
 	}
 
 	@ExceptionHandler(UserNotFoundException.class)

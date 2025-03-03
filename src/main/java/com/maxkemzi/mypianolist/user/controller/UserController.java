@@ -1,6 +1,7 @@
 package com.maxkemzi.mypianolist.user.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.maxkemzi.mypianolist.auth.controller.RefreshTokenCookieFactory;
 import com.maxkemzi.mypianolist.auth.service.AuthService;
 import com.maxkemzi.mypianolist.user.model.User;
+import com.maxkemzi.mypianolist.user.model.UserRole;
 import com.maxkemzi.mypianolist.user.service.UserService;
 import com.maxkemzi.mypianolist.user.service.UserUpdatePayload;
 
@@ -42,6 +44,7 @@ public class UserController {
 		return ResponseEntity.ok(resDto);
 	}
 
+	@Secured(UserRole.Constants.USER)
 	@PutMapping("/username")
 	public ResponseEntity<Void> updateUsername(@RequestBody UpdateUsernameRequest req,
 			@CookieValue String refreshToken, HttpServletResponse res) {

@@ -2,12 +2,12 @@ package com.maxkemzi.mypianolist.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,10 +18,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.maxkemzi.mypianolist.auth.filter.JwtFilter;
 import com.maxkemzi.mypianolist.auth.filter.RefreshTokenFilter;
-import com.maxkemzi.mypianolist.user.model.UserRole;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 	private final JwtFilter jwtFilter;
 	private final RefreshTokenFilter refreshTokenFilter;
@@ -39,22 +39,9 @@ public class SecurityConfig {
 		return http
 				.csrf(customizer -> customizer.disable())
 				.authorizeHttpRequests(req -> req
-						// Public
-						.requestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/refresh", "/api/auth/logout")
-						.permitAll()
-						.requestMatchers(HttpMethod.GET, "/api/pieces", "/api/pieces/{id}", "/api/pieces/genres",
-								"/api/composers",
-								"/api/users/{username}/favourite-pieces", "/api/users/{username}/favourite-composers",
-								"/api/users/{username}/pieces")
-						.permitAll()
-						// Admin
-						.requestMatchers(HttpMethod.POST, "/api/pieces", "/api/pieces/genres", "/api/composers")
-						.hasAuthority(UserRole.ADMIN.name())
-						.requestMatchers(HttpMethod.DELETE, "/api/pieces", "/api/pieces/genres", "/api/composers")
-						.hasAuthority(UserRole.ADMIN.name())
-						// Other
 						.anyRequest()
-						.hasAnyAuthority(UserRole.USER.name(), UserRole.ADMIN.name()))
+						.permitAll())
+				.anonymous(customizer -> customizer.disable())
 				.httpBasic(Customizer.withDefaults())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

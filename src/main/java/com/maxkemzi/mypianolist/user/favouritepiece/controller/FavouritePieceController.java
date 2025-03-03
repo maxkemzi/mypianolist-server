@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +23,7 @@ import com.maxkemzi.mypianolist.piece.controller.PieceResponseDto;
 import com.maxkemzi.mypianolist.user.favouritepiece.model.FavouritePiece;
 import com.maxkemzi.mypianolist.user.favouritepiece.service.FavouritePieceCreatePayload;
 import com.maxkemzi.mypianolist.user.favouritepiece.service.FavouritePieceService;
+import com.maxkemzi.mypianolist.user.model.UserRole;
 import com.maxkemzi.mypianolist.util.PageResponseDto;
 
 import jakarta.validation.Valid;
@@ -36,6 +38,7 @@ public class FavouritePieceController {
 		this.service = service;
 	}
 
+	@Secured(UserRole.Constants.USER)
 	@PostMapping("/favourite-pieces")
 	public ResponseEntity<FavouritePieceResponseDto> create(@Valid @RequestBody FavouritePieceRequest req) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -59,6 +62,7 @@ public class FavouritePieceController {
 		return new PageResponseDto<>(resPage);
 	}
 
+	@Secured(UserRole.Constants.USER)
 	@DeleteMapping("/favourite-pieces/{pieceId}")
 	public ResponseEntity<Void> deleteByUsernameAndPieceId(@PathVariable("pieceId") UUID pieceId) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
