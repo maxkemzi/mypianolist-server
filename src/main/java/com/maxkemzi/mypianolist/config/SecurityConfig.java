@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -41,9 +40,12 @@ public class SecurityConfig {
 				.authorizeHttpRequests(req -> req
 						.anyRequest()
 						.permitAll())
+				.formLogin(customizer -> customizer.loginPage("/login").defaultSuccessUrl("/dashboard", true).permitAll())
+				.logout(customizer -> customizer
+						.logoutUrl("/logout")
+						.logoutSuccessUrl("/login?logout"))
 				.anonymous(customizer -> customizer.disable())
 				.httpBasic(Customizer.withDefaults())
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(refreshTokenFilter, JwtFilter.class)
 				.build();
