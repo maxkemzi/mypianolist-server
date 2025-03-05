@@ -1,22 +1,21 @@
 package com.maxkemzi.mypianolist.auth.controller;
 
 import com.maxkemzi.mypianolist.auth.service.jwt.JwtUser;
-import com.maxkemzi.mypianolist.auth.service.jwt.JwtTokens;
 
 public class LoginResponse {
 	private JwtUser user;
-	private JwtTokens tokens;
+	private String accessToken;
 
-	public LoginResponse(JwtUser user, JwtTokens tokens) {
+	public LoginResponse(JwtUser user, String accessToken) {
 		this.user = user;
-		this.tokens = tokens;
+		this.accessToken = accessToken;
 	}
 
 	public JwtUser getUser() {
 		return user;
 	}
 
-	public JwtTokens getTokens() {
-		return tokens;
+	public String getAccessToken() {
+		return accessToken;
 	}
 }

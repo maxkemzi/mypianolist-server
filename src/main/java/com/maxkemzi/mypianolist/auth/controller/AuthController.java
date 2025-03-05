@@ -51,7 +51,7 @@ public class AuthController {
 
 		res.addCookie(refreshTokenCookieFactory.create(tokens.getRefresh()));
 
-		return ResponseEntity.ok(new LoginResponse(user, tokens));
+		return ResponseEntity.ok(new LoginResponse(user, tokens.getAccess()));
 	}
 
 	@PostMapping("/refresh")
@@ -62,7 +62,7 @@ public class AuthController {
 		JwtTokens tokens = data.getTokens();
 
 		res.addCookie(refreshTokenCookieFactory.create(tokens.getRefresh()));
-		return ResponseEntity.ok(new LoginResponse(user, tokens));
+		return ResponseEntity.ok(new LoginResponse(user, tokens.getAccess()));
 	}
 
 	@DeleteMapping("/logout")
