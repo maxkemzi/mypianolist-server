@@ -1,56 +1,54 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Login</title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
 </head>
 
 <body>
-	<section class="hero is-fullheight">
-		<div class="hero-body">
-			<div class="container">
-				<div class="columns is-centered">
-					<div class="column is-4">
-						<div class="box">
-							<h1 class="title has-text-centered">Login</h1>
-							<form th:action="@{/login}" method="post">
-								<div class="field">
-									<label class="label">Username</label>
-									<div class="control has-icons-left">
-										<input class="input" type="text" name="username" placeholder="Enter your username"
-											required>
-										<span class="icon is-small is-left">
-											<i class="fas fa-user"></i>
-										</span>
+	<div layout:fragment="content">
+		<section class="hero is-fullheight">
+			<div class="hero-body">
+				<div class="container">
+					<div class="columns is-centered">
+						<div class="column is-4">
+							<div class="box">
+								<h1 class="title has-text-centered">Login</h1>
+								<form th:action="@{/login}" method="post">
+									<div class="field">
+										<label class="label">Username</label>
+										<div class="control has-icons-left">
+											<input class="input" type="text" name="username" placeholder="Enter your username"
+												required>
+											<span class="icon is-small is-left">
+												<i class="fas fa-user"></i>
+											</span>
+										</div>
 									</div>
-								</div>
 
-								<div class="field">
-									<label class="label">Password</label>
-									<div class="control has-icons-left">
-										<input class="input" type="password" name="password" placeholder="Enter your password"
-											required>
-										<span class="icon is-small is-left">
-											<i class="fas fa-lock"></i>
-										</span>
+									<div class="field">
+										<label class="label">Password</label>
+										<div class="control has-icons-left">
+											<input class="input" type="password" name="password" placeholder="Enter your password"
+												required>
+											<span class="icon is-small is-left">
+												<i class="fas fa-lock"></i>
+											</span>
+										</div>
 									</div>
-								</div>
 
-								<div class="field">
-									<button class="button is-link is-fullwidth">Login</button>
-								</div>
-							</form>
+									<div class="field">
+										<button class="button is-link is-fullwidth">Login</button>
+									</div>
+								</form>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+		</section>
+	</div>
 </body>
 
 </html>
