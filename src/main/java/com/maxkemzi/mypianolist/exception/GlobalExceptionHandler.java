@@ -10,6 +10,7 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.maxkemzi.mypianolist.auth.service.WrongCredentialsException;
@@ -34,6 +35,12 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorResponse> handleGlobal(Exception e) {
 		return new ResponseEntity<>(new ErrorResponse("An unexpected error occurred.", "internal_server_error"),
 				HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@ExceptionHandler(NoResourceFoundException.class)
+	public ResponseEntity<ErrorResponse> handleNoResourceFound(NoResourceFoundException e) {
+		return new ResponseEntity<>(new ErrorResponse("No resource found.", "no_resource_found"),
+				HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
