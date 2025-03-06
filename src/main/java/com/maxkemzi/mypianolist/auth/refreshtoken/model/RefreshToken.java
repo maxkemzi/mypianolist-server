@@ -1,4 +1,4 @@
-package com.maxkemzi.mypianolist.refreshtoken.model;
+package com.maxkemzi.mypianolist.auth.refreshtoken.model;
 
 import java.util.Objects;
 

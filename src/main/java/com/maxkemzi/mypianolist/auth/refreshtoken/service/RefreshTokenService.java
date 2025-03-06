@@ -1,11 +1,11 @@
-package com.maxkemzi.mypianolist.refreshtoken.service;
+package com.maxkemzi.mypianolist.auth.refreshtoken.service;
 
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.maxkemzi.mypianolist.refreshtoken.model.RefreshToken;
-import com.maxkemzi.mypianolist.refreshtoken.repository.RefreshTokenRepository;
+import com.maxkemzi.mypianolist.auth.refreshtoken.model.RefreshToken;
+import com.maxkemzi.mypianolist.auth.refreshtoken.repository.RefreshTokenRepository;
 import com.maxkemzi.mypianolist.user.model.User;
 import com.maxkemzi.mypianolist.user.service.UserService;
 

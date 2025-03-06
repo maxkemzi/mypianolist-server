@@ -37,13 +37,9 @@ public class SecurityConfig {
 	public SecurityFilterChain web(HttpSecurity http) throws Exception {
 		return http
 				.csrf(customizer -> customizer.disable())
-				.authorizeHttpRequests(req -> req
-						.anyRequest()
-						.permitAll())
+				.authorizeHttpRequests(customizer -> customizer.anyRequest().permitAll())
 				.formLogin(customizer -> customizer.loginPage("/login").defaultSuccessUrl("/dashboard", true).permitAll())
-				.logout(customizer -> customizer
-						.logoutUrl("/logout")
-						.logoutSuccessUrl("/login?logout"))
+				.logout(customizer -> customizer.logoutUrl("/logout").logoutSuccessUrl("/login?logout"))
 				.anonymous(customizer -> customizer.disable())
 				.httpBasic(Customizer.withDefaults())
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

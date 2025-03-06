@@ -1,4 +1,4 @@
-package com.maxkemzi.mypianolist.refreshtoken.service;
+package com.maxkemzi.mypianolist.auth.refreshtoken.service;
 
 public class RefreshTokenCreatePayload {
 	private String token;
