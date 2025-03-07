@@ -32,41 +32,57 @@ public class DatabaseSeeder implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		User user = new User("maxkemzi", "iam.maxkyrychenko@gmail.com", "qwerty77");
+		seedUser(new User("maxkemzi", "iam.maxkyrychenko@gmail.com", "qwerty77"));
+
+		Genre genre = seedGenre(new Genre("ambient"));
+
+		Composer composer = seedComposer(new Composer("Daniel", "Rosenfeld", null,
+				"Daniel Rosenfeld, known professionally as C418, is a German musician, producer and sound engineer. Known for his minimalistic ambient work, he rose to fame as the former composer and sound designer for the sandbox video game Minecraft.",
+				"", LocalDate.of(1989, 5, 9), null));
+
+		seedPiece(new Piece("Sweden (Minecraft)",
+				"Here we again, this time with Sweden! While it is calm like most of the MC tracks, it's surprisingly hard to nail on the piano. The quick transitions from the simple melody to the chords are difficult when you're also supposed to highlight the top note of the chord. I also found myself contemplating some wisdom words from my teacher \"slow is not always easier\". Luckily, I'll have a few high tempo songs in a week or two :) Enjoy!",
+				"", LocalDate.of(2011, 3, 4), genre, composer));
+
+		System.out.println("Database seeded with initial data.");
+	}
+
+	private User seedUser(User user) {
 		Optional<User> existingUser = this.userRepository.findByUsername(user.getUsername());
 		if (existingUser.isEmpty()) {
-			this.userRepository.save(user);
+			return this.userRepository.save(user);
+		} else {
+			return existingUser.get();
 		}
+	}
 
-		Composer composer = new Composer("Daniel", "Rosenfeld", null,
-				"Daniel Rosenfeld, known professionally as C418, is a German musician, producer and sound engineer. Known for his minimalistic ambient work, he rose to fame as the former composer and sound designer for the sandbox video game Minecraft.",
-				"", LocalDate.of(1989, 5, 9), null);
+	private Composer seedComposer(Composer composer) {
 		Optional<Composer> existingComposer = this.composerRepository.findByFirstNameAndLastNameAndBornAt(
 				composer.getFirstName(),
 				composer.getLastName(), composer.getBornAt());
 		if (existingComposer.isEmpty()) {
-			composer = this.composerRepository.save(composer);
+			return this.composerRepository.save(composer);
 		} else {
-			composer = existingComposer.get();
+			return existingComposer.get();
 		}
+	}
 
-		Genre genre = new Genre("ambient");
+	private Genre seedGenre(Genre genre) {
 		Optional<Genre> existingGenre = this.genreRepository.findByName(genre.getName());
 		if (existingGenre.isEmpty()) {
-			genre = this.genreRepository.save(genre);
+			return this.genreRepository.save(genre);
 		} else {
-			genre = existingGenre.get();
+			return existingGenre.get();
 		}
+	}
 
-		Piece piece = new Piece("Sweden (Minecraft)",
-				"Here we again, this time with Sweden! While it is calm like most of the MC tracks, it's surprisingly hard to nail on the piano. The quick transitions from the simple melody to the chords are difficult when you're also supposed to highlight the top note of the chord. I also found myself contemplating some wisdom words from my teacher \"slow is not always easier\". Luckily, I'll have a few high tempo songs in a week or two :) Enjoy!",
-				"", LocalDate.of(2011, 3, 4), genre, composer);
+	private Piece seedPiece(Piece piece) {
 		Optional<Piece> existingPiece = this.pieceRepository.findByTitleAndComposerId(piece.getTitle(),
-				composer.getId());
+				piece.getComposer().getId());
 		if (existingPiece.isEmpty()) {
-			this.pieceRepository.save(piece);
+			return this.pieceRepository.save(piece);
+		} else {
+			return existingPiece.get();
 		}
-
-		System.out.println("Database seeded with initial data.");
 	}
 }

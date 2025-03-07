@@ -18,6 +18,9 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
+	private final long ACCESS_TOKEN_LIFETIME = TimeUnit.MINUTES.toMillis(30); // 30 minutes
+	private final long REFRESH_TOKEN_LIFETIME = TimeUnit.DAYS.toMillis(30); // 30 days
+
 	@Value("${jwt.access-token.key}")
 	private String accessTokenKey;
 
@@ -32,11 +35,11 @@ public class JwtService {
 	}
 
 	private String generateAccessToken(JwtUser user) {
-		return generateToken(user, getAccessTokenKey(), TimeUnit.MINUTES.toMillis(30)); // 30 minutes
+		return generateToken(user, getAccessTokenKey(), ACCESS_TOKEN_LIFETIME);
 	}
 
 	private String generateRefreshToken(JwtUser user) {
-		return generateToken(user, getRefreshTokenKey(), TimeUnit.DAYS.toMillis(30)); // 30 days
+		return generateToken(user, getRefreshTokenKey(), REFRESH_TOKEN_LIFETIME);
 	}
 
 	private String generateToken(JwtUser user, SecretKey key, long expireInMs) {

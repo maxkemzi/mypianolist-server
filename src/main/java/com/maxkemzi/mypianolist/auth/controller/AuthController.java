@@ -62,6 +62,7 @@ public class AuthController {
 		JwtTokens tokens = data.getTokens();
 
 		res.addCookie(refreshTokenCookieFactory.create(tokens.getRefresh()));
+
 		return ResponseEntity.ok(new LoginResponse(user, tokens.getAccess()));
 	}
 
