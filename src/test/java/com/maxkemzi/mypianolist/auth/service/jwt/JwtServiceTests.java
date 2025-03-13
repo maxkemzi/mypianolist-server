@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,16 +12,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class JwtServiceTests {
 	private final JwtService service;
+	private JwtUser mockJwtUser;
 
 	@Autowired
 	public JwtServiceTests(JwtService service) {
 		this.service = service;
 	}
 
+	@BeforeEach
+	public void setUpBeforeEach() {
+		this.mockJwtUser = new JwtUser("username", "avatar");
+	}
+
 	@Test
 	public void testGenerateAccessAndRefreshTokens() {
-		JwtUser payload = new JwtUser("username", "avatar");
-		JwtTokens tokens = service.generateAccessAndRefreshTokens(payload);
+		JwtTokens tokens = service.generateAccessAndRefreshTokens(mockJwtUser);
 
 		String accessToken = tokens.getAccess();
 		String refreshToken = tokens.getRefresh();
@@ -36,25 +42,23 @@ public class JwtServiceTests {
 
 	@Test
 	public void testVerifyAccessToken() {
-		JwtUser expected = new JwtUser("username", "avatar");
-		JwtTokens tokens = service.generateAccessAndRefreshTokens(expected);
+		JwtTokens tokens = service.generateAccessAndRefreshTokens(mockJwtUser);
 
-		JwtUser actual = service.verifyAccessToken(tokens.getAccess());
+		JwtUser actualJwtUser = service.verifyAccessToken(tokens.getAccess());
 
-		assertNotNull(actual, "Payload should not be null.");
-		assertEquals(expected.getUsername(), actual.getUsername(), "Usernames should match.");
-		assertEquals(expected.getAvatar(), actual.getAvatar(), "Avatars should match.");
+		assertNotNull(actualJwtUser, "User should not be null.");
+		assertEquals(mockJwtUser.getUsername(), actualJwtUser.getUsername(), "Usernames should match.");
+		assertEquals(mockJwtUser.getAvatar(), actualJwtUser.getAvatar(), "Avatars should match.");
 	}
 
 	@Test
 	public void testVerifyRefreshToken() {
-		JwtUser expected = new JwtUser("username", "avatar");
-		JwtTokens tokens = service.generateAccessAndRefreshTokens(expected);
+		JwtTokens tokens = service.generateAccessAndRefreshTokens(mockJwtUser);
 
-		JwtUser actual = service.verifyRefreshToken(tokens.getRefresh());
+		JwtUser actualJwtUser = service.verifyRefreshToken(tokens.getRefresh());
 
-		assertNotNull(actual, "Payload should not be null.");
-		assertEquals(expected.getUsername(), actual.getUsername(), "Usernames should match.");
-		assertEquals(expected.getAvatar(), actual.getAvatar(), "Avatars should match.");
+		assertNotNull(actualJwtUser, "User should not be null.");
+		assertEquals(mockJwtUser.getUsername(), actualJwtUser.getUsername(), "Usernames should match.");
+		assertEquals(mockJwtUser.getAvatar(), actualJwtUser.getAvatar(), "Avatars should match.");
 	}
 }
