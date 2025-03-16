@@ -3,6 +3,7 @@ package com.maxkemzi.mypianolist.auth.service.jwt;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,24 +42,36 @@ public class JwtServiceTests {
 	}
 
 	@Test
-	public void testVerifyAccessToken() {
+	public void testVerifyValidAccessToken() {
 		JwtTokens tokens = service.generateAccessAndRefreshTokens(mockJwtUser);
 
-		JwtUser actualJwtUser = service.verifyAccessToken(tokens.getAccess());
+		JwtUser jwtUser = service.verifyAccessToken(tokens.getAccess());
 
-		assertNotNull(actualJwtUser, "User should not be null.");
-		assertEquals(mockJwtUser.getUsername(), actualJwtUser.getUsername(), "Usernames should match.");
-		assertEquals(mockJwtUser.getAvatar(), actualJwtUser.getAvatar(), "Avatars should match.");
+		assertNotNull(jwtUser, "User should not be null.");
+		assertEquals(mockJwtUser.getUsername(), jwtUser.getUsername(), "Usernames should match.");
+		assertEquals(mockJwtUser.getAvatar(), jwtUser.getAvatar(), "Avatars should match.");
 	}
 
 	@Test
-	public void testVerifyRefreshToken() {
+	public void testVerifyInvalidAccessToken() {
+		JwtUser jwtUser = service.verifyAccessToken("invalid_token");
+		assertNull(jwtUser, "User should be null.");
+	}
+
+	@Test
+	public void testVerifyValidRefreshToken() {
 		JwtTokens tokens = service.generateAccessAndRefreshTokens(mockJwtUser);
 
-		JwtUser actualJwtUser = service.verifyRefreshToken(tokens.getRefresh());
+		JwtUser jwtUser = service.verifyRefreshToken(tokens.getRefresh());
 
-		assertNotNull(actualJwtUser, "User should not be null.");
-		assertEquals(mockJwtUser.getUsername(), actualJwtUser.getUsername(), "Usernames should match.");
-		assertEquals(mockJwtUser.getAvatar(), actualJwtUser.getAvatar(), "Avatars should match.");
+		assertNotNull(jwtUser, "User should not be null.");
+		assertEquals(mockJwtUser.getUsername(), jwtUser.getUsername(), "Usernames should match.");
+		assertEquals(mockJwtUser.getAvatar(), jwtUser.getAvatar(), "Avatars should match.");
+	}
+
+	@Test
+	public void testVerifyInvalidRefreshToken() {
+		JwtUser jwtUser = service.verifyRefreshToken("invalid_token");
+		assertNull(jwtUser, "User should be null.");
 	}
 }
