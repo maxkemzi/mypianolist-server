@@ -1,6 +1,7 @@
 package com.maxkemzi.mypianolist.user.controller;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 import com.maxkemzi.mypianolist.user.model.User;
@@ -34,6 +35,6 @@ public class UserResponseDto {
 	}
 
 	public LocalDateTime getCreatedAt() {
-		return createdAt;
+		return createdAt.truncatedTo(ChronoUnit.MILLIS);
 	}
 }
