@@ -1,13 +1,11 @@
 package com.maxkemzi.mypianolist.auth.controller;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.function.Supplier;
-
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,6 +17,9 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.maxkemzi.mypianolist.auth.refreshtoken.service.RefreshTokenService;
+import com.maxkemzi.mypianolist.auth.service.AuthService;
+import com.maxkemzi.mypianolist.auth.service.RegisterPayload;
 import com.maxkemzi.mypianolist.user.controller.UserResponseDto;
 import com.maxkemzi.mypianolist.user.model.User;
 import com.maxkemzi.mypianolist.user.service.UserService;
@@ -30,17 +31,21 @@ public class AuthControllerTests {
 	private final MockMvc mockMvc;
 	private final ObjectMapper objectMapper;
 	private final UserService userService;
+	private final AuthService authService;
+	private final RefreshTokenService refreshTokenService;
 
 	@Autowired
 	public AuthControllerTests(JdbcTemplate jdbc, MockMvc mockMvc, ObjectMapper objectMapper,
-			UserService userService) {
+			UserService userService, AuthService authService, RefreshTokenService refreshTokenService) {
 		this.jdbc = jdbc;
 		this.mockMvc = mockMvc;
 		this.objectMapper = objectMapper;
 		this.userService = userService;
+		this.authService = authService;
+		this.refreshTokenService = refreshTokenService;
 	}
 
-	@AfterEach
+	@BeforeEach
 	public void cleanDatabase() {
 		jdbc.execute("DELETE FROM user_account;");
 		jdbc.execute("DELETE FROM refresh_token;");
@@ -49,7 +54,6 @@ public class AuthControllerTests {
 	@Test
 	public void testRegister() throws Exception {
 		RegisterRequest content = new RegisterRequest("max", "max@gmail.com", "qwerty77");
-
 		MvcResult mvcResult = mockMvc
 				.perform(
 						MockMvcRequestBuilders.post("/api/auth/register").contentType(MediaType.APPLICATION_JSON)
@@ -57,15 +61,29 @@ public class AuthControllerTests {
 				.andExpect(status().isCreated())
 				.andReturn();
 
-		Supplier<User> findByUsername = () -> {
-			return userService.findByUsername("max");
-		};
+		assertTrue(userService.existsByUsername("max"), "Should create a new user.");
 
-		assertDoesNotThrow(findByUsername::get);
-
-		User user = findByUsername.get();
+		User user = userService.findByUsername("max");
 		UserResponseDto userResDto = new UserResponseDto(user);
 		assertEquals(objectMapper.writeValueAsString(userResDto), mvcResult.getResponse().getContentAsString(),
 				"Should have a correct response.");
+	}
+
+	@Test
+	public void testLogin() throws Exception {
+		authService.register(new RegisterPayload("max", "max@gmail.com", "qwerty77"));
+
+		LoginRequest content = new LoginRequest("max", "qwerty77");
+		mockMvc
+				.perform(
+						MockMvcRequestBuilders.post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+								.content(objectMapper.writeValueAsString(content)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.accessToken").isString())
+				.andExpect(jsonPath("$.user.username").value("max"))
+				.andExpect(jsonPath("$.user.avatar").isEmpty())
+				.andReturn();
+
+		assertTrue(refreshTokenService.existsByUsername("max"), "Should create a refresh token for the user.");
 	}
 }

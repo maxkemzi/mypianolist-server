@@ -56,4 +56,8 @@ public class RefreshTokenService {
 
 		return token.get();
 	}
+
+	public boolean existsByUsername(String username) {
+		return repository.existsByUserUsername(username);
+	}
 }

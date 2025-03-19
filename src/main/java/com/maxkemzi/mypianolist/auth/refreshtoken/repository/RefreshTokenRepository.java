@@ -12,4 +12,6 @@ public interface RefreshTokenRepository extends CrudRepository<RefreshToken, UUI
 	void deleteByToken(String token);
 
 	boolean existsByToken(String token);
+
+	boolean existsByUserUsername(String username);
 }
