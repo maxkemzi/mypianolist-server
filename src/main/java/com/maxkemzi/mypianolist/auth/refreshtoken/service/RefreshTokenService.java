@@ -27,9 +27,7 @@ public class RefreshTokenService {
 
 		try {
 			token = findByUsername(payload.getUsername());
-			if (payload.getToken() != null) {
-				token.setToken(payload.getToken());
-			}
+			token.setToken(payload.getToken());
 		} catch (RefreshTokenNotFoundException e) {
 			User user = userService.findByUsername(payload.getUsername());
 			token = new RefreshToken(payload.getToken(), user);
