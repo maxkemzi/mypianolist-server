@@ -1,7 +1,9 @@
 package com.maxkemzi.mypianolist.auth.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -114,16 +116,26 @@ public class AuthControllerTests {
 				.andExpect(jsonPath("$.user.avatar").isEmpty())
 				.andReturn();
 
-		System.out.println("Expected:" + mvcResult.getResponse().getCookie("refreshToken").getValue());
-		System.out.println("Unexpected:" + loginData.getTokens().getRefresh());
-
 		RefreshToken refreshToken = refreshTokenService.findByUsername("max");
 		assertNotEquals(loginData.getTokens().getRefresh(), refreshToken.getToken(),
 				"Should update refresh token in database.");
 		assertEquals(mvcResult.getResponse().getCookie("refreshToken").getValue(), refreshToken.getToken(),
 				"Should update refresh token in cookies.");
-
 	}
 
-	// TODO: Add test for /logout
+	@Test
+	public void testLogout() throws Exception {
+		authService.register(new RegisterPayload("max", "max@gmail.com", "qwerty77"));
+
+		LoginData loginData = authService.logIn(new LoginPayload("max", "qwerty77"));
+		Cookie refreshTokenCookie = refreshTokenCookieFactory.create(loginData.getTokens().getRefresh());
+
+		MvcResult mvcResult = mockMvc
+				.perform(MockMvcRequestBuilders.delete("/api/auth/logout").cookie(refreshTokenCookie))
+				.andExpect(status().isNoContent())
+				.andReturn();
+
+		assertFalse(refreshTokenService.existsByUsername("max"), "Should delete refresh token from database.");
+		assertNull(mvcResult.getResponse().getCookie("refreshToken").getValue(), "Should remove refreshToken cookie.");
+	}
 }
