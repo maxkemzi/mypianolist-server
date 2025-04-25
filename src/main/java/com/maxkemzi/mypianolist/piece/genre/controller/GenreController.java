@@ -38,7 +38,7 @@ public class GenreController {
 	@Secured(UserRole.Constants.ADMIN)
 	@PostMapping
 	public ResponseEntity<GenreResponseDto> create(@Valid @RequestBody GenreRequest req) {
-		GenreCreatePayload payload = new GenreCreatePayload(req.getName());
+		GenreCreatePayload payload = new GenreCreatePayload(req.getName(), req.getImage());
 
 		Genre genre = service.create(payload);
 

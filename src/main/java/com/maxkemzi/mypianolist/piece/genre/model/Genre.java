@@ -14,15 +14,23 @@ public class Genre extends BaseEntity {
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;
 
+	@Column(name = "image")
+	private String image;
+
 	protected Genre() {
 	}
 
-	public Genre(String name) {
+	public Genre(String name, String image) {
 		this.name = name;
+		this.image = image;
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public String getImage() {
+		return image;
 	}
 
 	protected boolean entityEquals(Object o) {
@@ -36,7 +44,8 @@ public class Genre extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return "Genre [getId()=" + getId() + ", getName()=" + getName() + ", getCreatedAt()=" + getCreatedAt()
+		return "Genre [getId()=" + getId() + ", getName()=" + getName() + ", getImage()=" + getImage()
+				+ ", getCreatedAt()=" + getCreatedAt()
 				+ ", getUpdatedAt()=" + getUpdatedAt() + "]";
 	}
 }

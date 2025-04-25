@@ -27,7 +27,7 @@ public class GenreService {
 			throw new GenreAlreadyExistsException();
 		}
 
-		Genre genre = new Genre(payload.getName());
+		Genre genre = new Genre(payload.getName(), payload.getImage());
 
 		return repository.save(genre);
 	}

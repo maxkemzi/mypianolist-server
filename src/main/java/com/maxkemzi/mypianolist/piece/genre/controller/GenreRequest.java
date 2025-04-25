@@ -8,14 +8,21 @@ public class GenreRequest {
 	@Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters.")
 	private String name;
 
+	private String image;
+
 	protected GenreRequest() {
 	}
 
-	public GenreRequest(String name) {
+	public GenreRequest(String name, String image) {
 		this.name = name;
+		this.image = image;
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public String getImage() {
+		return image;
 	}
 }
