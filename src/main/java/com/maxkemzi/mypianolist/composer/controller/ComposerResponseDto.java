@@ -25,7 +25,7 @@ public class ComposerResponseDto {
 		this.lastName = composer.getLastName();
 		this.nickname = composer.getNickname();
 		this.biography = composer.getBiography();
-		this.photo = composer.getPhoto();
+		this.photo = "/images/composers/" + composer.getPhoto();
 		this.bornAt = composer.getBornAt();
 		this.diedAt = composer.getDiedAt();
 	}
