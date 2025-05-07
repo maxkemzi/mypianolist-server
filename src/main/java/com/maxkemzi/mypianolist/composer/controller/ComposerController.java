@@ -59,6 +59,15 @@ public class ComposerController {
 		return new PageResponseDto<>(resPage);
 	}
 
+	@GetMapping("/{id}")
+	public ResponseEntity<ComposerResponseDto> findById(@PathVariable("id") UUID id) {
+		Composer composer = service.findById(id);
+
+		ComposerResponseDto resDto = new ComposerResponseDto(composer);
+
+		return ResponseEntity.ok(resDto);
+	}
+
 	@Secured(UserRole.Constants.ADMIN)
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteById(@PathVariable("id") UUID id) {
