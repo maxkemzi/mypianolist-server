@@ -37,7 +37,7 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
 			}
 
 			String refreshToken = getRefreshTokenFromCookies(cookies);
-			if (refreshToken.isBlank()) {
+			if (refreshToken == null || refreshToken.isBlank()) {
 				sendUnauthorizedError(res);
 				return;
 			}
