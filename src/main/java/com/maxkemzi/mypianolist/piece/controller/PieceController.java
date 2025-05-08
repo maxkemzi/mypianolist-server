@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.piece.model.Piece;
+import com.maxkemzi.mypianolist.piece.service.ExtendedPiece;
 import com.maxkemzi.mypianolist.piece.service.PieceCreatePayload;
 import com.maxkemzi.mypianolist.piece.service.PieceService;
 import com.maxkemzi.mypianolist.user.model.UserRole;
@@ -38,32 +39,39 @@ public class PieceController {
 
 	@Secured(UserRole.Constants.ADMIN)
 	@PostMapping
-	public ResponseEntity<PieceResponseDto> create(@Valid @RequestBody PieceRequest req) {
+	public ResponseEntity<ExtendedPieceResponseDto> create(@Valid @RequestBody PieceRequest req) {
 		PieceCreatePayload payload = new PieceCreatePayload(req.getTitle(), req.getDescription(), req.getImage(),
 				req.getComposedAt(), req.getComposerId(), req.getGenreId());
 
 		Piece piece = service.create(payload);
 
-		PieceResponseDto resDto = new PieceResponseDto(piece);
+		ExtendedPiece extendedPiece = service.extend(piece);
+
+		ExtendedPieceResponseDto resDto = new ExtendedPieceResponseDto(extendedPiece);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(resDto);
 	}
 
 	@GetMapping
-	public PageResponseDto<PieceResponseDto> findAll(@RequestParam(name = "genre", required = false) String genreName,
+	public PageResponseDto<ExtendedPieceResponseDto> findAll(
+			@RequestParam(name = "genre", required = false) String genreName,
 			@RequestParam(name = "search", defaultValue = "") String search, @PageableDefault Pageable pageable) {
 		Page<Piece> page = service.findAll(genreName, search, pageable);
 
-		Page<PieceResponseDto> resPage = page.map(PieceResponseDto::new);
+		Page<ExtendedPiece> extendedPage = service.extend(page);
+
+		Page<ExtendedPieceResponseDto> resPage = extendedPage.map(ExtendedPieceResponseDto::new);
 
 		return new PageResponseDto<>(resPage);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<PieceResponseDto> findById(@PathVariable("id") UUID id) {
+	public ResponseEntity<ExtendedPieceResponseDto> findById(@PathVariable("id") UUID id) {
 		Piece piece = service.findById(id);
 
-		PieceResponseDto resDto = new PieceResponseDto(piece);
+		ExtendedPiece extendedPiece = service.extend(piece);
+
+		ExtendedPieceResponseDto resDto = new ExtendedPieceResponseDto(extendedPiece);
 
 		return ResponseEntity.ok(resDto);
 	}

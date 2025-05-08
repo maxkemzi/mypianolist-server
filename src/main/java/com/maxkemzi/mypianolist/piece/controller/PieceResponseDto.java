@@ -19,14 +19,14 @@ public class PieceResponseDto {
 	protected PieceResponseDto() {
 	}
 
-	public PieceResponseDto(Piece piece) {
-		this.id = piece.getId();
-		this.title = piece.getTitle();
-		this.description = piece.getDescription();
-		this.image = piece.getImage();
-		this.composedAt = piece.getComposedAt();
-		this.genre = new GenreResponseDto(piece.getGenre());
-		this.composer = new ComposerResponseDto(piece.getComposer());
+	public PieceResponseDto(Piece p) {
+		this.id = p.getId();
+		this.title = p.getTitle();
+		this.description = p.getDescription();
+		this.image = p.getImage();
+		this.composedAt = p.getComposedAt();
+		this.genre = new GenreResponseDto(p.getGenre());
+		this.composer = new ComposerResponseDto(p.getComposer());
 	}
 
 	public UUID getId() {

@@ -17,4 +17,6 @@ public interface UserPieceRepository extends CrudRepository<UserPiece, UUID> {
 	Optional<UserPiece> findByUserUsernameAndPieceId(String username, UUID pieceId);
 
 	void deleteByUserUsernameAndPieceId(String username, UUID pieceId);
+
+	long countByPieceId(UUID pieceId);
 }

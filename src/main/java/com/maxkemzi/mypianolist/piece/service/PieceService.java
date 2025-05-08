@@ -13,6 +13,8 @@ import com.maxkemzi.mypianolist.piece.genre.model.Genre;
 import com.maxkemzi.mypianolist.piece.genre.service.GenreService;
 import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
+import com.maxkemzi.mypianolist.user.favouritepiece.repository.FavouritePieceRepository;
+import com.maxkemzi.mypianolist.user.piece.repository.UserPieceRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -21,11 +23,16 @@ public class PieceService {
 	private final PieceRepository repository;
 	private final GenreService genreService;
 	private final ComposerService composerService;
+	private final FavouritePieceRepository favouritePieceRepository;
+	private final UserPieceRepository userPieceRepository;
 
-	public PieceService(PieceRepository repository, GenreService genreService, ComposerService composerService) {
+	public PieceService(PieceRepository repository, GenreService genreService, ComposerService composerService,
+			FavouritePieceRepository favouritePieceRepository, UserPieceRepository userPieceRepository) {
 		this.repository = repository;
 		this.genreService = genreService;
 		this.composerService = composerService;
+		this.favouritePieceRepository = favouritePieceRepository;
+		this.userPieceRepository = userPieceRepository;
 	}
 
 	@Transactional
@@ -65,5 +72,16 @@ public class PieceService {
 		}
 
 		repository.deleteById(id);
+	}
+
+	public Page<ExtendedPiece> extend(Page<Piece> page) {
+		return page.map(piece -> extend(piece));
+	}
+
+	public ExtendedPiece extend(Piece piece) {
+		long favourites = this.favouritePieceRepository.countByPieceId(piece.getId());
+		long learners = this.userPieceRepository.countByPieceId(piece.getId());
+
+		return new ExtendedPiece(piece, favourites, learners);
 	}
 }

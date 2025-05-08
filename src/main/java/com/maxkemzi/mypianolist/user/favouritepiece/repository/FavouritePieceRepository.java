@@ -14,4 +14,6 @@ public interface FavouritePieceRepository extends CrudRepository<FavouritePiece,
 	void deleteByUserUsernameAndPieceId(String username, UUID pieceId);
 
 	boolean existsByUserUsernameAndPieceId(String username, UUID pieceId);
+
+	long countByPieceId(UUID pieceId);
 }
