@@ -1,4 +1,4 @@
-package com.maxkemzi.mypianolist.user.favouritecomposer.controller;
+package com.maxkemzi.mypianolist.user.favoritecomposer.controller;
 
 import java.util.UUID;
 
@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.composer.controller.ComposerResponseDto;
-import com.maxkemzi.mypianolist.user.favouritecomposer.model.FavouriteComposer;
-import com.maxkemzi.mypianolist.user.favouritecomposer.service.FavouriteComposerCreatePayload;
-import com.maxkemzi.mypianolist.user.favouritecomposer.service.FavouriteComposerService;
+import com.maxkemzi.mypianolist.user.favoritecomposer.model.FavoriteComposer;
+import com.maxkemzi.mypianolist.user.favoritecomposer.service.FavoriteComposerCreatePayload;
+import com.maxkemzi.mypianolist.user.favoritecomposer.service.FavoriteComposerService;
 import com.maxkemzi.mypianolist.user.model.UserRole;
 import com.maxkemzi.mypianolist.util.PageResponseDto;
 
@@ -31,32 +31,32 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/users")
 @Validated
-public class FavouriteComposerController {
-	private final FavouriteComposerService service;
+public class FavoriteComposerController {
+	private final FavoriteComposerService service;
 
-	public FavouriteComposerController(FavouriteComposerService service) {
+	public FavoriteComposerController(FavoriteComposerService service) {
 		this.service = service;
 	}
 
 	@Secured(UserRole.Constants.USER)
-	@PostMapping("/favourite-composers")
-	public ResponseEntity<FavouriteComposerResponseDto> create(@Valid @RequestBody FavouriteComposerRequest req) {
+	@PostMapping("/favorite-composers")
+	public ResponseEntity<FavoriteComposerResponseDto> create(@Valid @RequestBody FavoriteComposerRequest req) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-		FavouriteComposerCreatePayload payload = new FavouriteComposerCreatePayload(auth.getName(),
+		FavoriteComposerCreatePayload payload = new FavoriteComposerCreatePayload(auth.getName(),
 				req.getComposerId());
 
-		FavouriteComposer favComposer = service.create(payload);
+		FavoriteComposer favComposer = service.create(payload);
 
-		FavouriteComposerResponseDto resDto = new FavouriteComposerResponseDto(favComposer);
+		FavoriteComposerResponseDto resDto = new FavoriteComposerResponseDto(favComposer);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(resDto);
 	}
 
-	@GetMapping("/{username}/favourite-composers")
+	@GetMapping("/{username}/favorite-composers")
 	public PageResponseDto<ComposerResponseDto> findByUsername(@PathVariable("username") String username,
 			@PageableDefault Pageable pageable) {
-		Page<FavouriteComposer> page = service.findByUsername(username, pageable);
+		Page<FavoriteComposer> page = service.findByUsername(username, pageable);
 
 		Page<ComposerResponseDto> resPage = page.map(ufc -> new ComposerResponseDto(ufc.getComposer()));
 
@@ -64,7 +64,7 @@ public class FavouriteComposerController {
 	}
 
 	@Secured(UserRole.Constants.USER)
-	@DeleteMapping("/favourite-composers/{composerId}")
+	@DeleteMapping("/favorite-composers/{composerId}")
 	public ResponseEntity<Void> deleteByUsernameAndComposerId(@PathVariable("composerId") UUID composerId) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 

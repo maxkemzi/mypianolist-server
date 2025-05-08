@@ -1,15 +1,15 @@
-package com.maxkemzi.mypianolist.user.favouritepiece.repository;
+package com.maxkemzi.mypianolist.user.favoritepiece.repository;
 
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.maxkemzi.mypianolist.user.favouritepiece.model.FavouritePiece;
+import com.maxkemzi.mypianolist.user.favoritepiece.model.FavoritePiece;
 import com.maxkemzi.mypianolist.db.CrudRepository;
 
-public interface FavouritePieceRepository extends CrudRepository<FavouritePiece, UUID> {
-	Page<FavouritePiece> findByUserUsername(String username, Pageable pageable);
+public interface FavoritePieceRepository extends CrudRepository<FavoritePiece, UUID> {
+	Page<FavoritePiece> findByUserUsername(String username, Pageable pageable);
 
 	void deleteByUserUsernameAndPieceId(String username, UUID pieceId);
 

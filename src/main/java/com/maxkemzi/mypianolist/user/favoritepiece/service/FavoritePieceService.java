@@ -1,4 +1,4 @@
-package com.maxkemzi.mypianolist.user.favouritepiece.service;
+package com.maxkemzi.mypianolist.user.favoritepiece.service;
 
 import java.util.UUID;
 
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.piece.service.PieceService;
-import com.maxkemzi.mypianolist.user.favouritepiece.model.FavouritePiece;
-import com.maxkemzi.mypianolist.user.favouritepiece.repository.FavouritePieceRepository;
+import com.maxkemzi.mypianolist.user.favoritepiece.model.FavoritePiece;
+import com.maxkemzi.mypianolist.user.favoritepiece.repository.FavoritePieceRepository;
 import com.maxkemzi.mypianolist.user.model.User;
 import com.maxkemzi.mypianolist.user.service.UserNotFoundException;
 import com.maxkemzi.mypianolist.user.service.UserService;
@@ -17,12 +17,12 @@ import com.maxkemzi.mypianolist.user.service.UserService;
 import jakarta.transaction.Transactional;
 
 @Service
-public class FavouritePieceService {
-	private final FavouritePieceRepository repository;
+public class FavoritePieceService {
+	private final FavoritePieceRepository repository;
 	private final UserService userService;
 	private final PieceService pieceService;
 
-	public FavouritePieceService(FavouritePieceRepository repository, UserService userService,
+	public FavoritePieceService(FavoritePieceRepository repository, UserService userService,
 			PieceService pieceService) {
 		this.repository = repository;
 		this.userService = userService;
@@ -30,22 +30,22 @@ public class FavouritePieceService {
 	}
 
 	@Transactional
-	public FavouritePiece create(FavouritePieceCreatePayload payload)
-			throws FavouritePieceAlreadyExistsException {
+	public FavoritePiece create(FavoritePieceCreatePayload payload)
+			throws FavoritePieceAlreadyExistsException {
 		boolean alreadyExists = repository.existsByUserUsernameAndPieceId(payload.getUsername(), payload.getPieceId());
 		if (alreadyExists) {
-			throw new FavouritePieceAlreadyExistsException();
+			throw new FavoritePieceAlreadyExistsException();
 		}
 
 		User user = userService.findByUsername(payload.getUsername());
 		Piece piece = pieceService.findById(payload.getPieceId());
 
-		FavouritePiece favPiece = new FavouritePiece(user, piece);
+		FavoritePiece favPiece = new FavoritePiece(user, piece);
 
 		return repository.save(favPiece);
 	}
 
-	public Page<FavouritePiece> findByUsername(String username, Pageable pageable) throws UserNotFoundException {
+	public Page<FavoritePiece> findByUsername(String username, Pageable pageable) throws UserNotFoundException {
 		boolean userExists = userService.existsByUsername(username);
 		if (!userExists) {
 			throw new UserNotFoundException();
@@ -55,10 +55,10 @@ public class FavouritePieceService {
 	}
 
 	@Transactional
-	public void deleteByUsernameAndPieceId(String username, UUID pieceId) throws FavouritePieceNotFoundException {
+	public void deleteByUsernameAndPieceId(String username, UUID pieceId) throws FavoritePieceNotFoundException {
 		boolean exists = repository.existsByUserUsernameAndPieceId(username, pieceId);
 		if (!exists) {
-			throw new FavouritePieceNotFoundException();
+			throw new FavoritePieceNotFoundException();
 		}
 
 		repository.deleteByUserUsernameAndPieceId(username, pieceId);

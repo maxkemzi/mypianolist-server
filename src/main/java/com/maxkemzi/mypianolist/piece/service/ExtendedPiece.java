@@ -4,15 +4,15 @@ import com.maxkemzi.mypianolist.piece.model.Piece;
 
 public class ExtendedPiece {
 	private Piece piece;
-	private long favourites;
+	private long favorites;
 	private long learners;
 
 	protected ExtendedPiece() {
 	}
 
-	public ExtendedPiece(Piece piece, long favourites, long learners) {
+	public ExtendedPiece(Piece piece, long favorites, long learners) {
 		this.piece = piece;
-		this.favourites = favourites;
+		this.favorites = favorites;
 		this.learners = learners;
 	}
 
@@ -20,8 +20,8 @@ public class ExtendedPiece {
 		return piece;
 	}
 
-	public long getFavourites() {
-		return favourites;
+	public long getFavorites() {
+		return favorites;
 	}
 
 	public long getLearners() {

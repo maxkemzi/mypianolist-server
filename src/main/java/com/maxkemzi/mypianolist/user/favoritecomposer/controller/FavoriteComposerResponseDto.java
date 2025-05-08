@@ -1,20 +1,20 @@
-package com.maxkemzi.mypianolist.user.favouritecomposer.controller;
+package com.maxkemzi.mypianolist.user.favoritecomposer.controller;
 
 import java.util.UUID;
 
 import com.maxkemzi.mypianolist.composer.controller.ComposerResponseDto;
 import com.maxkemzi.mypianolist.user.controller.UserResponseDto;
-import com.maxkemzi.mypianolist.user.favouritecomposer.model.FavouriteComposer;
+import com.maxkemzi.mypianolist.user.favoritecomposer.model.FavoriteComposer;
 
-public class FavouriteComposerResponseDto {
+public class FavoriteComposerResponseDto {
 	private UUID id;
 	private UserResponseDto user;
 	private ComposerResponseDto composer;
 
-	protected FavouriteComposerResponseDto() {
+	protected FavoriteComposerResponseDto() {
 	}
 
-	public FavouriteComposerResponseDto(FavouriteComposer fc) {
+	public FavoriteComposerResponseDto(FavoriteComposer fc) {
 		this.id = fc.getId();
 		this.user = new UserResponseDto(fc.getUser());
 		this.composer = new ComposerResponseDto(fc.getComposer());

@@ -1,12 +1,12 @@
-package com.maxkemzi.mypianolist.user.favouritepiece.model;
+package com.maxkemzi.mypianolist.user.favoritecomposer.model;
 
 import java.util.Objects;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.db.BaseEntity;
-import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.user.model.User;
 
 import jakarta.persistence.Entity;
@@ -15,37 +15,37 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "favourite_piece")
-public class FavouritePiece extends BaseEntity {
+@Table(name = "favorite_composer")
+public class FavoriteComposer extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
 
 	@ManyToOne
-	@JoinColumn(name = "piece_id", nullable = false)
+	@JoinColumn(name = "composer_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Piece piece;
+	private Composer composer;
 
-	protected FavouritePiece() {
+	protected FavoriteComposer() {
 	}
 
-	public FavouritePiece(User user, Piece piece) {
+	public FavoriteComposer(User user, Composer composer) {
 		this.user = user;
-		this.piece = piece;
+		this.composer = composer;
 	}
 
 	public User getUser() {
 		return user;
 	}
 
-	public Piece getPiece() {
-		return piece;
+	public Composer getComposer() {
+		return composer;
 	}
 
 	protected boolean entityEquals(Object o) {
-		FavouritePiece fp = (FavouritePiece) o;
-		return Objects.equals(getId(), fp.getId());
+		FavoriteComposer fc = (FavoriteComposer) o;
+		return Objects.equals(getId(), fc.getId());
 	}
 
 	protected Object[] getHashCodeValues() {
@@ -54,7 +54,8 @@ public class FavouritePiece extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return "FavouritePiece [getId()=" + getId() + ", getUser()=" + getUser() + ", getPiece()=" + getPiece()
-				+ ", getCreatedAt()=" + getCreatedAt() + ", getUpdatedAt()=" + getUpdatedAt() + "]";
+		return "FavoriteComposer [getId()=" + getId() + ", getUser()="
+				+ getUser() + ", getComposer()=" + getComposer() + ", getCreatedAt()=" + getCreatedAt()
+				+ ", getUpdatedAt()=" + getUpdatedAt() + "]";
 	}
 }

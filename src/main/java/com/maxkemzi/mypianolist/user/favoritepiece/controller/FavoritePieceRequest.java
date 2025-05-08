@@ -1,17 +1,17 @@
-package com.maxkemzi.mypianolist.user.favouritepiece.controller;
+package com.maxkemzi.mypianolist.user.favoritepiece.controller;
 
 import java.util.UUID;
 
 import jakarta.validation.constraints.NotNull;
 
-public class FavouritePieceRequest {
+public class FavoritePieceRequest {
 	@NotNull(message = "Piece id is required.")
 	private UUID pieceId;
 
-	protected FavouritePieceRequest() {
+	protected FavoritePieceRequest() {
 	}
 
-	public FavouritePieceRequest(UUID pieceId) {
+	public FavoritePieceRequest(UUID pieceId) {
 		this.pieceId = pieceId;
 	}
 

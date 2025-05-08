@@ -1,4 +1,4 @@
-package com.maxkemzi.mypianolist.user.favouritepiece.controller;
+package com.maxkemzi.mypianolist.user.favoritepiece.controller;
 
 import java.util.UUID;
 
@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.piece.controller.PieceResponseDto;
-import com.maxkemzi.mypianolist.user.favouritepiece.model.FavouritePiece;
-import com.maxkemzi.mypianolist.user.favouritepiece.service.FavouritePieceCreatePayload;
-import com.maxkemzi.mypianolist.user.favouritepiece.service.FavouritePieceService;
+import com.maxkemzi.mypianolist.user.favoritepiece.model.FavoritePiece;
+import com.maxkemzi.mypianolist.user.favoritepiece.service.FavoritePieceCreatePayload;
+import com.maxkemzi.mypianolist.user.favoritepiece.service.FavoritePieceService;
 import com.maxkemzi.mypianolist.user.model.UserRole;
 import com.maxkemzi.mypianolist.util.PageResponseDto;
 
@@ -31,31 +31,31 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/users")
 @Validated
-public class FavouritePieceController {
-	private final FavouritePieceService service;
+public class FavoritePieceController {
+	private final FavoritePieceService service;
 
-	public FavouritePieceController(FavouritePieceService service) {
+	public FavoritePieceController(FavoritePieceService service) {
 		this.service = service;
 	}
 
 	@Secured(UserRole.Constants.USER)
-	@PostMapping("/favourite-pieces")
-	public ResponseEntity<FavouritePieceResponseDto> create(@Valid @RequestBody FavouritePieceRequest req) {
+	@PostMapping("/favorite-pieces")
+	public ResponseEntity<FavoritePieceResponseDto> create(@Valid @RequestBody FavoritePieceRequest req) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-		FavouritePieceCreatePayload payload = new FavouritePieceCreatePayload(auth.getName(), req.getPieceId());
+		FavoritePieceCreatePayload payload = new FavoritePieceCreatePayload(auth.getName(), req.getPieceId());
 
-		FavouritePiece favPiece = service.create(payload);
+		FavoritePiece favPiece = service.create(payload);
 
-		FavouritePieceResponseDto resDto = new FavouritePieceResponseDto(favPiece);
+		FavoritePieceResponseDto resDto = new FavoritePieceResponseDto(favPiece);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(resDto);
 	}
 
-	@GetMapping("/{username}/favourite-pieces")
+	@GetMapping("/{username}/favorite-pieces")
 	public PageResponseDto<PieceResponseDto> findByUsername(@PathVariable("username") String username,
 			@PageableDefault Pageable pageable) {
-		Page<FavouritePiece> page = service.findByUsername(username, pageable);
+		Page<FavoritePiece> page = service.findByUsername(username, pageable);
 
 		Page<PieceResponseDto> resPage = page.map(ufp -> new PieceResponseDto(ufp.getPiece()));
 
@@ -63,7 +63,7 @@ public class FavouritePieceController {
 	}
 
 	@Secured(UserRole.Constants.USER)
-	@DeleteMapping("/favourite-pieces/{pieceId}")
+	@DeleteMapping("/favorite-pieces/{pieceId}")
 	public ResponseEntity<Void> deleteByUsernameAndPieceId(@PathVariable("pieceId") UUID pieceId) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
