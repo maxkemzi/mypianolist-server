@@ -15,7 +15,7 @@ public class GenreResponseDto {
 	public GenreResponseDto(Genre g) {
 		this.id = g.getId();
 		this.name = g.getName();
-		this.image = "/images/genres/" + g.getImage();
+		this.image = g.getImage() != null && !g.getImage().isBlank() ? "/images/genres/" + g.getImage() : null;
 	}
 
 	public UUID getId() {

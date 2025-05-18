@@ -19,15 +19,15 @@ public class ComposerResponseDto {
 	protected ComposerResponseDto() {
 	}
 
-	public ComposerResponseDto(Composer composer) {
-		this.id = composer.getId();
-		this.firstName = composer.getFirstName();
-		this.lastName = composer.getLastName();
-		this.nickname = composer.getNickname();
-		this.biography = composer.getBiography();
-		this.photo = "/images/composers/" + composer.getPhoto();
-		this.bornAt = composer.getBornAt();
-		this.diedAt = composer.getDiedAt();
+	public ComposerResponseDto(Composer c) {
+		this.id = c.getId();
+		this.firstName = c.getFirstName();
+		this.lastName = c.getLastName();
+		this.nickname = c.getNickname();
+		this.biography = c.getBiography();
+		this.photo = c.getPhoto() != null && !c.getPhoto().isBlank() ? "/images/composers/" + c.getPhoto() : null;
+		this.bornAt = c.getBornAt();
+		this.diedAt = c.getDiedAt();
 	}
 
 	public UUID getId() {
