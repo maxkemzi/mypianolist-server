@@ -25,9 +25,6 @@ public class Piece extends BaseEntity {
 	@Column(name = "description", nullable = false, columnDefinition = "TEXT")
 	private String description;
 
-	@Column(name = "image")
-	private String image;
-
 	@Column(name = "composed_at", nullable = false)
 	private LocalDate composedAt;
 
@@ -42,11 +39,10 @@ public class Piece extends BaseEntity {
 	protected Piece() {
 	}
 
-	public Piece(String title, String description, String image, LocalDate composedAt, Genre genre,
+	public Piece(String title, String description, LocalDate composedAt, Genre genre,
 			Composer composer) {
 		this.title = title;
 		this.description = description;
-		this.image = image;
 		this.composedAt = composedAt;
 		this.genre = genre;
 		this.composer = composer;
@@ -58,10 +54,6 @@ public class Piece extends BaseEntity {
 
 	public String getDescription() {
 		return description;
-	}
-
-	public String getImage() {
-		return image;
 	}
 
 	public LocalDate getComposedAt() {
@@ -88,7 +80,7 @@ public class Piece extends BaseEntity {
 	@Override
 	public String toString() {
 		return "Piece [getId()=" + getId()
-				+ ", getTitle()=" + getTitle() + ", getDescription()=" + getDescription() + ", getImage()=" + getImage()
+				+ ", getTitle()=" + getTitle() + ", getDescription()=" + getDescription()
 				+ ", getComposedAt()=" + getComposedAt() + ", getGenre()=" + getGenre() + ", getComposer()=" + getComposer()
 				+ ", getCreatedAt()=" + getCreatedAt() + ", getUpdatedAt()=" + getUpdatedAt()
 				+ "]";

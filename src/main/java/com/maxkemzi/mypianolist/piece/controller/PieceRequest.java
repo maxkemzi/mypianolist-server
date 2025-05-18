@@ -3,8 +3,6 @@ package com.maxkemzi.mypianolist.piece.controller;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import org.hibernate.validator.constraints.URL;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -19,9 +17,6 @@ public class PieceRequest {
 	@Size(min = 10, max = 1000, message = "Description must be between 10 and 1000 characters.")
 	private String description;
 
-	@URL(message = "Image must be a valid URL.")
-	private String image;
-
 	@NotNull(message = "Composed date is required.")
 	@Past(message = "Composed date must be in the past.")
 	private LocalDate composedAt;
@@ -35,11 +30,10 @@ public class PieceRequest {
 	protected PieceRequest() {
 	}
 
-	public PieceRequest(String title, String description, String image, LocalDate composedAt, UUID composerId,
+	public PieceRequest(String title, String description, LocalDate composedAt, UUID composerId,
 			UUID genreId) {
 		this.title = title;
 		this.description = description;
-		this.image = image;
 		this.composedAt = composedAt;
 		this.composerId = composerId;
 		this.genreId = genreId;
@@ -51,10 +45,6 @@ public class PieceRequest {
 
 	public String getDescription() {
 		return description;
-	}
-
-	public String getImage() {
-		return image;
 	}
 
 	public LocalDate getComposedAt() {

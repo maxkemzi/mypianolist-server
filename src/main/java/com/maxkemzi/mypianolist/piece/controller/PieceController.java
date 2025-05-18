@@ -40,7 +40,7 @@ public class PieceController {
 	@Secured(UserRole.Constants.ADMIN)
 	@PostMapping
 	public ResponseEntity<ExtendedPieceResponseDto> create(@Valid @RequestBody PieceRequest req) {
-		PieceCreatePayload payload = new PieceCreatePayload(req.getTitle(), req.getDescription(), req.getImage(),
+		PieceCreatePayload payload = new PieceCreatePayload(req.getTitle(), req.getDescription(),
 				req.getComposedAt(), req.getComposerId(), req.getGenreId());
 
 		Piece piece = service.create(payload);

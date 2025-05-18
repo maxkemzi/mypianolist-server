@@ -11,7 +11,6 @@ public class PieceResponseDto {
 	private UUID id;
 	private String title;
 	private String description;
-	private String image;
 	private LocalDate composedAt;
 	private GenreResponseDto genre;
 	private ComposerResponseDto composer;
@@ -23,7 +22,6 @@ public class PieceResponseDto {
 		this.id = p.getId();
 		this.title = p.getTitle();
 		this.description = p.getDescription();
-		this.image = p.getImage();
 		this.composedAt = p.getComposedAt();
 		this.genre = new GenreResponseDto(p.getGenre());
 		this.composer = new ComposerResponseDto(p.getComposer());
@@ -39,10 +37,6 @@ public class PieceResponseDto {
 
 	public String getDescription() {
 		return description;
-	}
-
-	public String getImage() {
-		return image;
 	}
 
 	public LocalDate getComposedAt() {

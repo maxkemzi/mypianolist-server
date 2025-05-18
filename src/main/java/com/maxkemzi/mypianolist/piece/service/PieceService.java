@@ -45,7 +45,7 @@ public class PieceService {
 		Genre genre = genreService.findById(payload.getGenreId());
 		Composer composer = composerService.findById(payload.getComposerId());
 
-		Piece piece = new Piece(payload.getTitle(), payload.getDescription(), payload.getImage(), payload.getComposedAt(),
+		Piece piece = new Piece(payload.getTitle(), payload.getDescription(), payload.getComposedAt(),
 				genre, composer);
 
 		return repository.save(piece);

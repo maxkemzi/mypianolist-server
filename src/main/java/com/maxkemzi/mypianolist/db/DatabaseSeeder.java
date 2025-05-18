@@ -34,7 +34,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		seedUser(new User("maxkemzi", "iam.maxkyrychenko@gmail.com", "qwerty77"));
 
-		Genre genre = seedGenre(new Genre("ambient"));
+		Genre genre = seedGenre(new Genre("ambient", null));
 
 		Composer composer = seedComposer(new Composer("Daniel", "Rosenfeld", null,
 				"Daniel Rosenfeld, known professionally as C418, is a German musician, producer and sound engineer. Known for his minimalistic ambient work, he rose to fame as the former composer and sound designer for the sandbox video game Minecraft.",
@@ -42,7 +42,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
 		seedPiece(new Piece("Sweden (Minecraft)",
 				"Here we again, this time with Sweden! While it is calm like most of the MC tracks, it's surprisingly hard to nail on the piano. The quick transitions from the simple melody to the chords are difficult when you're also supposed to highlight the top note of the chord. I also found myself contemplating some wisdom words from my teacher \"slow is not always easier\". Luckily, I'll have a few high tempo songs in a week or two :) Enjoy!",
-				"", LocalDate.of(2011, 3, 4), genre, composer));
+				LocalDate.of(2011, 3, 4), genre, composer));
 
 		System.out.println("Database seeded with initial data.");
 	}
