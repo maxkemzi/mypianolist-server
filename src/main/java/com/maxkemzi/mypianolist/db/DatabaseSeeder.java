@@ -1,88 +1,53 @@
 package com.maxkemzi.mypianolist.db;
 
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.Arrays;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
 import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.composer.repository.ComposerRepository;
-import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.piece.genre.model.Genre;
 import com.maxkemzi.mypianolist.piece.genre.repository.GenreRepository;
+import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
-import com.maxkemzi.mypianolist.user.model.User;
-import com.maxkemzi.mypianolist.user.repository.UserRepository;
 
 @Component
 public class DatabaseSeeder implements CommandLineRunner {
-	private final UserRepository userRepository;
-	private final ComposerRepository composerRepository;
 	private final GenreRepository genreRepository;
+	private final ComposerRepository composerRepository;
 	private final PieceRepository pieceRepository;
 
-	public DatabaseSeeder(UserRepository userRepository, ComposerRepository composerRepository,
-			GenreRepository genreRepository,
+	public DatabaseSeeder(GenreRepository genreRepository, ComposerRepository composerRepository,
 			PieceRepository pieceRepository) {
-		this.userRepository = userRepository;
-		this.composerRepository = composerRepository;
 		this.genreRepository = genreRepository;
+		this.composerRepository = composerRepository;
 		this.pieceRepository = pieceRepository;
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		seedUser(new User("maxkemzi", "iam.maxkyrychenko@gmail.com", "qwerty77"));
+		if (this.genreRepository.count() == 0 && this.composerRepository.count() == 0
+				&& this.pieceRepository.count() == 0) {
+			Genre classical = new Genre("classical", "classical.jpg");
+			Genre jazz = new Genre("jazz", "jazz.jpg");
+			Genre pop = new Genre("pop", "pop.jpg");
 
-		Genre genre = seedGenre(new Genre("ambient", null));
+			this.genreRepository.saveAll(Arrays.asList(classical, jazz, pop));
 
-		Composer composer = seedComposer(new Composer("Daniel", "Rosenfeld", null,
-				"Daniel Rosenfeld, known professionally as C418, is a German musician, producer and sound engineer. Known for his minimalistic ambient work, he rose to fame as the former composer and sound designer for the sandbox video game Minecraft.",
-				"", LocalDate.of(1989, 5, 9), null));
+			Composer chopin = new Composer("Frédéric", "Chopin", null,
+					"Frédéric François Chopin was a Polish composer and virtuoso pianist of the Romantic period, who wrote primarily for solo piano. He has maintained worldwide renown as a leading musician of his era, one whose 'poetic genius was based on a professional technique that was without equal in his generation'.",
+					"chopin.jpg", LocalDate.of(1810, 3, 1), LocalDate.of(1849, 10, 17));
 
-		seedPiece(new Piece("Sweden (Minecraft)",
-				"Here we again, this time with Sweden! While it is calm like most of the MC tracks, it's surprisingly hard to nail on the piano. The quick transitions from the simple melody to the chords are difficult when you're also supposed to highlight the top note of the chord. I also found myself contemplating some wisdom words from my teacher \"slow is not always easier\". Luckily, I'll have a few high tempo songs in a week or two :) Enjoy!",
-				LocalDate.of(2011, 3, 4), genre, composer));
+			this.composerRepository.save(chopin);
 
-		System.out.println("Database seeded with initial data.");
-	}
+			Piece piece1 = new Piece("Prelude, Op. 28, No. 4",
+					"The Prelude Op. 28, No. 4 by Frédéric Chopin is one of the 24 Chopin preludes. By Chopin's request, this piece was played at his own funeral, along with Mozart's Requiem. The piece is only a page long and uses a descending melody line.",
+					LocalDate.of(1838, 3, 1), classical, chopin);
+			this.pieceRepository.save(piece1);
 
-	private User seedUser(User user) {
-		Optional<User> existingUser = this.userRepository.findByUsername(user.getUsername());
-		if (existingUser.isEmpty()) {
-			return this.userRepository.save(user);
-		} else {
-			return existingUser.get();
-		}
-	}
-
-	private Composer seedComposer(Composer composer) {
-		Optional<Composer> existingComposer = this.composerRepository.findByFirstNameAndLastNameAndBornAt(
-				composer.getFirstName(),
-				composer.getLastName(), composer.getBornAt());
-		if (existingComposer.isEmpty()) {
-			return this.composerRepository.save(composer);
-		} else {
-			return existingComposer.get();
-		}
-	}
-
-	private Genre seedGenre(Genre genre) {
-		Optional<Genre> existingGenre = this.genreRepository.findByName(genre.getName());
-		if (existingGenre.isEmpty()) {
-			return this.genreRepository.save(genre);
-		} else {
-			return existingGenre.get();
-		}
-	}
-
-	private Piece seedPiece(Piece piece) {
-		Optional<Piece> existingPiece = this.pieceRepository.findByTitleAndComposerId(piece.getTitle(),
-				piece.getComposer().getId());
-		if (existingPiece.isEmpty()) {
-			return this.pieceRepository.save(piece);
-		} else {
-			return existingPiece.get();
+			System.out.println("Database seeded with initial data.");
 		}
 	}
 }

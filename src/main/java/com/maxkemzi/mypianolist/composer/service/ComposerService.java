@@ -29,7 +29,7 @@ public class ComposerService {
 		}
 
 		Composer composer = new Composer(payload.getFirstName(), payload.getLastName(), payload.getNickname(),
-				payload.getBiography(), payload.getPhoto(), payload.getBornAt(), payload.getDiedAt());
+				payload.getBiography(), payload.getImage(), payload.getBornAt(), payload.getDiedAt());
 
 		return repository.save(composer);
 	}

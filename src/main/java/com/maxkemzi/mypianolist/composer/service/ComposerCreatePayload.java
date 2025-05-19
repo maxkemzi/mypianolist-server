@@ -7,20 +7,20 @@ public class ComposerCreatePayload {
 	private String lastName;
 	private String nickname;
 	private String biography;
-	private String photo;
+	private String image;
 	private LocalDate bornAt;
 	private LocalDate diedAt;
 
 	protected ComposerCreatePayload() {
 	}
 
-	public ComposerCreatePayload(String firstName, String lastName, String nickname, String biography, String photo,
+	public ComposerCreatePayload(String firstName, String lastName, String nickname, String biography, String image,
 			LocalDate bornAt, LocalDate diedAt) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.nickname = nickname;
 		this.biography = biography;
-		this.photo = photo;
+		this.image = image;
 		this.bornAt = bornAt;
 		this.diedAt = diedAt;
 	}
@@ -41,8 +41,8 @@ public class ComposerCreatePayload {
 		return biography;
 	}
 
-	public String getPhoto() {
-		return photo;
+	public String getImage() {
+		return image;
 	}
 
 	public LocalDate getBornAt() {

@@ -27,25 +27,25 @@ public class Composer extends BaseEntity {
 	@Column(name = "biography", nullable = false, columnDefinition = "TEXT")
 	private String biography;
 
-	@Column(name = "photo")
-	private String photo;
+	@Column(name = "image")
+	private String image;
 
-	@Column(name = "bornAt", nullable = false)
+	@Column(name = "born_at", nullable = false)
 	private LocalDate bornAt;
 
-	@Column(name = "diedAt")
+	@Column(name = "died_at")
 	private LocalDate diedAt;
 
 	protected Composer() {
 	}
 
-	public Composer(String firstName, String lastName, String nickname, String biography, String photo, LocalDate bornAt,
+	public Composer(String firstName, String lastName, String nickname, String biography, String image, LocalDate bornAt,
 			LocalDate diedAt) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.nickname = nickname;
 		this.biography = biography;
-		this.photo = photo;
+		this.image = image;
 		this.bornAt = bornAt;
 		this.diedAt = diedAt;
 	}
@@ -70,8 +70,8 @@ public class Composer extends BaseEntity {
 		return biography;
 	}
 
-	public String getPhoto() {
-		return photo;
+	public String getImage() {
+		return image;
 	}
 
 	public LocalDate getBornAt() {
@@ -95,7 +95,7 @@ public class Composer extends BaseEntity {
 	public String toString() {
 		return "Composer [getId()=" + getId() + ", getFirstName()=" + getFirstName() + ", getLastName()=" + getLastName()
 				+ ", getNickname()=" + getNickname() + ", getBiography()="
-				+ getBiography() + ", getPhoto()=" + getPhoto() + ",  getBornAt()=" + getBornAt() + ", getDiedAt()="
+				+ getBiography() + ", getImage()=" + getImage() + ",  getBornAt()=" + getBornAt() + ", getDiedAt()="
 				+ getDiedAt() + ", getCreatedAt()=" + getCreatedAt() + ", getUpdatedAt()="
 				+ getUpdatedAt() + "]";
 	}

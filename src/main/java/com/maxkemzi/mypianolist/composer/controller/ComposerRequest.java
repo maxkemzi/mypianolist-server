@@ -25,8 +25,8 @@ public class ComposerRequest {
 	@Size(min = 10, max = 2000, message = "Biography must be between 10 and 2000 characters.")
 	private String biography;
 
-	@URL(message = "Photo must be a valid URL.")
-	private String photo;
+	@URL(message = "Image must be a valid URL.")
+	private String image;
 
 	@NotNull(message = "Born date is required.")
 	@Past(message = "Born date must be in the past.")
@@ -38,13 +38,13 @@ public class ComposerRequest {
 	protected ComposerRequest() {
 	}
 
-	public ComposerRequest(String firstName, String lastName, String nickname, String biography, String photo,
+	public ComposerRequest(String firstName, String lastName, String nickname, String biography, String image,
 			LocalDate bornAt, LocalDate diedAt) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.nickname = nickname;
 		this.biography = biography;
-		this.photo = photo;
+		this.image = image;
 		this.bornAt = bornAt;
 		this.diedAt = diedAt;
 	}
@@ -65,8 +65,8 @@ public class ComposerRequest {
 		return biography;
 	}
 
-	public String getPhoto() {
-		return photo;
+	public String getImage() {
+		return image;
 	}
 
 	public LocalDate getBornAt() {

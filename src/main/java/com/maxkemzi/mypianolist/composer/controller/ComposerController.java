@@ -41,7 +41,7 @@ public class ComposerController {
 	public ResponseEntity<ComposerResponseDto> create(@Valid @RequestBody ComposerRequest req) {
 		ComposerCreatePayload payload = new ComposerCreatePayload(req.getFirstName(), req.getLastName(),
 				req.getNickname(),
-				req.getBiography(), req.getPhoto(), req.getBornAt(), req.getDiedAt());
+				req.getBiography(), req.getImage(), req.getBornAt(), req.getDiedAt());
 
 		Composer composer = service.create(payload);
 

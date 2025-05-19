@@ -12,7 +12,7 @@ public class ComposerResponseDto {
 	private String lastName;
 	private String nickname;
 	private String biography;
-	private String photo;
+	private String image;
 	private LocalDate bornAt;
 	private LocalDate diedAt;
 
@@ -25,7 +25,7 @@ public class ComposerResponseDto {
 		this.lastName = c.getLastName();
 		this.nickname = c.getNickname();
 		this.biography = c.getBiography();
-		this.photo = c.getPhoto() != null && !c.getPhoto().isBlank() ? "/images/composers/" + c.getPhoto() : null;
+		this.image = c.getImage() != null && !c.getImage().isBlank() ? "/images/composers/" + c.getImage() : null;
 		this.bornAt = c.getBornAt();
 		this.diedAt = c.getDiedAt();
 	}
@@ -50,8 +50,8 @@ public class ComposerResponseDto {
 		return biography;
 	}
 
-	public String getPhoto() {
-		return photo;
+	public String getImage() {
+		return image;
 	}
 
 	public LocalDate getBornAt() {
