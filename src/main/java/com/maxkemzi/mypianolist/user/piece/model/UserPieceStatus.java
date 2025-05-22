@@ -7,8 +7,7 @@ public enum UserPieceStatus {
 	CURRENTLY_LEARNING,
 	COMPLETED,
 	DROPPED,
-	PLAN_TO_LEARN,
-	ON_HOLD;
+	PLAN_TO_LEARN;
 
 	@JsonCreator
 	public static UserPieceStatus fromString(String value) {
