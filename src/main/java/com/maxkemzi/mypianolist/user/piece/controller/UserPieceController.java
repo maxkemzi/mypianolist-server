@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.user.model.UserRole;
 import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
+import com.maxkemzi.mypianolist.user.piece.model.UserPieceStatus;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceCreatePayload;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceService;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceUpdatePayload;
@@ -89,5 +90,10 @@ public class UserPieceController {
 		service.deleteByUsernameAndPieceId(auth.getName(), id);
 
 		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/pieces/statuses")
+	public ResponseEntity<UserPieceStatus[]> findStatuses() {
+		return ResponseEntity.ok(UserPieceStatus.values());
 	}
 }
