@@ -27,7 +27,7 @@ public class UserPiece extends BaseEntity {
 	@Column(name = "score")
 	private Integer score;
 
-	@Column(name = "status")
+	@Column(name = "status", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private UserPieceStatus status;
 

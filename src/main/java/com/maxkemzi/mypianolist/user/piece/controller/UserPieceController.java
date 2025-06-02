@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.user.model.UserRole;
@@ -58,8 +59,24 @@ public class UserPieceController {
 
 	@GetMapping("/{username}/pieces")
 	public PageResponseDto<UserPieceResponseDto> findByUsername(@PathVariable("username") String username,
+			@RequestParam(name = "search", defaultValue = "") String search,
+			@RequestParam(name = "status", required = false) UserPieceStatus status,
 			@PageableDefault Pageable pageable) {
-		Page<UserPiece> page = service.findByUsername(username, pageable);
+		Page<UserPiece> page = service.findByUsername(username, search, status, pageable);
+
+		Page<UserPieceResponseDto> resPage = page.map(UserPieceResponseDto::new);
+
+		return new PageResponseDto<>(resPage);
+	}
+
+	@Secured(UserRole.Constants.USER)
+	@GetMapping("/pieces")
+	public PageResponseDto<UserPieceResponseDto> findAll(@RequestParam(name = "search", defaultValue = "") String search,
+			@RequestParam(name = "status", required = false) UserPieceStatus status,
+			@PageableDefault Pageable pageable) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		Page<UserPiece> page = service.findByUsername(auth.getName(), search, status, pageable);
 
 		Page<UserPieceResponseDto> resPage = page.map(UserPieceResponseDto::new);
 

@@ -11,6 +11,7 @@ import com.maxkemzi.mypianolist.piece.service.ExtendedPiece;
 import com.maxkemzi.mypianolist.piece.service.PieceService;
 import com.maxkemzi.mypianolist.user.model.User;
 import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
+import com.maxkemzi.mypianolist.user.piece.model.UserPieceStatus;
 import com.maxkemzi.mypianolist.user.piece.repository.UserPieceRepository;
 import com.maxkemzi.mypianolist.user.service.UserNotFoundException;
 import com.maxkemzi.mypianolist.user.service.UserService;
@@ -47,13 +48,13 @@ public class UserPieceService {
 		return repository.save(userPiece);
 	}
 
-	public Page<UserPiece> findByUsername(String username, Pageable pageable) {
+	public Page<UserPiece> findByUsername(String username, String search, UserPieceStatus status, Pageable pageable) {
 		boolean userExists = userService.existsByUsername(username);
 		if (!userExists) {
 			throw new UserNotFoundException();
 		}
 
-		return repository.findByUserUsername(username, pageable);
+		return repository.findByUsername(username, search, status, pageable);
 	}
 
 	@Transactional
