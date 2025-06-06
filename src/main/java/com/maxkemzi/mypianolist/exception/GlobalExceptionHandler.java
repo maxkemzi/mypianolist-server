@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.maxkemzi.mypianolist.auth.service.WrongCredentialsException;
 import com.maxkemzi.mypianolist.composer.service.ComposerAlreadyExistsException;
 import com.maxkemzi.mypianolist.composer.service.ComposerNotFoundException;
+import com.maxkemzi.mypianolist.piece.controller.InvalidPieceSortException;
 import com.maxkemzi.mypianolist.piece.genre.service.GenreAlreadyExistsException;
 import com.maxkemzi.mypianolist.piece.genre.service.GenreNotFoundException;
 import com.maxkemzi.mypianolist.piece.service.PieceAlreadyExistsException;
@@ -67,6 +68,10 @@ public class GlobalExceptionHandler {
 
 		if (cause instanceof InvalidUserPieceStatusException) {
 			return new ResponseEntity<>(new ErrorResponse("Invalid piece status.", "invalid_piece_status"), status);
+		}
+
+		if (cause instanceof InvalidPieceSortException) {
+			return new ResponseEntity<>(new ErrorResponse("Invalid piece sort.", "invalid_piece_sort"), status);
 		}
 
 		return new ResponseEntity<>(new ErrorResponse("Invalid input format.", "invalid_input_format"), status);

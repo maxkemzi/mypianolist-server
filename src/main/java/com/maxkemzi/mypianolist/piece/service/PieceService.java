@@ -1,7 +1,10 @@
 package com.maxkemzi.mypianolist.piece.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -76,6 +79,10 @@ public class PieceService {
 
 	public Page<ExtendedPiece> extend(Page<Piece> page) {
 		return page.map(piece -> extend(piece));
+	}
+
+	public List<ExtendedPiece> extend(List<Piece> pieces) {
+		return pieces.stream().map(this::extend).toList();
 	}
 
 	public ExtendedPiece extend(Piece piece) {
