@@ -2,6 +2,8 @@ package com.maxkemzi.mypianolist.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -18,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.maxkemzi.mypianolist.auth.filter.JwtFilter;
 import com.maxkemzi.mypianolist.auth.filter.RefreshTokenFilter;
+import com.maxkemzi.mypianolist.user.model.UserRole;
 
 @Configuration
 @EnableWebSecurity
@@ -58,5 +61,10 @@ public class SecurityConfig {
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
 		return config.getAuthenticationManager();
+	}
+
+	@Bean
+	public RoleHierarchy roleHierarchy() {
+		return RoleHierarchyImpl.fromHierarchy(UserRole.Constants.ADMIN + " > " + UserRole.Constants.USER);
 	}
 }
