@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.maxkemzi.mypianolist.piece.model.Piece;
-import com.maxkemzi.mypianolist.piece.service.ExtendedPiece;
 import com.maxkemzi.mypianolist.piece.service.PieceService;
 import com.maxkemzi.mypianolist.user.model.User;
 import com.maxkemzi.mypianolist.user.piece.model.UserPiece;

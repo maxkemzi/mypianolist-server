@@ -1,23 +1,15 @@
 package com.maxkemzi.mypianolist.piece.service;
 
-import com.maxkemzi.mypianolist.piece.model.Piece;
-
-public class ExtendedPiece {
-	private Piece piece;
+public class PieceStats {
 	private long favorites;
 	private long learners;
 
-	protected ExtendedPiece() {
+	protected PieceStats() {
 	}
 
-	public ExtendedPiece(Piece piece, long favorites, long learners) {
-		this.piece = piece;
+	public PieceStats(long favorites, long learners) {
 		this.favorites = favorites;
 		this.learners = learners;
-	}
-
-	public Piece getPiece() {
-		return piece;
 	}
 
 	public long getFavorites() {

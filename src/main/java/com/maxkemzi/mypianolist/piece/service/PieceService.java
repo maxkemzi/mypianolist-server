@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
@@ -77,18 +79,33 @@ public class PieceService {
 		repository.deleteById(id);
 	}
 
-	public Page<ExtendedPiece> extend(Page<Piece> page) {
-		return page.map(piece -> extend(piece));
+	public List<CompletePiece> complete(List<Piece> pieces) {
+		return pieces.stream().map(p -> this.complete(p)).toList();
 	}
 
-	public List<ExtendedPiece> extend(List<Piece> pieces) {
-		return pieces.stream().map(this::extend).toList();
+	public CompletePiece complete(Piece piece) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		PieceStats stats = this.getStats(piece);
+		PieceUserMetadata userMetadata = null;
+
+		if (auth != null) {
+			userMetadata = this.getUserMetadata(piece, auth.getName());
+		}
+
+		return new CompletePiece(piece, stats, userMetadata);
 	}
 
-	public ExtendedPiece extend(Piece piece) {
+	private PieceStats getStats(Piece piece) {
 		long favorites = this.favoritePieceRepository.countByPieceId(piece.getId());
 		long learners = this.userPieceRepository.countByPieceId(piece.getId());
 
-		return new ExtendedPiece(piece, favorites, learners);
+		return new PieceStats(favorites, learners);
+	}
+
+	private PieceUserMetadata getUserMetadata(Piece piece, String username) {
+		boolean inFavorites = this.favoritePieceRepository.existsByUserUsernameAndPieceId(username, piece.getId());
+
+		return new PieceUserMetadata(inFavorites);
 	}
 }
