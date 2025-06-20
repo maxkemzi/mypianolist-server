@@ -19,6 +19,8 @@ import com.maxkemzi.mypianolist.piece.genre.service.GenreService;
 import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
 import com.maxkemzi.mypianolist.user.favoritepiece.repository.FavoritePieceRepository;
+import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
+import com.maxkemzi.mypianolist.user.piece.model.UserPieceStatus;
 import com.maxkemzi.mypianolist.user.piece.repository.UserPieceRepository;
 
 import jakarta.transaction.Transactional;
@@ -105,7 +107,13 @@ public class PieceService {
 
 	private PieceUserMetadata getUserMetadata(Piece piece, String username) {
 		boolean inFavorites = this.favoritePieceRepository.existsByUserUsernameAndPieceId(username, piece.getId());
+		UserPieceStatus status = null;
 
-		return new PieceUserMetadata(inFavorites);
+		Optional<UserPiece> userPiece = this.userPieceRepository.findByUserUsernameAndPieceId(username, piece.getId());
+		if (userPiece.isPresent()) {
+			status = userPiece.get().getStatus();
+		}
+
+		return new PieceUserMetadata(inFavorites, status);
 	}
 }
