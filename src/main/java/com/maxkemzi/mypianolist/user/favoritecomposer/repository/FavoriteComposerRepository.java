@@ -14,4 +14,6 @@ public interface FavoriteComposerRepository extends CrudRepository<FavoriteCompo
 	void deleteByUserUsernameAndComposerId(String username, UUID composerId);
 
 	boolean existsByUserUsernameAndComposerId(String username, UUID composerId);
+
+	long countByComposerId(UUID composerId);
 }

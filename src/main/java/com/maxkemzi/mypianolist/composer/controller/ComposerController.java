@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
+import com.maxkemzi.mypianolist.composer.service.CompleteComposer;
 import com.maxkemzi.mypianolist.composer.service.ComposerCreatePayload;
 import com.maxkemzi.mypianolist.composer.service.ComposerService;
 import com.maxkemzi.mypianolist.user.model.UserRole;
@@ -51,10 +52,12 @@ public class ComposerController {
 	}
 
 	@GetMapping
-	public PageResponseDto<ComposerResponseDto> findAll(@PageableDefault Pageable pageable) {
+	public PageResponseDto<CompleteComposerResponseDto> findAll(@PageableDefault Pageable pageable) {
 		Page<Composer> page = service.findAll(pageable);
 
-		Page<ComposerResponseDto> resPage = page.map(ComposerResponseDto::new);
+		Page<CompleteComposer> completePage = page.map(c -> service.complete(c));
+
+		Page<CompleteComposerResponseDto> resPage = completePage.map(CompleteComposerResponseDto::new);
 
 		return new PageResponseDto<>(resPage);
 	}
@@ -63,7 +66,9 @@ public class ComposerController {
 	public ResponseEntity<ComposerResponseDto> findById(@PathVariable("id") UUID id) {
 		Composer composer = service.findById(id);
 
-		ComposerResponseDto resDto = new ComposerResponseDto(composer);
+		CompleteComposer completeComposer = service.complete(composer);
+
+		CompleteComposerResponseDto resDto = new CompleteComposerResponseDto(completeComposer);
 
 		return ResponseEntity.ok(resDto);
 	}
