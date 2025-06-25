@@ -1,40 +1,29 @@
 package com.maxkemzi.mypianolist.user.profile.service;
 
+import com.maxkemzi.mypianolist.user.piece.model.UserPieceStatus;
+
 public class UserProfileStats {
 	private long total;
-	private long learning;
-	private long completed;
-	private long dropped;
-	private long planToLearn;
+	private UserProfileStatusStat[] statuses;
 
 	protected UserProfileStats() {
 	}
 
 	public UserProfileStats(long total, long learning, long completed, long dropped, long planToLearn) {
 		this.total = total;
-		this.learning = learning;
-		this.completed = completed;
-		this.dropped = dropped;
-		this.planToLearn = planToLearn;
+		this.statuses = new UserProfileStatusStat[] {
+				new UserProfileStatusStat(UserPieceStatus.CURRENTLY_LEARNING, learning),
+				new UserProfileStatusStat(UserPieceStatus.COMPLETED, completed),
+				new UserProfileStatusStat(UserPieceStatus.DROPPED, dropped),
+				new UserProfileStatusStat(UserPieceStatus.PLAN_TO_LEARN, planToLearn)
+		};
 	}
 
 	public long getTotal() {
 		return total;
 	}
 
-	public long getLearning() {
-		return learning;
-	}
-
-	public long getCompleted() {
-		return completed;
-	}
-
-	public long getDropped() {
-		return dropped;
-	}
-
-	public long getPlanToLearn() {
-		return planToLearn;
+	public UserProfileStatusStat[] getStatuses() {
+		return statuses;
 	}
 }
