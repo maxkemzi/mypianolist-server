@@ -1,5 +1,6 @@
 package com.maxkemzi.mypianolist.user.piece.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -86,5 +87,21 @@ public class UserPieceService {
 		}
 
 		repository.deleteByUserUsernameAndPieceId(username, pieceId);
+	}
+
+	public UserPieceStats getStats(String username) {
+		List<UserPiece> pieces = this.repository.findByUserUsername(username);
+
+		long total = pieces.size();
+		long learning = this.countPiecesByStatus(pieces, UserPieceStatus.CURRENTLY_LEARNING);
+		long completed = this.countPiecesByStatus(pieces, UserPieceStatus.COMPLETED);
+		long dropped = this.countPiecesByStatus(pieces, UserPieceStatus.DROPPED);
+		long planToLearn = this.countPiecesByStatus(pieces, UserPieceStatus.PLAN_TO_LEARN);
+
+		return new UserPieceStats(total, learning, completed, dropped, planToLearn);
+	}
+
+	private long countPiecesByStatus(List<UserPiece> pieces, UserPieceStatus status) {
+		return pieces.stream().filter(p -> p.getStatus() == status).count();
 	}
 }

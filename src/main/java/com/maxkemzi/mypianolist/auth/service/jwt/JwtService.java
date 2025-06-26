@@ -45,6 +45,7 @@ public class JwtService {
 	private String generateToken(JwtUser user, SecretKey key, long expireInMs) {
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("username", user.getUsername());
+		claims.put("biography", user.getBiography());
 		claims.put("avatar", user.getAvatar());
 
 		long now = System.currentTimeMillis();
@@ -73,7 +74,8 @@ public class JwtService {
 			Claims claims = Jwts.parser().verifyWith(key).build().parseSignedClaims(token)
 					.getPayload();
 
-			return new JwtUser(claims.get("username", String.class), claims.get("avatar", String.class));
+			return new JwtUser(claims.get("username", String.class), claims.get("biography", String.class),
+					claims.get("avatar", String.class));
 		} catch (JwtException e) {
 			System.out.println(e.getMessage());
 			return null;

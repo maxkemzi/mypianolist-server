@@ -7,28 +7,32 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.maxkemzi.mypianolist.user.model.User;
+import com.maxkemzi.mypianolist.user.profile.model.UserProfile;
 
 public class UserPrincipal implements UserDetails {
-	private User user;
+	private UserProfile user;
 
-	public UserPrincipal(User user) {
+	public UserPrincipal(UserProfile user) {
 		this.user = user;
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Collections.singleton(new SimpleGrantedAuthority(user.getRole().toString()));
+		return Collections.singleton(new SimpleGrantedAuthority(user.getUser().getRole().toString()));
 	}
 
 	@Override
 	public String getPassword() {
-		return user.getPassword();
+		return user.getUser().getPassword();
 	}
 
 	@Override
 	public String getUsername() {
-		return user.getUsername();
+		return user.getUser().getUsername();
+	}
+
+	public String getBiography() {
+		return user.getBiography();
 	}
 
 	public String getAvatar() {

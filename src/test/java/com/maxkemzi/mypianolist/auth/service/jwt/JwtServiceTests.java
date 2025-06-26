@@ -22,7 +22,7 @@ public class JwtServiceTests {
 
 	@BeforeEach
 	public void setUpBeforeEach() {
-		this.mockJwtUser = new JwtUser("username", "avatar");
+		this.mockJwtUser = new JwtUser("username", "biography", "avatar");
 	}
 
 	@Test
@@ -49,6 +49,7 @@ public class JwtServiceTests {
 
 		assertNotNull(jwtUser, "User should not be null.");
 		assertEquals(mockJwtUser.getUsername(), jwtUser.getUsername(), "Usernames should match.");
+		assertEquals(mockJwtUser.getBiography(), jwtUser.getBiography(), "Biographies should match.");
 		assertEquals(mockJwtUser.getAvatar(), jwtUser.getAvatar(), "Avatars should match.");
 	}
 
@@ -66,6 +67,7 @@ public class JwtServiceTests {
 
 		assertNotNull(jwtUser, "User should not be null.");
 		assertEquals(mockJwtUser.getUsername(), jwtUser.getUsername(), "Usernames should match.");
+		assertEquals(mockJwtUser.getBiography(), jwtUser.getBiography(), "Biographies should match.");
 		assertEquals(mockJwtUser.getAvatar(), jwtUser.getAvatar(), "Avatars should match.");
 	}
 

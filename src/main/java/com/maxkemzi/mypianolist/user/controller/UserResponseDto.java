@@ -18,7 +18,6 @@ public class UserResponseDto {
 	public UserResponseDto(User user) {
 		this.id = user.getId();
 		this.username = user.getUsername();
-		this.avatar = user.getAvatar();
 		this.createdAt = user.getCreatedAt();
 	}
 

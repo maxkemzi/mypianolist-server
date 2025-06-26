@@ -1,42 +1,39 @@
 package com.maxkemzi.mypianolist.user.profile.controller;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
-import com.maxkemzi.mypianolist.user.profile.service.UserProfile;
-import com.maxkemzi.mypianolist.user.profile.service.UserProfileStats;
+import com.maxkemzi.mypianolist.user.profile.model.UserProfile;
 
 public class UserProfileResponseDto {
 	private String username;
+	private String biography;
 	private String avatar;
-	private LocalDateTime joinedAt;
-	private UserProfileStats stats;
+	private LocalDateTime createdAt;
 
 	protected UserProfileResponseDto() {
 	}
 
 	public UserProfileResponseDto(UserProfile up) {
-		if (up.getUser() != null) {
-			this.username = up.getUser().getUsername();
-			this.avatar = up.getUser().getAvatar();
-			this.joinedAt = up.getUser().getCreatedAt();
-		}
-		this.stats = up.getStats();
+		this.username = up.getUser().getUsername();
+		this.biography = up.getBiography();
+		this.avatar = up.getAvatar();
+		this.createdAt = up.getUser().getCreatedAt();
 	}
 
 	public String getUsername() {
 		return username;
 	}
 
+	public String getBiography() {
+		return biography;
+	}
+
 	public String getAvatar() {
 		return avatar;
 	}
 
-	public LocalDateTime getJoinedAt() {
-		return joinedAt;
+	public LocalDateTime getCreatedAt() {
+		return createdAt.truncatedTo(ChronoUnit.MILLIS);
 	}
-
-	public UserProfileStats getStats() {
-		return stats;
-	}
-
 }

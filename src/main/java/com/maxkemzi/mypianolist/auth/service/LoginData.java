@@ -1,7 +1,7 @@
 package com.maxkemzi.mypianolist.auth.service;
 
-import com.maxkemzi.mypianolist.auth.service.jwt.JwtUser;
 import com.maxkemzi.mypianolist.auth.service.jwt.JwtTokens;
+import com.maxkemzi.mypianolist.auth.service.jwt.JwtUser;
 
 public class LoginData {
 	private final JwtUser user;

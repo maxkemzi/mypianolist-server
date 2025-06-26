@@ -15,8 +15,8 @@ import com.maxkemzi.mypianolist.auth.service.LoginPayload;
 import com.maxkemzi.mypianolist.auth.service.RegisterPayload;
 import com.maxkemzi.mypianolist.auth.service.jwt.JwtTokens;
 import com.maxkemzi.mypianolist.auth.service.jwt.JwtUser;
-import com.maxkemzi.mypianolist.user.controller.UserResponseDto;
-import com.maxkemzi.mypianolist.user.model.User;
+import com.maxkemzi.mypianolist.user.profile.controller.UserProfileResponseDto;
+import com.maxkemzi.mypianolist.user.profile.model.UserProfile;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -32,12 +32,12 @@ public class AuthController {
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity<UserResponseDto> register(@RequestBody RegisterRequest req) {
+	public ResponseEntity<UserProfileResponseDto> register(@RequestBody RegisterRequest req) {
 		RegisterPayload payload = new RegisterPayload(req.getUsername(), req.getEmail(), req.getPassword());
 
-		User user = service.register(payload);
+		UserProfile user = service.register(payload);
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponseDto(user));
+		return ResponseEntity.status(HttpStatus.CREATED).body(new UserProfileResponseDto(user));
 	}
 
 	@PostMapping("/login")

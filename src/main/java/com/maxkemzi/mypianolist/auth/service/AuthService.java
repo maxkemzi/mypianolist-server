@@ -13,6 +13,8 @@ import com.maxkemzi.mypianolist.auth.service.jwt.JwtUser;
 import com.maxkemzi.mypianolist.auth.refreshtoken.service.RefreshTokenCreatePayload;
 import com.maxkemzi.mypianolist.auth.refreshtoken.service.RefreshTokenService;
 import com.maxkemzi.mypianolist.user.model.User;
+import com.maxkemzi.mypianolist.user.profile.model.UserProfile;
+import com.maxkemzi.mypianolist.user.profile.service.UserProfileService;
 import com.maxkemzi.mypianolist.user.service.UserCreatePayload;
 import com.maxkemzi.mypianolist.user.service.UserService;
 
@@ -23,21 +25,25 @@ public class AuthService {
 	private final AuthenticationManager authManager;
 	private final JwtService jwtService;
 	private final RefreshTokenService refreshTokenService;
+	private final UserProfileService userProfileService;
 
 	public AuthService(UserService userService, AuthenticationManager authManager, JwtService jwtService,
-			RefreshTokenService refreshTokenService) {
+			RefreshTokenService refreshTokenService, UserProfileService userProfileService) {
 		this.userService = userService;
 		this.passwordEncoder = new BCryptPasswordEncoder();
 		this.authManager = authManager;
 		this.jwtService = jwtService;
 		this.refreshTokenService = refreshTokenService;
+		this.userProfileService = userProfileService;
 	}
 
-	public User register(RegisterPayload payload) {
+	public UserProfile register(RegisterPayload payload) {
 		String hashedPassword = passwordEncoder.encode(payload.getPassword());
 
-		return userService.create(new UserCreatePayload(payload.getUsername(), payload.getEmail(),
+		User user = userService.create(new UserCreatePayload(payload.getUsername(), payload.getEmail(),
 				hashedPassword));
+
+		return userProfileService.create(user, null, null);
 	}
 
 	public LoginData logIn(LoginPayload payload) throws WrongCredentialsException {
@@ -46,7 +52,8 @@ public class AuthService {
 					.authenticate(new UsernamePasswordAuthenticationToken(payload.getUsername(), payload.getPassword()));
 			UserPrincipal userPrincipal = (UserPrincipal) auth.getPrincipal();
 
-			JwtUser user = new JwtUser(userPrincipal.getUsername(), userPrincipal.getAvatar());
+			JwtUser user = new JwtUser(userPrincipal.getUsername(), userPrincipal.getBiography(),
+					userPrincipal.getAvatar());
 			JwtTokens tokens = jwtService.generateAccessAndRefreshTokens(user);
 
 			RefreshTokenCreatePayload refreshTokenPayload = new RefreshTokenCreatePayload(tokens.getRefresh(),

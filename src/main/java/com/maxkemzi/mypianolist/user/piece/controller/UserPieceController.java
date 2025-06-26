@@ -26,6 +26,7 @@ import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
 import com.maxkemzi.mypianolist.user.piece.model.UserPieceStatus;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceCreatePayload;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceService;
+import com.maxkemzi.mypianolist.user.piece.service.UserPieceStats;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceUpdatePayload;
 import com.maxkemzi.mypianolist.util.PageResponseDto;
 
@@ -112,5 +113,15 @@ public class UserPieceController {
 	@GetMapping("/pieces/statuses")
 	public ResponseEntity<UserPieceStatus[]> findStatuses() {
 		return ResponseEntity.ok(UserPieceStatus.values());
+	}
+
+	@Secured(UserRole.Constants.USER)
+	@GetMapping("/pieces/stats")
+	public ResponseEntity<UserPieceStats> findStats() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		UserPieceStats stats = service.getStats(auth.getName());
+
+		return ResponseEntity.ok(stats);
 	}
 }

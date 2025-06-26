@@ -26,9 +26,6 @@ public class User extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private UserRole role = UserRole.USER;
 
-	@Column(name = "avatar")
-	private String avatar;
-
 	protected User() {
 	}
 
@@ -70,14 +67,6 @@ public class User extends BaseEntity {
 		this.role = role;
 	}
 
-	public String getAvatar() {
-		return avatar;
-	}
-
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
-	}
-
 	protected boolean entityEquals(Object o) {
 		User ua = (User) o;
 		return Objects.equals(getId(), ua.getId());
@@ -91,7 +80,7 @@ public class User extends BaseEntity {
 	public String toString() {
 		return "User [getId()=" + getId()
 				+ ", getUsername()=" + getUsername() + ", getEmail()=" + getEmail() + ", getPassword()=" + getPassword()
-				+ ", getAvatar()=" + getAvatar() + ", getCreatedAt()=" + getCreatedAt() + ", getUpdatedAt()="
+				+ ", getCreatedAt()=" + getCreatedAt() + ", getUpdatedAt()="
 				+ getUpdatedAt() + "]";
 	}
 }
