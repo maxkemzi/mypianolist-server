@@ -53,6 +53,18 @@ public class FavoriteComposerController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(resDto);
 	}
 
+	@Secured(UserRole.Constants.USER)
+	@GetMapping("/favorite-composers")
+	public PageResponseDto<ComposerResponseDto> findByAuth(@PageableDefault Pageable pageable) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		Page<FavoriteComposer> page = service.findByUsername(auth.getName(), pageable);
+
+		Page<ComposerResponseDto> resPage = page.map(ufc -> new ComposerResponseDto(ufc.getComposer()));
+
+		return new PageResponseDto<>(resPage);
+	}
+
 	@GetMapping("/{username}/favorite-composers")
 	public PageResponseDto<ComposerResponseDto> findByUsername(@PathVariable("username") String username,
 			@PageableDefault Pageable pageable) {
