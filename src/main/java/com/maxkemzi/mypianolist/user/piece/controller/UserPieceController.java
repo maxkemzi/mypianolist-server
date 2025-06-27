@@ -117,10 +117,17 @@ public class UserPieceController {
 
 	@Secured(UserRole.Constants.USER)
 	@GetMapping("/pieces/stats")
-	public ResponseEntity<UserPieceStats> findStats() {
+	public ResponseEntity<UserPieceStats> findStatsByAuth() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		UserPieceStats stats = service.getStats(auth.getName());
+
+		return ResponseEntity.ok(stats);
+	}
+
+	@GetMapping("/{username}/pieces/stats")
+	public ResponseEntity<UserPieceStats> findStatsByUsername(@PathVariable("username") String username) {
+		UserPieceStats stats = service.getStats(username);
 
 		return ResponseEntity.ok(stats);
 	}
