@@ -52,6 +52,18 @@ public class FavoritePieceController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(resDto);
 	}
 
+	@Secured(UserRole.Constants.USER)
+	@GetMapping("/favorite-pieces")
+	public PageResponseDto<PieceResponseDto> findByAuth(@PageableDefault Pageable pageable) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		Page<FavoritePiece> page = service.findByUsername(auth.getName(), pageable);
+
+		Page<PieceResponseDto> resPage = page.map(ufp -> new PieceResponseDto(ufp.getPiece()));
+
+		return new PageResponseDto<>(resPage);
+	}
+
 	@GetMapping("/{username}/favorite-pieces")
 	public PageResponseDto<PieceResponseDto> findByUsername(@PathVariable("username") String username,
 			@PageableDefault Pageable pageable) {

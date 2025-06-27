@@ -5,8 +5,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maxkemzi.mypianolist.auth.controller.RefreshTokenCookieFactory;
 import com.maxkemzi.mypianolist.auth.service.AuthService;
-import com.maxkemzi.mypianolist.user.model.User;
 import com.maxkemzi.mypianolist.user.model.UserRole;
 import com.maxkemzi.mypianolist.user.service.UserService;
 import com.maxkemzi.mypianolist.user.service.UserUpdatePayload;
@@ -33,15 +30,6 @@ public class UserController {
 		this.service = service;
 		this.authService = authService;
 		this.refreshTokenCookieFactory = refreshTokenCookieFactory;
-	}
-
-	@GetMapping("/{username}")
-	public ResponseEntity<UserResponseDto> findByUsername(@PathVariable("username") String username) {
-		User user = service.findByUsername(username);
-
-		UserResponseDto resDto = new UserResponseDto(user);
-
-		return ResponseEntity.ok(resDto);
 	}
 
 	@Secured(UserRole.Constants.USER)
