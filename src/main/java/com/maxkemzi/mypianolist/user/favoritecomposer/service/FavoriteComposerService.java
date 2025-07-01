@@ -32,6 +32,11 @@ public class FavoriteComposerService {
 	@Transactional
 	public FavoriteComposer create(FavoriteComposerCreatePayload payload)
 			throws FavoriteComposerAlreadyExistsException {
+		boolean reachedLimit = repository.countByUserUsername(payload.getUsername()) == 10;
+		if (reachedLimit) {
+			throw new FavoriteComposerReachedLimitException();
+		}
+
 		boolean alreadyExists = repository.existsByUserUsernameAndComposerId(payload.getUsername(),
 				payload.getComposerId());
 		if (alreadyExists) {

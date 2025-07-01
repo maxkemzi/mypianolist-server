@@ -32,6 +32,11 @@ public class FavoritePieceService {
 	@Transactional
 	public FavoritePiece create(FavoritePieceCreatePayload payload)
 			throws FavoritePieceAlreadyExistsException {
+		boolean reachedLimit = repository.countByUserUsername(payload.getUsername()) == 10;
+		if (reachedLimit) {
+			throw new FavoritePieceReachedLimitException();
+		}
+
 		boolean alreadyExists = repository.existsByUserUsernameAndPieceId(payload.getUsername(), payload.getPieceId());
 		if (alreadyExists) {
 			throw new FavoritePieceAlreadyExistsException();

@@ -23,8 +23,10 @@ import com.maxkemzi.mypianolist.piece.service.PieceAlreadyExistsException;
 import com.maxkemzi.mypianolist.piece.service.PieceNotFoundException;
 import com.maxkemzi.mypianolist.user.favoritecomposer.service.FavoriteComposerAlreadyExistsException;
 import com.maxkemzi.mypianolist.user.favoritecomposer.service.FavoriteComposerNotFoundException;
+import com.maxkemzi.mypianolist.user.favoritecomposer.service.FavoriteComposerReachedLimitException;
 import com.maxkemzi.mypianolist.user.favoritepiece.service.FavoritePieceAlreadyExistsException;
 import com.maxkemzi.mypianolist.user.favoritepiece.service.FavoritePieceNotFoundException;
+import com.maxkemzi.mypianolist.user.favoritepiece.service.FavoritePieceReachedLimitException;
 import com.maxkemzi.mypianolist.user.piece.model.InvalidUserPieceStatusException;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceAlreadyExistsException;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceNotFoundException;
@@ -131,6 +133,13 @@ public class GlobalExceptionHandler {
 				HttpStatus.CONFLICT);
 	}
 
+	@ExceptionHandler(FavoritePieceReachedLimitException.class)
+	public ResponseEntity<ErrorResponse> handleFavoritePieceReachedLimit(FavoritePieceReachedLimitException e) {
+		return new ResponseEntity<>(
+				new ErrorResponse("The maximum amount of favorite pieces is 10.", "piece_favorites_reached_limit"),
+				HttpStatus.CONFLICT);
+	}
+
 	@ExceptionHandler(FavoriteComposerAlreadyExistsException.class)
 	public ResponseEntity<ErrorResponse> handleFavoriteComposerAlreadyExists(
 			FavoriteComposerAlreadyExistsException e) {
@@ -143,6 +152,13 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorResponse> handleFavoriteComposerNotFound(FavoriteComposerNotFoundException e) {
 		return new ResponseEntity<>(
 				new ErrorResponse("The composer is not in your favorites.", "composer_not_in_favorites"),
+				HttpStatus.CONFLICT);
+	}
+
+	@ExceptionHandler(FavoriteComposerReachedLimitException.class)
+	public ResponseEntity<ErrorResponse> handleFavoriteComposerReachedLimit(FavoriteComposerReachedLimitException e) {
+		return new ResponseEntity<>(
+				new ErrorResponse("The maximum amount of favorite composers is 10.", "composer_favorites_reached_limit"),
 				HttpStatus.CONFLICT);
 	}
 

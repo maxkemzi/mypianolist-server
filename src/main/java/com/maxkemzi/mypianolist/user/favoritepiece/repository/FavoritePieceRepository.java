@@ -16,4 +16,6 @@ public interface FavoritePieceRepository extends CrudRepository<FavoritePiece, U
 	boolean existsByUserUsernameAndPieceId(String username, UUID pieceId);
 
 	long countByPieceId(UUID pieceId);
+
+	long countByUserUsername(String username);
 }

@@ -16,4 +16,6 @@ public interface FavoriteComposerRepository extends CrudRepository<FavoriteCompo
 	boolean existsByUserUsernameAndComposerId(String username, UUID composerId);
 
 	long countByComposerId(UUID composerId);
+
+	long countByUserUsername(String username);
 }
