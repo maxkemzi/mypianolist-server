@@ -9,6 +9,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.maxkemzi.mypianolist.piece.controller.PieceSortConverter;
+import com.maxkemzi.mypianolist.user.piece.controller.UserPieceSortConverter;
 import com.maxkemzi.mypianolist.user.piece.controller.UserPieceStatusConverter;
 
 @Configuration
@@ -26,6 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
 	public void addFormatters(FormatterRegistry registry) {
 		registry.addConverter(new UserPieceStatusConverter());
 		registry.addConverter(new PieceSortConverter());
+		registry.addConverter(new UserPieceSortConverter());
 		WebMvcConfigurer.super.addFormatters(registry);
 	}
 }

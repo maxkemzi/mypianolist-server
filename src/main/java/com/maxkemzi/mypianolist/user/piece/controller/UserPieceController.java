@@ -1,8 +1,13 @@
 package com.maxkemzi.mypianolist.user.piece.controller;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -13,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +34,7 @@ import com.maxkemzi.mypianolist.user.piece.service.UserPieceCreatePayload;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceService;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceStats;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceUpdatePayload;
+import com.maxkemzi.mypianolist.util.PageRequestParams;
 import com.maxkemzi.mypianolist.util.PageResponseDto;
 
 import jakarta.validation.Valid;
@@ -62,10 +69,30 @@ public class UserPieceController {
 	public PageResponseDto<UserPieceResponseDto> findByUsername(@PathVariable("username") String username,
 			@RequestParam(name = "search", defaultValue = "") String search,
 			@RequestParam(name = "status", required = false) UserPieceStatus status,
-			@PageableDefault Pageable pageable) {
+			@RequestParam(name = "sort", defaultValue = UserPieceSort.Constants.CREATED_AT) UserPieceSort sort,
+			@ModelAttribute PageRequestParams params) {
+		Pageable pageable = PageRequest.of(params.getPage(), params.getLimit());
+
 		Page<UserPiece> page = service.findByUsername(username, search, status, pageable);
 
-		Page<UserPieceResponseDto> resPage = page.map(UserPieceResponseDto::new);
+		List<UserPiece> pieces = new ArrayList<>(page.getContent());
+
+		switch (sort) {
+			case UserPieceSort.CREATED_AT:
+				pieces.sort(Comparator.comparing(ep -> ep.getPiece().getCreatedAt(), (s1, s2) -> {
+					return s2.compareTo(s1);
+				}));
+				break;
+			case UserPieceSort.SCORE:
+				pieces.sort(Comparator.comparing(p -> p.getScore(), (s1, s2) -> {
+					return s2.compareTo(s1);
+				}));
+				break;
+		}
+
+		Page<UserPiece> sortedPage = new PageImpl<UserPiece>(pieces, pageable, pieces.size());
+
+		Page<UserPieceResponseDto> resPage = sortedPage.map(UserPieceResponseDto::new);
 
 		return new PageResponseDto<>(resPage);
 	}
@@ -74,12 +101,32 @@ public class UserPieceController {
 	@GetMapping("/pieces")
 	public PageResponseDto<UserPieceResponseDto> findAll(@RequestParam(name = "search", defaultValue = "") String search,
 			@RequestParam(name = "status", required = false) UserPieceStatus status,
-			@PageableDefault Pageable pageable) {
+			@RequestParam(name = "sort", defaultValue = UserPieceSort.Constants.CREATED_AT) UserPieceSort sort,
+			@ModelAttribute PageRequestParams params) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		Pageable pageable = PageRequest.of(params.getPage(), params.getLimit());
 
 		Page<UserPiece> page = service.findByUsername(auth.getName(), search, status, pageable);
 
-		Page<UserPieceResponseDto> resPage = page.map(UserPieceResponseDto::new);
+		List<UserPiece> pieces = new ArrayList<>(page.getContent());
+
+		switch (sort) {
+			case UserPieceSort.CREATED_AT:
+				pieces.sort(Comparator.comparing(ep -> ep.getPiece().getCreatedAt(), (s1, s2) -> {
+					return s2.compareTo(s1);
+				}));
+				break;
+			case UserPieceSort.SCORE:
+				pieces.sort(Comparator.comparing(p -> p.getScore(), (s1, s2) -> {
+					return s2.compareTo(s1);
+				}));
+				break;
+		}
+
+		Page<UserPiece> sortedPage = new PageImpl<UserPiece>(pieces, pageable, pieces.size());
+
+		Page<UserPieceResponseDto> resPage = sortedPage.map(UserPieceResponseDto::new);
 
 		return new PageResponseDto<>(resPage);
 	}

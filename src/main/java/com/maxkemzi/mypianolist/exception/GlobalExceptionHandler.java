@@ -27,6 +27,7 @@ import com.maxkemzi.mypianolist.user.favoritecomposer.service.FavoriteComposerRe
 import com.maxkemzi.mypianolist.user.favoritepiece.service.FavoritePieceAlreadyExistsException;
 import com.maxkemzi.mypianolist.user.favoritepiece.service.FavoritePieceNotFoundException;
 import com.maxkemzi.mypianolist.user.favoritepiece.service.FavoritePieceReachedLimitException;
+import com.maxkemzi.mypianolist.user.piece.controller.InvalidUserPieceSortException;
 import com.maxkemzi.mypianolist.user.piece.model.InvalidUserPieceStatusException;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceAlreadyExistsException;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceNotFoundException;
@@ -74,6 +75,10 @@ public class GlobalExceptionHandler {
 
 		if (cause instanceof InvalidPieceSortException) {
 			return new ResponseEntity<>(new ErrorResponse("Invalid piece sort.", "invalid_piece_sort"), status);
+		}
+
+		if (cause instanceof InvalidUserPieceSortException) {
+			return new ResponseEntity<>(new ErrorResponse("Invalid user piece sort.", "invalid_user_piece_sort"), status);
 		}
 
 		return new ResponseEntity<>(new ErrorResponse("Invalid input format.", "invalid_input_format"), status);
