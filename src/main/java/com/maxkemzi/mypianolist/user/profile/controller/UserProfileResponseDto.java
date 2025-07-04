@@ -17,7 +17,10 @@ public class UserProfileResponseDto {
 	public UserProfileResponseDto(UserProfile up) {
 		this.username = up.getUser().getUsername();
 		this.biography = up.getBiography();
-		this.avatar = up.getAvatar();
+
+		String avatar = up.getAvatar();
+		this.avatar = avatar != null && !avatar.isBlank() ? "/avatars/" + avatar : null;
+
 		this.createdAt = up.getUser().getCreatedAt();
 	}
 

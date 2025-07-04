@@ -3,15 +3,15 @@ package com.maxkemzi.mypianolist.auth.controller;
 import com.maxkemzi.mypianolist.auth.service.jwt.JwtUser;
 
 public class LoginResponse {
-	private JwtUser user;
+	private JwtUserResponseDto user;
 	private String accessToken;
 
 	public LoginResponse(JwtUser user, String accessToken) {
-		this.user = user;
+		this.user = new JwtUserResponseDto(user);
 		this.accessToken = accessToken;
 	}
 
-	public JwtUser getUser() {
+	public JwtUserResponseDto getUser() {
 		return user;
 	}
 

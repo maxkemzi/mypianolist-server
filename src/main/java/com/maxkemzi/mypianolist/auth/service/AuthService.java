@@ -14,6 +14,7 @@ import com.maxkemzi.mypianolist.auth.refreshtoken.service.RefreshTokenCreatePayl
 import com.maxkemzi.mypianolist.auth.refreshtoken.service.RefreshTokenService;
 import com.maxkemzi.mypianolist.user.model.User;
 import com.maxkemzi.mypianolist.user.profile.model.UserProfile;
+import com.maxkemzi.mypianolist.user.profile.service.UserProfileCreatePayload;
 import com.maxkemzi.mypianolist.user.profile.service.UserProfileService;
 import com.maxkemzi.mypianolist.user.service.UserCreatePayload;
 import com.maxkemzi.mypianolist.user.service.UserService;
@@ -43,7 +44,9 @@ public class AuthService {
 		User user = userService.create(new UserCreatePayload(payload.getUsername(), payload.getEmail(),
 				hashedPassword));
 
-		return userProfileService.create(user, null, null);
+		UserProfileCreatePayload profilePayload = new UserProfileCreatePayload(user, null, null);
+
+		return userProfileService.create(profilePayload);
 	}
 
 	public LoginData logIn(LoginPayload payload) throws WrongCredentialsException {
