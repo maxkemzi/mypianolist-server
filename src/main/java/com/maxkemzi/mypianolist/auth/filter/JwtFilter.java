@@ -49,4 +49,10 @@ public class JwtFilter extends OncePerRequestFilter {
 
 		filterChain.doFilter(req, res);
 	}
+
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest req) throws ServletException {
+		String path = req.getServletPath();
+		return path.startsWith("/api/auth/");
+	}
 }

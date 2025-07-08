@@ -29,27 +29,31 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain)
 			throws ServletException, IOException {
-		if (req.getRequestURI().matches("/api/auth/refresh|/api/auth/logout")) {
-			Cookie[] cookies = req.getCookies();
-			if (cookies == null) {
-				sendUnauthorizedError(res);
-				return;
-			}
+		Cookie[] cookies = req.getCookies();
+		if (cookies == null) {
+			sendUnauthorizedError(res);
+			return;
+		}
 
-			String refreshToken = getRefreshTokenFromCookies(cookies);
-			if (refreshToken == null || refreshToken.isBlank()) {
-				sendUnauthorizedError(res);
-				return;
-			}
+		String refreshToken = getRefreshTokenFromCookies(cookies);
+		if (refreshToken == null || refreshToken.isBlank()) {
+			sendUnauthorizedError(res);
+			return;
+		}
 
-			JwtUser user = jwtService.verifyRefreshToken(refreshToken);
-			if (user == null) {
-				sendUnauthorizedError(res);
-				return;
-			}
+		JwtUser user = jwtService.verifyRefreshToken(refreshToken);
+		if (user == null) {
+			sendUnauthorizedError(res);
+			return;
 		}
 
 		filterChain.doFilter(req, res);
+	}
+
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest req) throws ServletException {
+		String path = req.getServletPath();
+		return !path.matches("/api/auth/refresh|/api/auth/logout");
 	}
 
 	private void sendUnauthorizedError(HttpServletResponse res) throws IOException {
