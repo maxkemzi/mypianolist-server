@@ -5,13 +5,11 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.maxkemzi.mypianolist.auth.controller.RefreshTokenCookieFactory;
-import com.maxkemzi.mypianolist.auth.service.AuthService;
 import com.maxkemzi.mypianolist.user.model.UserRole;
 import com.maxkemzi.mypianolist.user.service.UserService;
 import com.maxkemzi.mypianolist.user.service.UserUpdatePayload;
@@ -22,18 +20,13 @@ import jakarta.servlet.http.HttpServletResponse;
 @RequestMapping("/api/users")
 public class UserController {
 	private final UserService service;
-	private final AuthService authService;
-	private final RefreshTokenCookieFactory refreshTokenCookieFactory;
 
-	public UserController(UserService service, AuthService authService,
-			RefreshTokenCookieFactory refreshTokenCookieFactory) {
+	public UserController(UserService service) {
 		this.service = service;
-		this.authService = authService;
-		this.refreshTokenCookieFactory = refreshTokenCookieFactory;
 	}
 
 	@Secured(UserRole.Constants.USER)
-	@PutMapping("/username")
+	@PostMapping("/username")
 	public ResponseEntity<Void> updateUsername(@RequestBody UpdateUsernameRequest req,
 			@CookieValue String refreshToken, HttpServletResponse res) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -41,11 +34,6 @@ public class UserController {
 		UserUpdatePayload payload = new UserUpdatePayload();
 		payload.setUsername(req.getUsername());
 		service.updateByUsername(auth.getName(), payload);
-
-		authService.logOut(refreshToken);
-
-		// Delete refresh token cookie
-		res.addCookie(refreshTokenCookieFactory.createExpired());
 
 		return ResponseEntity.noContent().build();
 	}
