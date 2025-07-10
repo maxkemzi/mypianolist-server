@@ -70,14 +70,20 @@ public class AuthService {
 	}
 
 	public LoginData refresh(String refreshToken) {
-		JwtUser user = jwtService.verifyRefreshToken(refreshToken);
-		JwtTokens tokens = jwtService.generateAccessAndRefreshTokens(user);
+		JwtUser oldJwtUser = jwtService.verifyRefreshToken(refreshToken);
+
+		UserProfile userProfile = userProfileService.findByUsername(oldJwtUser.getUsername());
+
+		JwtUser newJwtUser = new JwtUser(userProfile.getUser().getUsername(), userProfile.getBiography(),
+				userProfile.getAvatar());
+
+		JwtTokens tokens = jwtService.generateAccessAndRefreshTokens(newJwtUser);
 
 		RefreshTokenCreatePayload refreshTokenPayload = new RefreshTokenCreatePayload(tokens.getRefresh(),
-				user.getUsername());
+				userProfile.getUser().getUsername());
 		refreshTokenService.upsert(refreshTokenPayload);
 
-		return new LoginData(user, tokens);
+		return new LoginData(newJwtUser, tokens);
 	}
 
 	public void logOut(String refreshToken) {

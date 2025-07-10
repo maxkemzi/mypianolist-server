@@ -1,39 +1,18 @@
 package com.maxkemzi.mypianolist.user.controller;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.UUID;
-
 import com.maxkemzi.mypianolist.user.model.User;
 
 public class UserResponseDto {
-	private UUID id;
 	private String username;
-	private String avatar;
-	private LocalDateTime createdAt;
 
 	protected UserResponseDto() {
 	}
 
 	public UserResponseDto(User user) {
-		this.id = user.getId();
 		this.username = user.getUsername();
-		this.createdAt = user.getCreatedAt();
-	}
-
-	public UUID getId() {
-		return id;
 	}
 
 	public String getUsername() {
 		return username;
-	}
-
-	public String getAvatar() {
-		return avatar;
-	}
-
-	public LocalDateTime getCreatedAt() {
-		return createdAt.truncatedTo(ChronoUnit.MILLIS);
 	}
 }
