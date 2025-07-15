@@ -10,6 +10,7 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
@@ -194,6 +195,13 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(WrongCredentialsException.class)
 	public ResponseEntity<ErrorResponse> handleWrongCredentials(WrongCredentialsException e) {
 		return new ResponseEntity<>(new ErrorResponse("Wrong credentials.", "wrong_credentials"),
+				HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(MaxUploadSizeExceededException.class)
+	public ResponseEntity<ErrorResponse> handleMaxUploadSizeExceeded(MaxUploadSizeExceededException e) {
+		return new ResponseEntity<>(
+				new ErrorResponse("Maximum upload size of 500KB exceeded.", "max_upload_size_exceeded"),
 				HttpStatus.BAD_REQUEST);
 	}
 }
