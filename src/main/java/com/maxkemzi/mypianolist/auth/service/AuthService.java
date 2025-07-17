@@ -39,6 +39,16 @@ public class AuthService {
 	}
 
 	public UserProfile register(RegisterPayload payload) {
+		boolean existsByUsername = userService.existsByUsername(payload.getUsername());
+		if (existsByUsername) {
+			throw new UserWithUsernameAlreadyExistsException();
+		}
+
+		boolean existsByEmail = userService.existsByEmail(payload.getEmail());
+		if (existsByEmail) {
+			throw new UserWithEmailAlreadyExistsException();
+		}
+
 		String hashedPassword = passwordEncoder.encode(payload.getPassword());
 
 		User user = userService.create(new UserCreatePayload(payload.getUsername(), payload.getEmail(),

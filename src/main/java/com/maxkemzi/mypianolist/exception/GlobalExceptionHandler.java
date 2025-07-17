@@ -1,5 +1,7 @@
 package com.maxkemzi.mypianolist.exception;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -7,13 +9,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.maxkemzi.mypianolist.auth.service.UserWithEmailAlreadyExistsException;
+import com.maxkemzi.mypianolist.auth.service.UserWithUsernameAlreadyExistsException;
 import com.maxkemzi.mypianolist.auth.service.WrongCredentialsException;
 import com.maxkemzi.mypianolist.composer.service.ComposerAlreadyExistsException;
 import com.maxkemzi.mypianolist.composer.service.ComposerNotFoundException;
@@ -195,6 +201,20 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(WrongCredentialsException.class)
 	public ResponseEntity<ErrorResponse> handleWrongCredentials(WrongCredentialsException e) {
 		return new ResponseEntity<>(new ErrorResponse("Wrong credentials.", "wrong_credentials"),
+				HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(UserWithUsernameAlreadyExistsException.class)
+	public ResponseEntity<ErrorResponse> handleUserWithUsernameAlreadyExists(UserWithUsernameAlreadyExistsException e) {
+		return new ResponseEntity<>(
+				new ErrorResponse("User with provided username already exists.", "user_with_username_already_exists"),
+				HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(UserWithEmailAlreadyExistsException.class)
+	public ResponseEntity<ErrorResponse> handleUserWithEmailAlreadyExists(UserWithEmailAlreadyExistsException e) {
+		return new ResponseEntity<>(
+				new ErrorResponse("User with provided email already exists.", "user_with_email_already_exists"),
 				HttpStatus.BAD_REQUEST);
 	}
 
