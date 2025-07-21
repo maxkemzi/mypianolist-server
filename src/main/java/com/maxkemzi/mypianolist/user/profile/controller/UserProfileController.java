@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,6 +77,18 @@ public class UserProfileController {
 		UserProfileUpdatePayload payload = new UserProfileUpdatePayload(null, avatar);
 
 		UserProfile profile = service.updateByUsername(auth.getName(), payload);
+
+		UserProfileResponseDto resDto = new UserProfileResponseDto(profile);
+
+		return ResponseEntity.ok(resDto);
+	}
+
+	@Secured(UserRole.Constants.USER)
+	@DeleteMapping(value = "/profile/avatar")
+	public ResponseEntity<UserProfileResponseDto> deleteAvatarByAuth() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		UserProfile profile = service.deleteAvatarByUsername(auth.getName());
 
 		UserProfileResponseDto resDto = new UserProfileResponseDto(profile);
 

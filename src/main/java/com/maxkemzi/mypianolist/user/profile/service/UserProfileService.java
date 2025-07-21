@@ -51,4 +51,16 @@ public class UserProfileService {
 
 		return repository.save(profile);
 	}
+
+	@Transactional
+	public UserProfile deleteAvatarByUsername(String username) {
+		UserProfile profile = repository.findByUserUsername(username).orElseThrow(UserNotFoundException::new);
+
+		if (profile.getAvatar() != null) {
+			fileStorage.deleteAvatar(profile.getAvatar());
+			profile.setAvatar(null);
+		}
+
+		return repository.save(profile);
+	}
 }

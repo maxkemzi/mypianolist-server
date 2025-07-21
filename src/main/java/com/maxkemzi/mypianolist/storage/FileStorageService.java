@@ -39,6 +39,16 @@ public class FileStorageService {
 		}
 	}
 
+	public boolean deleteAvatar(String filename) {
+		try {
+			Path path = root.resolve(Paths.get("avatars", filename)).normalize().toAbsolutePath();
+
+			return Files.deleteIfExists(path);
+		} catch (IOException e) {
+			throw new StorageException("Failed to delete file.", e);
+		}
+	}
+
 	private String computeSHA256Hash(InputStream input) throws IOException {
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");
