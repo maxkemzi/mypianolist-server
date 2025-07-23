@@ -2,6 +2,8 @@ package com.maxkemzi.mypianolist.user.service;
 
 import java.util.Optional;
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.maxkemzi.mypianolist.user.model.User;
@@ -12,9 +14,13 @@ import jakarta.transaction.Transactional;
 @Service
 public class UserService {
 	private final UserRepository repository;
+	private final AuthenticationManager authManager;
+	private final BCryptPasswordEncoder passwordEncoder;
 
-	public UserService(UserRepository repository) {
+	public UserService(UserRepository repository, AuthenticationManager authManager) {
 		this.repository = repository;
+		this.authManager = authManager;
+		this.passwordEncoder = new BCryptPasswordEncoder();
 	}
 
 	@Transactional
@@ -56,5 +62,18 @@ public class UserService {
 
 	public boolean existsByEmail(String email) {
 		return repository.existsByEmail(email);
+	}
+
+	public void updatePasswordByUsername(String username, String password) {
+		User user = findByUsername(username);
+		if (passwordEncoder.matches(password, user.getPassword())) {
+			throw new SamePasswordException();
+		}
+
+		String hashedPassword = passwordEncoder.encode(password);
+
+		UserUpdatePayload payload = new UserUpdatePayload();
+		payload.setPassword(hashedPassword);
+		updateByUsername(username, payload);
 	}
 }

@@ -4,7 +4,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,13 +26,22 @@ public class UserController {
 
 	@Secured(UserRole.Constants.USER)
 	@PostMapping("/username")
-	public ResponseEntity<Void> updateUsername(@RequestBody UpdateUsernameRequest req,
-			@CookieValue String refreshToken, HttpServletResponse res) {
+	public ResponseEntity<Void> updateUsername(@RequestBody UpdateUsernameRequest req, HttpServletResponse res) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		UserUpdatePayload payload = new UserUpdatePayload();
 		payload.setUsername(req.getUsername());
 		service.updateByUsername(auth.getName(), payload);
+
+		return ResponseEntity.noContent().build();
+	}
+
+	@Secured(UserRole.Constants.USER)
+	@PostMapping("/password")
+	public ResponseEntity<Void> updatePassword(@RequestBody UpdatePasswordRequest req) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		service.updatePasswordByUsername(auth.getName(), req.getPassword());
 
 		return ResponseEntity.noContent().build();
 	}

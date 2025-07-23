@@ -38,6 +38,7 @@ import com.maxkemzi.mypianolist.user.piece.controller.InvalidUserPieceSortExcept
 import com.maxkemzi.mypianolist.user.piece.model.InvalidUserPieceStatusException;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceAlreadyExistsException;
 import com.maxkemzi.mypianolist.user.piece.service.UserPieceNotFoundException;
+import com.maxkemzi.mypianolist.user.service.SamePasswordException;
 import com.maxkemzi.mypianolist.user.service.UserNotFoundException;
 
 @RestControllerAdvice
@@ -222,6 +223,13 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorResponse> handleMaxUploadSizeExceeded(MaxUploadSizeExceededException e) {
 		return new ResponseEntity<>(
 				new ErrorResponse("Maximum upload size of 500KB exceeded.", "max_upload_size_exceeded"),
+				HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(SamePasswordException.class)
+	public ResponseEntity<ErrorResponse> handleSamePassword(SamePasswordException e) {
+		return new ResponseEntity<>(
+				new ErrorResponse("New password must be different from the current one.", "same_password"),
 				HttpStatus.BAD_REQUEST);
 	}
 }
