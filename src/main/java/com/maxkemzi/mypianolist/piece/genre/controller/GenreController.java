@@ -3,14 +3,15 @@ package com.maxkemzi.mypianolist.piece.genre.controller;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ import com.maxkemzi.mypianolist.piece.genre.model.Genre;
 import com.maxkemzi.mypianolist.piece.genre.service.GenreCreatePayload;
 import com.maxkemzi.mypianolist.piece.genre.service.GenreService;
 import com.maxkemzi.mypianolist.user.model.UserRole;
+import com.maxkemzi.mypianolist.util.PageRequestParams;
 import com.maxkemzi.mypianolist.util.PageResponseDto;
 
 import jakarta.validation.Valid;
@@ -48,7 +50,9 @@ public class GenreController {
 	}
 
 	@GetMapping
-	public PageResponseDto<GenreResponseDto> findAll(@PageableDefault(sort = "name") Pageable pageable) {
+	public PageResponseDto<GenreResponseDto> findAll(@ModelAttribute PageRequestParams params) {
+		Pageable pageable = PageRequest.of(params.getPage(), params.getLimit());
+
 		Page<Genre> page = service.findAll(pageable);
 
 		Page<GenreResponseDto> resPage = page.map(GenreResponseDto::new);

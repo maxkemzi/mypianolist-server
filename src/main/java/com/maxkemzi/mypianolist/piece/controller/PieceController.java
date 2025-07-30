@@ -86,7 +86,7 @@ public class PieceController {
 				break;
 		}
 
-		Page<CompletePiece> sortedPage = new PageImpl<CompletePiece>(pieces, pageable, pieces.size());
+		Page<CompletePiece> sortedPage = new PageImpl<CompletePiece>(pieces, pageable, page.getTotalElements());
 
 		Page<CompletePieceResponseDto> resPage = sortedPage.map(CompletePieceResponseDto::new);
 

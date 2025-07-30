@@ -3,8 +3,8 @@ package com.maxkemzi.mypianolist.user.favoritepiece.controller;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +25,7 @@ import com.maxkemzi.mypianolist.user.favoritepiece.model.FavoritePiece;
 import com.maxkemzi.mypianolist.user.favoritepiece.service.FavoritePieceCreatePayload;
 import com.maxkemzi.mypianolist.user.favoritepiece.service.FavoritePieceService;
 import com.maxkemzi.mypianolist.user.model.UserRole;
+import com.maxkemzi.mypianolist.util.PageRequestParams;
 import com.maxkemzi.mypianolist.util.PageResponseDto;
 
 import jakarta.validation.Valid;
@@ -54,8 +56,10 @@ public class FavoritePieceController {
 
 	@Secured(UserRole.Constants.USER)
 	@GetMapping("/favorite-pieces")
-	public PageResponseDto<PieceResponseDto> findByAuth(@PageableDefault Pageable pageable) {
+	public PageResponseDto<PieceResponseDto> findByAuth(@ModelAttribute PageRequestParams params) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		Pageable pageable = PageRequest.of(params.getPage(), params.getLimit());
 
 		Page<FavoritePiece> page = service.findByUsername(auth.getName(), pageable);
 
@@ -66,7 +70,9 @@ public class FavoritePieceController {
 
 	@GetMapping("/{username}/favorite-pieces")
 	public PageResponseDto<PieceResponseDto> findByUsername(@PathVariable("username") String username,
-			@PageableDefault Pageable pageable) {
+			@ModelAttribute PageRequestParams params) {
+		Pageable pageable = PageRequest.of(params.getPage(), params.getLimit());
+
 		Page<FavoritePiece> page = service.findByUsername(username, pageable);
 
 		Page<PieceResponseDto> resPage = page.map(ufp -> new PieceResponseDto(ufp.getPiece()));
