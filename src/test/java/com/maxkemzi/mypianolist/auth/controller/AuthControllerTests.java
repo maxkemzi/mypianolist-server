@@ -28,6 +28,9 @@ import com.maxkemzi.mypianolist.auth.service.LoginPayload;
 import com.maxkemzi.mypianolist.auth.service.RegisterPayload;
 import com.maxkemzi.mypianolist.user.controller.UserResponseDto;
 import com.maxkemzi.mypianolist.user.model.User;
+import com.maxkemzi.mypianolist.user.profile.controller.UserProfileResponseDto;
+import com.maxkemzi.mypianolist.user.profile.model.UserProfile;
+import com.maxkemzi.mypianolist.user.profile.service.UserProfileService;
 import com.maxkemzi.mypianolist.user.service.UserService;
 
 import jakarta.servlet.http.Cookie;
@@ -39,18 +42,21 @@ public class AuthControllerTests {
 	private final MockMvc mockMvc;
 	private final ObjectMapper objectMapper;
 	private final UserService userService;
+	private final UserProfileService userProfileService;
 	private final AuthService authService;
 	private final RefreshTokenService refreshTokenService;
 	private final RefreshTokenCookieFactory refreshTokenCookieFactory;
 
 	@Autowired
 	public AuthControllerTests(JdbcTemplate jdbc, MockMvc mockMvc, ObjectMapper objectMapper,
-			UserService userService, AuthService authService, RefreshTokenService refreshTokenService,
+			UserService userService, UserProfileService userProfileService, AuthService authService,
+			RefreshTokenService refreshTokenService,
 			RefreshTokenCookieFactory refreshTokenCookieFactory) {
 		this.jdbc = jdbc;
 		this.mockMvc = mockMvc;
 		this.objectMapper = objectMapper;
 		this.userService = userService;
+		this.userProfileService = userProfileService;
 		this.authService = authService;
 		this.refreshTokenService = refreshTokenService;
 		this.refreshTokenCookieFactory = refreshTokenCookieFactory;
@@ -74,9 +80,9 @@ public class AuthControllerTests {
 
 		assertTrue(userService.existsByUsername("max"), "Should create a new user.");
 
-		User user = userService.findByUsername("max");
-		UserResponseDto userResDto = new UserResponseDto(user);
-		assertEquals(objectMapper.writeValueAsString(userResDto), mvcResult.getResponse().getContentAsString(),
+		UserProfile userProfile = userProfileService.findByUsername("max");
+		UserProfileResponseDto expectedRes = new UserProfileResponseDto(userProfile);
+		assertEquals(objectMapper.writeValueAsString(expectedRes), mvcResult.getResponse().getContentAsString(),
 				"Should have a correct response.");
 	}
 

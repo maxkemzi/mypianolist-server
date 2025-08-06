@@ -2,7 +2,6 @@ package com.maxkemzi.mypianolist.user.service;
 
 import java.util.Optional;
 
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +13,10 @@ import jakarta.transaction.Transactional;
 @Service
 public class UserService {
 	private final UserRepository repository;
-	private final AuthenticationManager authManager;
 	private final BCryptPasswordEncoder passwordEncoder;
 
-	public UserService(UserRepository repository, AuthenticationManager authManager) {
+	public UserService(UserRepository repository) {
 		this.repository = repository;
-		this.authManager = authManager;
 		this.passwordEncoder = new BCryptPasswordEncoder();
 	}
 
