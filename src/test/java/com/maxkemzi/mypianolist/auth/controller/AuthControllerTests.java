@@ -26,8 +26,7 @@ import com.maxkemzi.mypianolist.auth.service.AuthService;
 import com.maxkemzi.mypianolist.auth.service.LoginData;
 import com.maxkemzi.mypianolist.auth.service.LoginPayload;
 import com.maxkemzi.mypianolist.auth.service.RegisterPayload;
-import com.maxkemzi.mypianolist.user.controller.UserResponseDto;
-import com.maxkemzi.mypianolist.user.model.User;
+import com.maxkemzi.mypianolist.user.model.UserRole;
 import com.maxkemzi.mypianolist.user.profile.controller.UserProfileResponseDto;
 import com.maxkemzi.mypianolist.user.profile.model.UserProfile;
 import com.maxkemzi.mypianolist.user.profile.service.UserProfileService;
@@ -65,7 +64,6 @@ public class AuthControllerTests {
 	@BeforeEach
 	public void cleanDatabase() {
 		jdbc.execute("DELETE FROM user_account;");
-		jdbc.execute("DELETE FROM refresh_token;");
 	}
 
 	@Test
@@ -88,7 +86,7 @@ public class AuthControllerTests {
 
 	@Test
 	public void testLogin() throws Exception {
-		authService.register(new RegisterPayload("max", "max@gmail.com", "qwerty77"));
+		authService.register(new RegisterPayload("max", "max@gmail.com", "qwerty77", UserRole.USER));
 
 		LoginRequest content = new LoginRequest("max", "qwerty77");
 		mockMvc
@@ -106,7 +104,7 @@ public class AuthControllerTests {
 
 	@Test
 	public void testRefresh() throws Exception {
-		authService.register(new RegisterPayload("max", "max@gmail.com", "qwerty77"));
+		authService.register(new RegisterPayload("max", "max@gmail.com", "qwerty77", UserRole.USER));
 
 		LoginData loginData = authService.logIn(new LoginPayload("max", "qwerty77"));
 		Cookie refreshTokenCookie = refreshTokenCookieFactory.create(loginData.getTokens().getRefresh());
@@ -131,7 +129,7 @@ public class AuthControllerTests {
 
 	@Test
 	public void testLogout() throws Exception {
-		authService.register(new RegisterPayload("max", "max@gmail.com", "qwerty77"));
+		authService.register(new RegisterPayload("max", "max@gmail.com", "qwerty77", UserRole.USER));
 
 		LoginData loginData = authService.logIn(new LoginPayload("max", "qwerty77"));
 		Cookie refreshTokenCookie = refreshTokenCookieFactory.create(loginData.getTokens().getRefresh());
