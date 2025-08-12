@@ -22,7 +22,7 @@ public class UserService {
 
 	@Transactional
 	public User create(UserCreatePayload payload) {
-		User user = new User(payload.getUsername(), payload.getEmail(), payload.getPassword());
+		User user = new User(payload.getUsername(), payload.getEmail(), payload.getPassword(), payload.getRole());
 
 		return repository.save(user);
 	}

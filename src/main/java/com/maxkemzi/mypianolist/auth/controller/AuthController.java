@@ -15,6 +15,7 @@ import com.maxkemzi.mypianolist.auth.service.LoginPayload;
 import com.maxkemzi.mypianolist.auth.service.RegisterPayload;
 import com.maxkemzi.mypianolist.auth.service.jwt.JwtTokens;
 import com.maxkemzi.mypianolist.auth.service.jwt.JwtUser;
+import com.maxkemzi.mypianolist.user.model.UserRole;
 import com.maxkemzi.mypianolist.user.profile.controller.UserProfileResponseDto;
 import com.maxkemzi.mypianolist.user.profile.model.UserProfile;
 
@@ -33,7 +34,8 @@ public class AuthController {
 
 	@PostMapping("/register")
 	public ResponseEntity<UserProfileResponseDto> register(@RequestBody RegisterRequest req) {
-		RegisterPayload payload = new RegisterPayload(req.getUsername(), req.getEmail(), req.getPassword());
+		RegisterPayload payload = new RegisterPayload(req.getUsername(), req.getEmail(), req.getPassword(),
+				UserRole.USER);
 
 		UserProfile user = service.register(payload);
 

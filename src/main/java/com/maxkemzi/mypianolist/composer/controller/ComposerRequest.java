@@ -25,7 +25,6 @@ public class ComposerRequest {
 	@Size(min = 10, max = 2000, message = "Biography must be between 10 and 2000 characters.")
 	private String biography;
 
-	@URL(message = "Image must be a valid URL.")
 	private String image;
 
 	@NotNull(message = "Born date is required.")

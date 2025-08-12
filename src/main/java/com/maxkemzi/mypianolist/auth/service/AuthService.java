@@ -52,7 +52,7 @@ public class AuthService {
 		String hashedPassword = passwordEncoder.encode(payload.getPassword());
 
 		User user = userService.create(new UserCreatePayload(payload.getUsername(), payload.getEmail(),
-				hashedPassword));
+				hashedPassword, payload.getRole()));
 
 		UserProfileCreatePayload profilePayload = new UserProfileCreatePayload(user, null, null);
 
