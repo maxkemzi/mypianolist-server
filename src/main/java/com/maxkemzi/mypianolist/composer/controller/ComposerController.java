@@ -67,7 +67,7 @@ public class ComposerController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<ComposerResponseDto> findById(@PathVariable("id") UUID id) {
+	public ResponseEntity<CompleteComposerResponseDto> findById(@PathVariable("id") UUID id) {
 		Composer composer = service.findById(id);
 
 		CompleteComposer completeComposer = service.complete(composer);
