@@ -67,7 +67,7 @@ public class PieceController {
 		Page<Piece> page = service.findAll(genre, search, pageable);
 
 		List<CompletePiece> pieces = new ArrayList<>(service.complete(page.getContent()));
-
+		// TODO: Sort pieces before applying limit
 		switch (sort) {
 			case PieceSort.CREATED_AT:
 				pieces.sort(Comparator.comparing(ep -> ep.getPiece().getCreatedAt(), (s1, s2) -> {
