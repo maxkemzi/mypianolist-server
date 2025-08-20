@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.composer.service.ComposerService;
+import com.maxkemzi.mypianolist.piece.controller.PieceSort;
 import com.maxkemzi.mypianolist.piece.genre.model.Genre;
 import com.maxkemzi.mypianolist.piece.genre.service.GenreService;
 import com.maxkemzi.mypianolist.piece.model.Piece;
@@ -56,12 +57,30 @@ public class PieceService {
 		return repository.save(piece);
 	}
 
-	public Page<Piece> findAll(String genreName, String search, Pageable pageable) {
-		return repository.findAll(genreName, search, pageable);
+	public Page<PieceWithStats> findAll(String genreName, String search, Pageable pageable, PieceSort sort) {
+		switch (sort) {
+			case PieceSort.CREATED_AT:
+				return repository.findAllWithStatsOrderByCreatedAt(genreName, search, pageable);
+			case PieceSort.LEARNERS:
+				return repository.findAllWithStatsOrderByLearners(genreName, search, pageable);
+			case PieceSort.FAVORITES:
+				return repository.findAllWithStatsOrderByFavorites(genreName, search, pageable);
+			default:
+				return repository.findAllWithStats(genreName, search, pageable);
+		}
 	}
 
 	public Piece findById(UUID id) throws PieceNotFoundException {
 		Optional<Piece> piece = repository.findById(id);
+		if (piece.isEmpty()) {
+			throw new PieceNotFoundException();
+		}
+
+		return piece.get();
+	}
+
+	public PieceWithStats findByIdWithStats(UUID id) throws PieceNotFoundException {
+		Optional<PieceWithStats> piece = repository.findByIdWithStats(id);
 		if (piece.isEmpty()) {
 			throw new PieceNotFoundException();
 		}
@@ -79,28 +98,16 @@ public class PieceService {
 		repository.deleteById(id);
 	}
 
-	public List<CompletePiece> complete(List<Piece> pieces) {
-		return pieces.stream().map(p -> this.complete(p)).toList();
-	}
-
-	public CompletePiece complete(Piece piece) {
+	public CompletePiece complete(PieceWithStats pieceWithStats) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-		PieceStats stats = this.getStats(piece);
 		PieceUserMetadata userMetadata = null;
 
 		if (auth != null) {
-			userMetadata = this.getUserMetadata(piece, auth.getName());
+			userMetadata = this.getUserMetadata(pieceWithStats.getPiece(), auth.getName());
 		}
 
-		return new CompletePiece(piece, stats, userMetadata);
-	}
-
-	private PieceStats getStats(Piece piece) {
-		long favorites = this.favoritePieceRepository.countByPieceId(piece.getId());
-		long learners = this.userPieceRepository.countByPieceId(piece.getId());
-
-		return new PieceStats(favorites, learners);
+		return new CompletePiece(pieceWithStats, userMetadata);
 	}
 
 	private PieceUserMetadata getUserMetadata(Piece piece, String username) {

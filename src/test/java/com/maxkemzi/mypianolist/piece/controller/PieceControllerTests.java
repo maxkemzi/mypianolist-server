@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -33,6 +34,7 @@ import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
 import com.maxkemzi.mypianolist.piece.service.CompletePiece;
 import com.maxkemzi.mypianolist.piece.service.PieceStats;
+import com.maxkemzi.mypianolist.piece.service.PieceWithStats;
 import com.maxkemzi.mypianolist.user.model.UserRole;
 import com.maxkemzi.mypianolist.user.repository.UserRepository;
 import com.maxkemzi.mypianolist.util.PageResponseDto;
@@ -137,8 +139,6 @@ public class PieceControllerTests {
 		PageResponseDto<CompletePieceResponseDto> response = objectMapper.readValue(content, new TypeReference<>() {
 		});
 
-		System.out.println(pieceRepository.findAll());
-
 		assertEquals(3, response.getContent().size());
 		assertEquals("Ballade", response.getContent().get(0).getTitle());
 		assertEquals("Nocturne", response.getContent().get(1).getTitle());
@@ -171,7 +171,8 @@ public class PieceControllerTests {
 				.andExpect(status().isOk())
 				.andReturn();
 
-		CompletePiece createdCompletePiece = new CompletePiece(createdPiece, new PieceStats(0, 0), null);
+		CompletePiece createdCompletePiece = new CompletePiece(new PieceWithStats(createdPiece, 0, 0),
+				null);
 		CompletePieceResponseDto expectedResponse = new CompletePieceResponseDto(createdCompletePiece);
 
 		String expected = objectMapper.writeValueAsString(expectedResponse);

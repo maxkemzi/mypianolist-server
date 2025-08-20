@@ -1,27 +1,19 @@
 package com.maxkemzi.mypianolist.piece.service;
 
-import com.maxkemzi.mypianolist.piece.model.Piece;
-
 public class CompletePiece {
-	private Piece piece;
-	private PieceStats stats;
+	private PieceWithStats piece;
 	private PieceUserMetadata userMetadata;
 
 	protected CompletePiece() {
 	}
 
-	public CompletePiece(Piece p, PieceStats s, PieceUserMetadata um) {
+	public CompletePiece(PieceWithStats p, PieceUserMetadata um) {
 		this.piece = p;
-		this.stats = s;
 		this.userMetadata = um;
 	}
 
-	public Piece getPiece() {
+	public PieceWithStats getPieceWithStats() {
 		return piece;
-	}
-
-	public PieceStats getStats() {
-		return stats;
 	}
 
 	public PieceUserMetadata getUserMetadata() {

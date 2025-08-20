@@ -1,12 +1,8 @@
 package com.maxkemzi.mypianolist.piece.controller;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -27,6 +23,7 @@ import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.piece.service.CompletePiece;
 import com.maxkemzi.mypianolist.piece.service.PieceCreatePayload;
 import com.maxkemzi.mypianolist.piece.service.PieceService;
+import com.maxkemzi.mypianolist.piece.service.PieceWithStats;
 import com.maxkemzi.mypianolist.user.model.UserRole;
 import com.maxkemzi.mypianolist.util.PageRequestParams;
 import com.maxkemzi.mypianolist.util.PageResponseDto;
@@ -64,38 +61,18 @@ public class PieceController {
 			@ModelAttribute PageRequestParams params) {
 		Pageable pageable = PageRequest.of(params.getPage(), params.getLimit());
 
-		Page<Piece> page = service.findAll(genre, search, pageable);
+		Page<PieceWithStats> page = service.findAll(genre, search, pageable, sort);
 
-		List<CompletePiece> pieces = new ArrayList<>(service.complete(page.getContent()));
-		// TODO: Sort pieces before applying limit
-		switch (sort) {
-			case PieceSort.CREATED_AT:
-				pieces.sort(Comparator.comparing(ep -> ep.getPiece().getCreatedAt(), (s1, s2) -> {
-					return s2.compareTo(s1);
-				}));
-				break;
-			case PieceSort.LEARNERS:
-				pieces.sort(Comparator.comparing(p -> p.getStats().getLearners(), (s1, s2) -> {
-					return s2.compareTo(s1);
-				}));
-				break;
-			case PieceSort.FAVORITES:
-				pieces.sort(Comparator.comparing(p -> p.getStats().getFavorites(), (s1, s2) -> {
-					return s2.compareTo(s1);
-				}));
-				break;
-		}
+		Page<CompletePiece> completedPage = page.map((p) -> service.complete(p));
 
-		Page<CompletePiece> sortedPage = new PageImpl<CompletePiece>(pieces, pageable, page.getTotalElements());
-
-		Page<CompletePieceResponseDto> resPage = sortedPage.map(CompletePieceResponseDto::new);
+		Page<CompletePieceResponseDto> resPage = completedPage.map(CompletePieceResponseDto::new);
 
 		return new PageResponseDto<>(resPage);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<CompletePieceResponseDto> findById(@PathVariable("id") UUID id) {
-		Piece piece = service.findById(id);
+		PieceWithStats piece = service.findByIdWithStats(id);
 
 		CompletePiece completePiece = service.complete(piece);
 
