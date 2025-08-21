@@ -1,5 +1,6 @@
 package com.maxkemzi.mypianolist.piece.genre.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,6 +14,8 @@ public interface GenreRepository extends CrudRepository<Genre, UUID> {
 	Optional<Genre> findByName(String name);
 
 	Page<Genre> findAll(Pageable pageable);
+
+	List<Genre> findAll();
 
 	boolean existsByName(String name);
 }

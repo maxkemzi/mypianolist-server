@@ -57,7 +57,7 @@ public class PieceService {
 		return repository.save(piece);
 	}
 
-	public Page<PieceWithStats> findAll(String genreName, String search, Pageable pageable, PieceSort sort) {
+	public Page<PieceWithStats> findAllWithStats(String genreName, String search, Pageable pageable, PieceSort sort) {
 		switch (sort) {
 			case PieceSort.CREATED_AT:
 				return repository.findAllWithStatsOrderByCreatedAt(genreName, search, pageable);

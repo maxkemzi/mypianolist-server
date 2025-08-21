@@ -61,9 +61,9 @@ public class PieceController {
 			@ModelAttribute PageRequestParams params) {
 		Pageable pageable = PageRequest.of(params.getPage(), params.getLimit());
 
-		Page<PieceWithStats> page = service.findAll(genre, search, pageable, sort);
+		Page<PieceWithStats> page = service.findAllWithStats(genre, search, pageable, sort);
 
-		Page<CompletePiece> completedPage = page.map((p) -> service.complete(p));
+		Page<CompletePiece> completedPage = page.map(service::complete);
 
 		Page<CompletePieceResponseDto> resPage = completedPage.map(CompletePieceResponseDto::new);
 
