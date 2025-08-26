@@ -19,6 +19,22 @@ public interface UserPieceRepository extends CrudRepository<UserPiece, UUID> {
 			@Param("status") UserPieceStatus status,
 			Pageable pageable);
 
+	@Query("""
+			SELECT up FROM UserPiece up WHERE (:search IS NULL OR LOWER(up.piece.title) LIKE LOWER(CONCAT('%', :search, '%'))) AND (:status IS NULL OR up.status = :status) AND up.user.username = :username
+			ORDER BY up.createdAt DESC
+			""")
+	Page<UserPiece> findByUsernameOrderByCreatedAt(@Param("username") String username, @Param("search") String search,
+			@Param("status") UserPieceStatus status,
+			Pageable pageable);
+
+	@Query("""
+			SELECT up FROM UserPiece up WHERE (:search IS NULL OR LOWER(up.piece.title) LIKE LOWER(CONCAT('%', :search, '%'))) AND (:status IS NULL OR up.status = :status) AND up.user.username = :username
+			ORDER BY up.score DESC
+			""")
+	Page<UserPiece> findByUsernameOrderByScore(@Param("username") String username, @Param("search") String search,
+			@Param("status") UserPieceStatus status,
+			Pageable pageable);
+
 	List<UserPiece> findByUserUsername(@Param("username") String username);
 
 	boolean existsByUserUsernameAndPieceId(String username, UUID pieceId);

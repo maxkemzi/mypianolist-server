@@ -1,12 +1,8 @@
 package com.maxkemzi.mypianolist.user.piece.controller;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -72,26 +68,9 @@ public class UserPieceController {
 			@ModelAttribute PageRequestParams params) {
 		Pageable pageable = PageRequest.of(params.getPage(), params.getLimit());
 
-		Page<UserPiece> page = service.findByUsername(username, search, status, pageable);
+		Page<UserPiece> page = service.findByUsername(username, search, status, pageable, sort);
 
-		List<UserPiece> pieces = new ArrayList<>(page.getContent());
-
-		switch (sort) {
-			case UserPieceSort.CREATED_AT:
-				pieces.sort(Comparator.comparing(ep -> ep.getPiece().getCreatedAt(), (s1, s2) -> {
-					return s2.compareTo(s1);
-				}));
-				break;
-			case UserPieceSort.SCORE:
-				pieces.sort(Comparator.comparing(p -> p.getScore(), (s1, s2) -> {
-					return s2.compareTo(s1);
-				}));
-				break;
-		}
-
-		Page<UserPiece> sortedPage = new PageImpl<UserPiece>(pieces, pageable, page.getTotalElements());
-
-		Page<UserPieceResponseDto> resPage = sortedPage.map(UserPieceResponseDto::new);
+		Page<UserPieceResponseDto> resPage = page.map(UserPieceResponseDto::new);
 
 		return new PageResponseDto<>(resPage);
 	}
@@ -106,26 +85,9 @@ public class UserPieceController {
 
 		Pageable pageable = PageRequest.of(params.getPage(), params.getLimit());
 
-		Page<UserPiece> page = service.findByUsername(auth.getName(), search, status, pageable);
+		Page<UserPiece> page = service.findByUsername(auth.getName(), search, status, pageable, sort);
 
-		List<UserPiece> pieces = new ArrayList<>(page.getContent());
-
-		switch (sort) {
-			case UserPieceSort.CREATED_AT:
-				pieces.sort(Comparator.comparing(ep -> ep.getPiece().getCreatedAt(), (s1, s2) -> {
-					return s2.compareTo(s1);
-				}));
-				break;
-			case UserPieceSort.SCORE:
-				pieces.sort(Comparator.comparing(p -> p.getScore(), (s1, s2) -> {
-					return s2.compareTo(s1);
-				}));
-				break;
-		}
-
-		Page<UserPiece> sortedPage = new PageImpl<UserPiece>(pieces, pageable, page.getTotalElements());
-
-		Page<UserPieceResponseDto> resPage = sortedPage.map(UserPieceResponseDto::new);
+		Page<UserPieceResponseDto> resPage = page.map(UserPieceResponseDto::new);
 
 		return new PageResponseDto<>(resPage);
 	}

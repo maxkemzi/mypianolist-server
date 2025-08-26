@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.piece.service.PieceService;
 import com.maxkemzi.mypianolist.user.model.User;
+import com.maxkemzi.mypianolist.user.piece.controller.UserPieceSort;
 import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
 import com.maxkemzi.mypianolist.user.piece.model.UserPieceStatus;
 import com.maxkemzi.mypianolist.user.piece.repository.UserPieceRepository;
@@ -48,13 +49,21 @@ public class UserPieceService {
 		return repository.save(userPiece);
 	}
 
-	public Page<UserPiece> findByUsername(String username, String search, UserPieceStatus status, Pageable pageable) {
+	public Page<UserPiece> findByUsername(String username, String search, UserPieceStatus status, Pageable pageable,
+			UserPieceSort sort) {
 		boolean userExists = userService.existsByUsername(username);
 		if (!userExists) {
 			throw new UserNotFoundException();
 		}
 
-		return repository.findByUsername(username, search, status, pageable);
+		switch (sort) {
+			case UserPieceSort.CREATED_AT:
+				return repository.findByUsernameOrderByCreatedAt(username, search, status, pageable);
+			case UserPieceSort.SCORE:
+				return repository.findByUsernameOrderByScore(username, search, status, pageable);
+			default:
+				return repository.findByUsername(username, search, status, pageable);
+		}
 	}
 
 	@Transactional
