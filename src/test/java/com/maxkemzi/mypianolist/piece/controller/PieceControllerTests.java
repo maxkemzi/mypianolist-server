@@ -20,10 +20,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.maxkemzi.mypianolist.auth.service.AuthService;
+import com.maxkemzi.mypianolist.TestUtils;
 import com.maxkemzi.mypianolist.auth.service.LoginData;
-import com.maxkemzi.mypianolist.auth.service.LoginPayload;
-import com.maxkemzi.mypianolist.auth.service.RegisterPayload;
 import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.composer.repository.ComposerRepository;
 import com.maxkemzi.mypianolist.piece.genre.model.Genre;
@@ -32,8 +30,6 @@ import com.maxkemzi.mypianolist.piece.model.Piece;
 import com.maxkemzi.mypianolist.piece.repository.PieceRepository;
 import com.maxkemzi.mypianolist.piece.service.CompletePiece;
 import com.maxkemzi.mypianolist.piece.service.PieceWithStats;
-import com.maxkemzi.mypianolist.user.model.UserRole;
-import com.maxkemzi.mypianolist.user.repository.UserRepository;
 import com.maxkemzi.mypianolist.util.PageResponseDto;
 
 @AutoConfigureMockMvc
@@ -41,39 +37,32 @@ import com.maxkemzi.mypianolist.util.PageResponseDto;
 public class PieceControllerTests {
 	private final MockMvc mockMvc;
 	private final ObjectMapper objectMapper;
-	private final UserRepository userRepository;
 	private final PieceRepository pieceRepository;
 	private final GenreRepository genreRepository;
 	private final ComposerRepository composerRepository;
-	private final AuthService authService;
+	private final TestUtils testUtils;
 
 	@Autowired
-	public PieceControllerTests(MockMvc mockMvc, ObjectMapper objectMapper, UserRepository userRepository,
-			PieceRepository pieceRepository, GenreRepository genreRepository, ComposerRepository composerRepository,
-			AuthService authService) {
+	public PieceControllerTests(MockMvc mockMvc, ObjectMapper objectMapper, PieceRepository pieceRepository,
+			GenreRepository genreRepository, ComposerRepository composerRepository,
+			TestUtils testUtils) {
 		this.mockMvc = mockMvc;
 		this.objectMapper = objectMapper;
-		this.userRepository = userRepository;
 		this.pieceRepository = pieceRepository;
 		this.genreRepository = genreRepository;
 		this.composerRepository = composerRepository;
-		this.authService = authService;
+		this.testUtils = testUtils;
 	}
 
 	@BeforeEach
 	public void setup() {
-		userRepository.deleteAll();
-		pieceRepository.deleteAll();
-		composerRepository.deleteAll();
-		genreRepository.deleteAll();
-
-		RegisterPayload payload = new RegisterPayload("maxkemzi", "a@gmail.com", "123456", UserRole.ADMIN);
-		authService.register(payload);
+		testUtils.clearDatabase();
+		testUtils.registerUser("maxkemzi", "a@gmail.com", "123456");
 	}
 
 	@Test
 	public void testCreate() throws Exception {
-		LoginData loginData = logIn();
+		LoginData loginData = testUtils.logInUser("maxkemzi", "123456");
 
 		Composer composer = new Composer("George Frideric", "Handel", null,
 				"German-British Baroque composer famous for operas, oratorios, and concerti grossi.",
@@ -180,7 +169,7 @@ public class PieceControllerTests {
 
 	@Test
 	public void testDeleteById() throws Exception {
-		LoginData loginData = logIn();
+		LoginData loginData = testUtils.logInUser("maxkemzi", "123456");
 
 		Composer composer = new Composer("George Frideric", "Handel", null,
 				"German-British Baroque composer famous for operas, oratorios, and concerti grossi.",
@@ -206,10 +195,5 @@ public class PieceControllerTests {
 				.andReturn();
 
 		assertFalse(pieceRepository.existsById(createdPiece.getId()), "Should delete a new piece.");
-	}
-
-	private LoginData logIn() {
-		LoginPayload loginPayload = new LoginPayload("maxkemzi", "123456");
-		return authService.logIn(loginPayload);
 	}
 }

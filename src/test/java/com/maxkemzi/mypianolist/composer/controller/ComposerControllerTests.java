@@ -21,16 +21,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.maxkemzi.mypianolist.auth.service.AuthService;
+import com.maxkemzi.mypianolist.TestUtils;
 import com.maxkemzi.mypianolist.auth.service.LoginData;
-import com.maxkemzi.mypianolist.auth.service.LoginPayload;
-import com.maxkemzi.mypianolist.auth.service.RegisterPayload;
 import com.maxkemzi.mypianolist.composer.model.Composer;
 import com.maxkemzi.mypianolist.composer.repository.ComposerRepository;
 import com.maxkemzi.mypianolist.composer.service.CompleteComposer;
 import com.maxkemzi.mypianolist.composer.service.ComposerStats;
-import com.maxkemzi.mypianolist.user.model.UserRole;
-import com.maxkemzi.mypianolist.user.repository.UserRepository;
 import com.maxkemzi.mypianolist.util.PageResponseDto;
 
 @AutoConfigureMockMvc
@@ -38,32 +34,27 @@ import com.maxkemzi.mypianolist.util.PageResponseDto;
 public class ComposerControllerTests {
 	private final MockMvc mockMvc;
 	private final ObjectMapper objectMapper;
-	private final UserRepository userRepository;
 	private final ComposerRepository composerRepository;
-	private final AuthService authService;
+	private final TestUtils testUtils;
 
 	@Autowired
-	public ComposerControllerTests(MockMvc mockMvc, ObjectMapper objectMapper, UserRepository userRepository,
-			ComposerRepository composerRepository, AuthService authService) {
+	public ComposerControllerTests(MockMvc mockMvc, ObjectMapper objectMapper, ComposerRepository composerRepository,
+			TestUtils testUtils) {
 		this.mockMvc = mockMvc;
 		this.objectMapper = objectMapper;
-		this.userRepository = userRepository;
 		this.composerRepository = composerRepository;
-		this.authService = authService;
+		this.testUtils = testUtils;
 	}
 
 	@BeforeEach
 	public void setup() {
-		userRepository.deleteAll();
-		composerRepository.deleteAll();
-
-		RegisterPayload payload = new RegisterPayload("maxkemzi", "a@gmail.com", "123456", UserRole.ADMIN);
-		authService.register(payload);
+		testUtils.clearDatabase();
+		testUtils.registerUser("maxkemzi", "a@gmail.com", "123456");
 	}
 
 	@Test
 	public void testCreate() throws Exception {
-		LoginData loginData = logIn();
+		LoginData loginData = testUtils.logInUser("maxkemzi", "123456");
 
 		ComposerRequest content = new ComposerRequest("George Frideric", "Handel", null,
 				"German-British Baroque composer famous for operas, oratorios, and concerti grossi.",
@@ -151,7 +142,7 @@ public class ComposerControllerTests {
 
 	@Test
 	public void testDeleteById() throws Exception {
-		LoginData loginData = logIn();
+		LoginData loginData = testUtils.logInUser("maxkemzi", "123456");
 
 		Composer composer = new Composer("George Frideric", "Handel", null,
 				"German-British Baroque composer famous for operas, oratorios, and concerti grossi.",
@@ -169,10 +160,5 @@ public class ComposerControllerTests {
 				.andReturn();
 
 		assertFalse(composerRepository.existsById(createdComposer.getId()), "Should delete a new composer.");
-	}
-
-	private LoginData logIn() {
-		LoginPayload loginPayload = new LoginPayload("maxkemzi", "123456");
-		return authService.logIn(loginPayload);
 	}
 }

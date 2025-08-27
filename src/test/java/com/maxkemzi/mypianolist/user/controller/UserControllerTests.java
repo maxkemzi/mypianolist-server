@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Optional;
 
-import org.aspectj.weaver.bcel.BcelAccessForInlineMunger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +16,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.maxkemzi.mypianolist.auth.service.AuthService;
+import com.maxkemzi.mypianolist.TestUtils;
 import com.maxkemzi.mypianolist.auth.service.LoginData;
-import com.maxkemzi.mypianolist.auth.service.LoginPayload;
-import com.maxkemzi.mypianolist.auth.service.RegisterPayload;
 import com.maxkemzi.mypianolist.user.model.User;
-import com.maxkemzi.mypianolist.user.model.UserRole;
 import com.maxkemzi.mypianolist.user.repository.UserRepository;
 
 @AutoConfigureMockMvc
@@ -31,30 +27,28 @@ public class UserControllerTests {
 	private final MockMvc mockMvc;
 	private final ObjectMapper objectMapper;
 	private final UserRepository userRepository;
-	private final AuthService authService;
 	private final BCryptPasswordEncoder passwordEncoder;
+	private final TestUtils testUtils;
 
 	@Autowired
 	public UserControllerTests(MockMvc mockMvc, ObjectMapper objectMapper, UserRepository userRepository,
-			AuthService authService) {
+			TestUtils testUtils) {
 		this.mockMvc = mockMvc;
 		this.objectMapper = objectMapper;
 		this.userRepository = userRepository;
-		this.authService = authService;
 		this.passwordEncoder = new BCryptPasswordEncoder();
+		this.testUtils = testUtils;
 	}
 
 	@BeforeEach
 	public void setup() {
-		userRepository.deleteAll();
-
-		RegisterPayload payload = new RegisterPayload("maxkemzi", "a@gmail.com", "123456", UserRole.ADMIN);
-		authService.register(payload);
+		testUtils.clearDatabase();
+		testUtils.registerUser("maxkemzi", "a@gmail.com", "123456");
 	}
 
 	@Test
 	public void testUpdateUsername() throws Exception {
-		LoginData loginData = logIn();
+		LoginData loginData = testUtils.logInUser("maxkemzi", "123456");
 
 		UpdateUsernameRequest content = new UpdateUsernameRequest("maxkyrychenko");
 
@@ -71,7 +65,7 @@ public class UserControllerTests {
 
 	@Test
 	public void testUpdatePassword() throws Exception {
-		LoginData loginData = logIn();
+		LoginData loginData = testUtils.logInUser("maxkemzi", "123456");
 
 		UpdatePasswordRequest content = new UpdatePasswordRequest("qwerty");
 
@@ -85,10 +79,5 @@ public class UserControllerTests {
 
 		Optional<User> user = userRepository.findByUsername("maxkemzi");
 		assertTrue(passwordEncoder.matches("qwerty", user.get().getPassword()), "Should update user's password.");
-	}
-
-	private LoginData logIn() {
-		LoginPayload loginPayload = new LoginPayload("maxkemzi", "123456");
-		return authService.logIn(loginPayload);
 	}
 }
