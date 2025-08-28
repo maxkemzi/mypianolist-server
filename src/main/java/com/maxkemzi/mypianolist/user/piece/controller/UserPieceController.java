@@ -77,7 +77,8 @@ public class UserPieceController {
 
 	@Secured(UserRole.Constants.USER)
 	@GetMapping("/pieces")
-	public PageResponseDto<UserPieceResponseDto> findAll(@RequestParam(name = "search", defaultValue = "") String search,
+	public PageResponseDto<UserPieceResponseDto> findByAuth(
+			@RequestParam(name = "search", defaultValue = "") String search,
 			@RequestParam(name = "status", required = false) UserPieceStatus status,
 			@RequestParam(name = "sort", defaultValue = UserPieceSort.Constants.CREATED_AT) UserPieceSort sort,
 			@ModelAttribute PageRequestParams params) {
@@ -94,7 +95,7 @@ public class UserPieceController {
 
 	@Secured(UserRole.Constants.USER)
 	@PatchMapping("/pieces/{id}")
-	public ResponseEntity<UserPieceResponseDto> update(@PathVariable("id") UUID id,
+	public ResponseEntity<UserPieceResponseDto> updateById(@PathVariable("id") UUID id,
 			@Valid @RequestBody UserPieceUpdateRequest req) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
