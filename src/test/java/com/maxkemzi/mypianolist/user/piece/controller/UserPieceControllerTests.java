@@ -35,6 +35,7 @@ import com.maxkemzi.mypianolist.user.model.User;
 import com.maxkemzi.mypianolist.user.piece.model.UserPiece;
 import com.maxkemzi.mypianolist.user.piece.model.UserPieceStatus;
 import com.maxkemzi.mypianolist.user.piece.repository.UserPieceRepository;
+import com.maxkemzi.mypianolist.user.piece.service.UserPieceStats;
 import com.maxkemzi.mypianolist.user.repository.UserRepository;
 import com.maxkemzi.mypianolist.util.PageResponseDto;
 
@@ -290,6 +291,71 @@ public class UserPieceControllerTests {
 				.andReturn();
 
 		String expected = objectMapper.writeValueAsString(UserPieceStatus.values());
+		String actual = result.getResponse().getContentAsString();
+
+		assertEquals(expected, actual, "Should have a correct response.");
+	}
+
+	@Test
+	public void testFindStatsByAuth() throws Exception {
+		LoginData loginData = testUtils.logInUser("maxkemzi", "123456");
+
+		Genre classical = new Genre("classical", "classical.jpg");
+		genreRepository.save(classical);
+
+		Composer handel = new Composer("George Frideric", "Handel", null,
+				"German-British Baroque composer famous for operas, oratorios, and concerti grossi.",
+				"handel.jpg", LocalDate.of(1685, 2, 23), LocalDate.of(1759, 4, 14));
+		composerRepository.save(handel);
+
+		Piece piece = new Piece("Prelude, Op. 28, No. 4",
+				"One of Chopin's 24 preludes, played at his funeral.",
+				LocalDate.of(1838, 3, 1), classical, handel);
+		pieceRepository.save(piece);
+
+		User user = userRepository.findByUsername("maxkemzi").orElse(null);
+
+		UserPiece userPiece = new UserPiece(4, UserPieceStatus.CURRENTLY_LEARNING, null, null, user, piece);
+		userPieceRepository.save(userPiece);
+
+		MvcResult result = mockMvc.perform(
+				MockMvcRequestBuilders.get("/api/users/pieces/stats")
+						.header("Authorization", "Bearer " + loginData.getTokens().getAccess()))
+				.andExpect(status().isOk())
+				.andReturn();
+
+		String expected = objectMapper.writeValueAsString(new UserPieceStats(1, 1, 0, 0, 0));
+		String actual = result.getResponse().getContentAsString();
+
+		assertEquals(expected, actual, "Should have a correct response.");
+	}
+
+	@Test
+	public void testFindStatsByUsername() throws Exception {
+		Genre classical = new Genre("classical", "classical.jpg");
+		genreRepository.save(classical);
+
+		Composer handel = new Composer("George Frideric", "Handel", null,
+				"German-British Baroque composer famous for operas, oratorios, and concerti grossi.",
+				"handel.jpg", LocalDate.of(1685, 2, 23), LocalDate.of(1759, 4, 14));
+		composerRepository.save(handel);
+
+		Piece piece = new Piece("Prelude, Op. 28, No. 4",
+				"One of Chopin's 24 preludes, played at his funeral.",
+				LocalDate.of(1838, 3, 1), classical, handel);
+		pieceRepository.save(piece);
+
+		User user = userRepository.findByUsername("maxkemzi").orElse(null);
+
+		UserPiece userPiece = new UserPiece(4, UserPieceStatus.CURRENTLY_LEARNING, null, null, user, piece);
+		userPieceRepository.save(userPiece);
+
+		MvcResult result = mockMvc.perform(
+				MockMvcRequestBuilders.get("/api/users/maxkemzi/pieces/stats"))
+				.andExpect(status().isOk())
+				.andReturn();
+
+		String expected = objectMapper.writeValueAsString(new UserPieceStats(1, 1, 0, 0, 0));
 		String actual = result.getResponse().getContentAsString();
 
 		assertEquals(expected, actual, "Should have a correct response.");
